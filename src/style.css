@@ -1,5 +1,5 @@
 body {
-    font-family: "PT Serif", serif;
+    font-family: 'PT Serif';
     font-size: 14pt;
     text-align: justify;
 }
@@ -24,6 +24,12 @@ h2, h3, h4, h5 {
 
 h2 {
     page-break-before: always;
+}
+
+:root {
+	--main-font: 'PT Serif';
+	--alt-font: 'PT Serif';
+	--code-font: Inconsolata;
 }
 
 @page:first {
