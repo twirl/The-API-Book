@@ -34,7 +34,7 @@ function getParts ({ path, l10n: { chapter }}) {
                 .sort()
                 .forEach((file) => {
                     const md = fs.readFileSync(`${subdir}${file}`, 'utf-8');
-                    parts.push(md.trim().replace(/$### /, `### ${chapter} ${counter++}. `));
+                    parts.push(md.trim().replace(/^### /, `### ${chapter} ${counter++}. `));
                 });
         });
     
