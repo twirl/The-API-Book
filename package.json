@@ -5,12 +5,10 @@
     "author": "Sergey Konstantinov <twirl-team@yandex.ru>",
     "repository": "github.com:twirl/The-API-Book",
     "devDependencies": {
-        "html-pdf": "^2.2.0",
-        "percollate": "^1.0.1",
-        "showdown": "^1.9.1"
+        "showdown": "^1.9.1",
+        "puppeteer": "^5.3.1"
     },
     "scripts": {
-        "build-html": "node build_html.js | percollate html -o ./dist/API.ru.html --style=./src/style.css -",
-        "build-pdf": "node build_pdf.js | percollate pdf -o ./dist/API.ru.pdf --style=./src/style.css -"
+        "build": "node build.js"
     }
 }
