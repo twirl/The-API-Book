@@ -22,7 +22,7 @@ const html = `<html><head>
     <article>${content}</article>
 </body></html>`;
 
-fs.writeFileSync('./dist/API.ru.html', html);
+fs.writeFileSync('./docs/API.ru.html', html);
 
 function getParts ({ path, l10n: { chapter }, pageBreak}) {
     const parts = [
@@ -61,7 +61,7 @@ async function buildPdf() {
         waitUntil: 'load'
     });
     const pdf = await page.pdf({
-        path: './dist/API.ru.pdf',
+        path: './docs/API.ru.pdf',
         preferCSSPageSize: true,
         printBackground: true
     });
