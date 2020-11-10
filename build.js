@@ -14,7 +14,7 @@ const html = `<html><head>
     <meta charset="utf-8"/>
     <title>Сергей Константинов. API</title>
     <meta name="author" content="Сергей Константинов"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif&family=PT+Sans&family=Inconsolata"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&family=PT+Sans&family=Inconsolata"/>
     <style>${fs.readFileSync('src/style.css', 'utf-8')}</style>
 </head><body>
     <article>${content}</article>
