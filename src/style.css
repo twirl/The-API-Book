@@ -22,9 +22,19 @@ body {
     padding-left: 92px;
 }
 
-code {
+code, pre {
     font-family: Inconsolata, sans-serif;
     font-size: 12pt;
+}
+
+pre {
+    margin: 12pt 0;
+    padding: 12pt;
+    border-radius: .25em;
+    border-top: 1px solid rgba(0,0,0,.45);
+    border-left: 1px solid rgba(0,0,0,.45);
+    box-shadow: .1em .1em .1em rgba(0,0,0,.45);
+    page-break-inside: avoid;
 }
 
 .page-break {

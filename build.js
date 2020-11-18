@@ -42,7 +42,8 @@ function getParts ({ path, l10n: { chapter }, pageBreak}) {
                     const md = fs.readFileSync(`${subdir}${file}`, 'utf-8');
                     parts.push(
                         mdHtml.makeHtml(
-                            md.trim().replace(/^### /, `### ${chapter} ${counter++}. `)
+                            md.trim()
+                                .replace(/^### /, `### ${chapter} ${counter++}. `)
                         ) + pageBreak
                     );
                 });
