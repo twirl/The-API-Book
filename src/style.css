@@ -25,6 +25,7 @@ body {
 code, pre {
     font-family: Inconsolata, sans-serif;
     font-size: 12pt;
+    white-space: nowrap;
 }
 
 pre {
