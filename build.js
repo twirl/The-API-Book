@@ -52,6 +52,30 @@ function getParts ({ path, l10n: { chapter }, pageBreak}) {
     return parts;
 }
 
+const printStyles = `
+@media print {
+    * { 
+        text-align: left;
+        line-height: 1.55;
+    }
+    code, pre {
+        white-space: pre-wrap;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        page-break-inside: avoid;
+    }
+    h1::after, h2::after, h3::after, h4::after, h5::after, h6::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-bottom: -100px;
+    }
+    p {
+        orphans: 2;
+        widows: 2;
+    }
+}`;
+
 async function buildPdf() {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -59,7 +83,10 @@ async function buildPdf() {
     await page.setContent(html, {
         waitUntil: 'load'
     });
-    const pdf = await page.pdf({
+
+    await page.addStyleTag({ content: printStyles });
+
+    await page.pdf({
         path: './docs/API.ru.pdf',
         preferCSSPageSize: true,
         printBackground: true
