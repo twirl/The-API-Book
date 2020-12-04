@@ -13,7 +13,10 @@ body {
 
 @media print {
     h1 {
-        margin: 3.5in 0 4in 0;
+        margin: 4.5in 0 5.2in 0;
+    }
+    body {
+        font-size: 20pt;
     }
 }
 
@@ -24,18 +27,24 @@ body {
 
 code, pre {
     font-family: Inconsolata, sans-serif;
-    font-size: 12pt;
+}
+
+code {
     white-space: nowrap;
 }
 
 pre {
-    margin: 12pt 0;
-    padding: 12pt;
+    margin: 1em 0;
+    padding: 1em;
     border-radius: .25em;
     border-top: 1px solid rgba(0,0,0,.45);
     border-left: 1px solid rgba(0,0,0,.45);
     box-shadow: .1em .1em .1em rgba(0,0,0,.45);
     page-break-inside: avoid;
+}
+
+pre code {
+    white-space: pre;
 }
 
 .page-break {
@@ -50,22 +59,23 @@ h1, h2, h3, h4, h5 {
     text-align: left;
     font-family: 'PT Sans';
     font-weight: bold;
+    page-break-after: avoid;
 }
 
 h1 {
-    font-size: 28pt;
+    font-size: 200%;
 }
 
 h2 {
-    font-size: 24pt;
+    font-size: 160%;
 }
 
 h3 {
-    font-size: 20pt;
+    font-size: 140%;
 }
 
 h4, h5 {
-    font-size: 16pt;
+    font-size: 120%;
 }
 
 @page {

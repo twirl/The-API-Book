@@ -5,8 +5,8 @@
     "author": "Sergey Konstantinov <twirl-team@yandex.ru>",
     "repository": "github.com:twirl/The-API-Book",
     "devDependencies": {
-        "showdown": "^1.9.1",
-        "puppeteer": "^5.3.1"
+        "puppeteer": "^5.5.0",
+        "showdown": "^1.9.1"
     },
     "scripts": {
         "build": "node build.js"
