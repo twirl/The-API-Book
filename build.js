@@ -2,25 +2,53 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const mdHtml = new (require('showdown').Converter)();
 
-const content = getParts({
-    path: './src/ru/clean-copy/',
-    l10n: {
-        chapter: 'Глава'
+const l10n = {
+    en: {
+        title: 'Sergey Konstantinov. The API',
+        author: 'Sergey Konstantinov',
+        chapter: 'Chapter'
     },
-    pageBreak:'<div class="page-break"></div>'
-}).join('');
+    ru: {
+        title: 'Сергей Константинов. API',
+        author: 'Сергей Константинов',
+        chapter: 'Глава'
+    }
+};
 
-const html = `<html><head>
-    <meta charset="utf-8"/>
-    <title>Сергей Константинов. API</title>
-    <meta name="author" content="Сергей Константинов"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&family=PT+Sans&family=Inconsolata"/>
-    <style>${fs.readFileSync('src/style.css', 'utf-8')}</style>
-</head><body>
-    <article>${content}</article>
-</body></html>`;
+buildDocs(l10n).then(() => {
+    process.exit(0);
+}, (e) => {
+    console.error(e);
+    process.exit(255);
+});
 
-fs.writeFileSync('./docs/API.ru.html', html);
+function buildDocs (l10n) {
+    return Promise.all(
+        Object.entries(l10n).map(([lang, l10n]) => buildDoc(lang, l10n))
+    );
+}
+
+function buildDoc (lang, l10n) {
+    const content = getParts({
+        path: `./src/${lang}/clean-copy/`,
+        l10n,
+        pageBreak:'<div class="page-break"></div>'
+    }).join('');
+
+    const html = `<html><head>
+        <meta charset="utf-8"/>
+        <title>${l10n.title}</title>
+        <meta name="author" content="${l10n.author}"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&family=PT+Sans&family=Inconsolata"/>
+        <style>${fs.readFileSync('src/style.css', 'utf-8')}</style>
+    </head><body>
+        <article>${content}</article>
+    </body></html>`;
+
+    fs.writeFileSync(`./docs/API.${lang}.html`, html);
+
+    return buildPdf(`./docs/API.${lang}.pdf`, html);
+}
 
 function getParts ({ path, l10n: { chapter }, pageBreak}) {
     const parts = [
@@ -52,7 +80,7 @@ function getParts ({ path, l10n: { chapter }, pageBreak}) {
     return parts;
 }
 
-async function buildPdf() {
+async function buildPdf (path, html) {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
@@ -60,17 +88,10 @@ async function buildPdf() {
         waitUntil: 'load'
     });
     const pdf = await page.pdf({
-        path: './docs/API.ru.pdf',
+        path,
         preferCSSPageSize: true,
         printBackground: true
     });
    
     await browser.close();
 }
-
-buildPdf().then(() => {
-    process.exit(0);
-}, (e) => {
-    console.error(e);
-    process.exit(255);
-})

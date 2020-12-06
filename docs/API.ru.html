@@ -1,9 +1,9 @@
 <html><head>
-    <meta charset="utf-8"/>
-    <title>Сергей Константинов. API</title>
-    <meta name="author" content="Сергей Константинов"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&family=PT+Sans&family=Inconsolata"/>
-    <style>body {
+        <meta charset="utf-8"/>
+        <title>Сергей Константинов. API</title>
+        <meta name="author" content="Сергей Константинов"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&family=PT+Sans&family=Inconsolata"/>
+        <style>body {
     font-family: 'PT Serif';
     font-size: 14pt;
     text-align: justify;
@@ -93,8 +93,8 @@ h4, h5 {
 	--alt-font: 'PT Serif';
 	--code-font: Inconsolata;
 }</style>
-</head><body>
-    <article><h1>Сергей Константинов<br/>API</h1>
+    </head><body>
+        <article><h1>Сергей Константинов<br/>API</h1>
 
 <p class="cc-by-nc">Это произведение доступно по <a href="http://creativecommons.org/licenses/by-nc/4.0/">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.</p>
 <div class="page-break"></div><h2>Введение</h2><h3 id="1">Глава 1. О структуре этой книги</h3>
@@ -1155,4 +1155,4 @@ GET /v1/record-views/{id}?cursor={cursor}
 <p><strong>Важно</strong>: различайте локализацию для конечного пользователя и локализацию для разработчика. В примере из п.&nbsp;12 сообщение <code>localized_message</code> адресовано пользователю — его должно показать приложение, если в коде обработка такой ошибки невозможно. Это сообщение должно быть написано на указанном в запросе языке и отформатировано согласно правилам локации пользователя. А вот сообщение <code>details.checks_failed[].message</code> написано не для пользователя, а для разработчика, который будет разбираться с проблемой. Соответственно, написано и отформатировано оно должно быть понятно для разработчика — что, скорее всего, означает «на английском языке», т.к. английский де факто является стандартом в мире разработки программного обеспечения.</p>
 <p>Следует отметить, что индикация, какие сообщения следует показать пользователю, а какие написаны для разработчика, должна, разумеется, быть явной конвенцией вашего API. В примере для этого используется префикс <code>localized_</code>.</p>
 <p>И ещё одна вещь: все строки должны быть в кодировке UTF-8 и никакой другой.</p><div class="page-break"></div></article>
-</body></html>
+    </body></html>
