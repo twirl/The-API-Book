@@ -4,7 +4,7 @@ This is the working repository for ‘The API’ book, being written by Sergey K
 
 You may find .html or .pdf version of the book [NB: Warning! Work in progress] in the 'docs' folder, or at https://twirl.github.io/The-API-Book/docs/API.ru.html (Russian version).
 
-The book is distributed under CC-BY Licence, meaning that you're totally free to use this book in any manner while complying with two rules:
+The book is distributed under Creative Commons Attribution-NonCommercial 4.0 licence, meaning that you're totally free to use this book in any manner while complying with two rules:
   * you're not getting commercial profit from the book;
   * you're not forgetting to mention the author.
 
