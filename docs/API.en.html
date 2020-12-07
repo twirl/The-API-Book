@@ -131,7 +131,7 @@ h4, h5 {
 <p>Principles we are explaining below are specifically oriented to make APIs evolve smoothly over time, not being turned into a pile of mixed inconsistent interfaces. It is crucial to understand that this approach isn't free: a necessity to bear in mind all possible extension variants and keep essential growth points mean interface redundancy and possibly excessing abstractions being embedded in the API design. Besides both make developers' work harder. <strong>Providing excess design complexities being reserved for future use makes sense only when this future actually exists for your API. Otherwise it's simply an overengineering.</strong></p><div class="page-break"></div><h3 id="chapter4backwardscompatibility">Chapter 4. Backwards Compatibility</h3>
 <p>Backwards compatibility is a temporal characteristics of your API. An obligation to maintain backwards compatibility is the crucial point where API developments differs form software development in general.</p>
 <p>Of course, backwards compatibility isn't an absolute. In some subject areas shipping new backwards incompatible API versions is a routine. Nevertheless, every time you deploy new backwards incompatible API version, the developers need to make some non-zero effort to adapt their code to the new API version. In this sense, releasing new API versions puts a sort of a ‘tax’ on customers. They must spend quite real money just to make sure they product continue working.</p>
-<p>Of course, large companies which occupy firm market positions could afford implying such a taxation. Furthermore, they may introduce penalties for those who refuse to adapt their code to new API versions, up to disabling their applications.</p>
+<p>Large companies, which occupy firm market positions, could afford implying such a taxation. Furthermore, they may introduce penalties for those who refuse to adapt their code to new API versions, up to disabling their applications.</p>
 <p>From our point of view such practice cannot be justified. Don't imply hidden taxes on your customers. If you're able to avoid breaking backwards compatibility — never break it.</p>
 <p>Of course, maintaining old API versions is sort of a tax either. Technology changes, and you cannot foresee everything, regardless of how nice your API is initially designed. At some point keeping old API versions results in an inability to provide new functionality and support new platforms, and you will be forced to release new version. But at least you will be able to explain to your customers why they need to make an effort.</p>
 <p>We will discuss API lifecycle and version policies in Section II.</p><div class="page-break"></div><h3 id="chapter5onversioning">Chapter 5. On versioning</h3>
@@ -178,5 +178,52 @@ Cache-Control: no-cache
 <p>Some request and response parts might be omitted if they are irrelevant to a topic being discussed.</p>
 <p>Simplified notation might be used to avoid redundancies, like <code>POST /v1/bucket/{id}/some-resource</code> <code>{…,"some_parameter",…}</code> → <code>{ "operation_id" }</code>; request and response bodies might also be omitted.</p>
 <p>We will be using expressions like ‘<code>POST /v1/bucket/{id}/some-resource</code> method’ (or simply ‘<code>bucket/some-resource</code> method’, ‘<code>some-resource</code>’ method if no other <code>some-resource</code>s are specified throughout the chapter, so there is no ambiguity) to refer to such endpoint definition.</p>
-<p>Apart from HTTP API notation we will employ C-style pseudocode, or, to be more precise, JavaScript-like or Python-like since types are omitted. We assume such imperative structures being readable enough to skip detailed grammar explanations.</p><div class="page-break"></div><h2>The API Design</h2></article>
+<p>Apart from HTTP API notation we will employ C-style pseudocode, or, to be more precise, JavaScript-like or Python-like since types are omitted. We assume such imperative structures being readable enough to skip detailed grammar explanations.</p><div class="page-break"></div><h2>The API Design</h2><h3 id="chapter7apicontextspyramid">Chapter 7. API Contexts Pyramid</h3>
+<p>The approach we use to design API comprises four steps:</p>
+<ul>
+<li>defining an application field;</li>
+<li>separating abstraction levels;</li>
+<li>isolating responsibility areas;</li>
+<li>describing final interfaces.</li>
+</ul>
+<p>This for-step algorithm actually builds an API from top to bottom, from common requirements and use case scenarios down to refined entity nomenclature. In fact, moving this way you will eventually get a ready-to-use API — that's why we value this approach.</p>
+<p>It might seem that the most useful pieces of advice are given in a last chapter, but that's not true. The cost of a mistake made at certain levels differs. Fixing naming is simple; revising wrong understanding what the API stands for is practically impossible.</p>
+<p><strong>NB</strong>. Here and throughout we will illustrate API design concepts using a hypothetical example of an API allowing for ordering a cup of coffee in city cafes. Just in case: this example is totally synthetic. If we were to design such an API in a real world, it would probably have very few in common with our fictional example.</p><div class="page-break"></div><h3 id="chapter8defininganapplicationfield">Chapter 8. Defining an Application Field</h3>
+<p>Key question you should ask yourself looks like that: what problem we solve? It should be asked four times, each time putting emphasis on another word.</p>
+<ol>
+<li><p><em>What</em> problem we solve? Could we clearly outline the situation in which our hypothetical API is needed by developers?</p></li>
+<li><p>What <em>problem</em> we solve? Are we sure that abovementioned situation poses a problem? Does someone really want to pay (literally or figuratively) to automate a solution for this problem?</p></li>
+<li><p>What problem <em>we</em> solve? Do we actually possess an expertise to solve the problem?</p></li>
+<li><p>What problem we <em>solve</em>? Is it true that the solution we propose solves the problem indeed? Aren't we creating another problem instead?</p></li>
+</ol>
+<p>So, let's imagine that we are going to develop an API for automated coffee ordering in city cafes, and let' apply the key question to it.</p>
+<ol>
+<li><p>Why would someone need an API to make a coffee? Why ordering a coffee via ‘human-to-human’ or ‘human-to-machine’ interface is inconvenient, why have ‘machine-to-machine’ interface?</p>
+<ul>
+<li>Possibly, we're solving knowledge and selection problems? To provide humans with a full knowledge what options they have right now and right here.</li>
+<li>Possibly, we're optimizing waiting times? To save the time people waste while waiting their beverages.</li>
+<li>Possibly, we're reducing the number of errors? To help people get exactly what they wanted to order, stop losing information in imprecise conversational communication or in dealing with unfamiliar coffee machine interfaces?</li></ul>
+<p>‘Why’ question is the most important of all questions you must ask yourself. And not only about global project goals, but also locally about every single piece of functionality. <strong>If you can't briefly and clearly answer the question ‘what for this entity is needed’, then it's not needed</strong>.</p>
+<p>Here and throughout we assume, to make our example more complex and bizarre, that we are optimizing all three factors.</p></li>
+<li><p>Do the problems we outlined really exist? Do we really observe unequal coffee-machines utilization in mornings? Do people really suffer from inability to find nearby toffee nut latte they long for? Do they really care about minutes they spend in lines?</p></li>
+<li><p>Do we actually have a resource to solve a problem? Do we have an access to sufficient number of coffee machines and users to ensure system's efficiency?</p></li>
+<li><p>Finally, will we really solve a problem? How we're going to quantify an impact our API makes? </p></li>
+</ol>
+<p>In general, there is no simple answers to those questions. Ideally, you should give answers having all relevant metrics measured: how much time is wasted exactly, and what numbers we're going to achieve having this coffee machines density? Let us also stress that in real life obtaining these numbers is only possibly when you're entering a stable market. If you try to create something new, your only option is to rely on your intuition.</p>
+<h4 id="whyanapi">Why an API?</h4>
+<p>Since our book is dedicated not to software development per se, but developing APIs, we should look at all those questions from different angle: why solving those problems specifically requires an API, not simply specialized software? In terms of our fictional example we should ask ourselves: why provide a service to developers to allow brewing coffee to end users instead of just making an app for end users?</p>
+<p>In other words, there must be a solid reason to split two software development domains: there are the operators which provide APIs; and there are the operators which develop services for end users. Their interests are somehow different to such an extent that coupling this two roles in one entity is undesirable. We will talk about the motivation to specifically provide APIs in more details in Section III.</p>
+<p>We should also note, that you should try making an API when and only when you wrote ‘because that's our area of expertise’ in question 2. Developing APIs is sort of meta-engineering: your writing some software to allow other companies to develop software to solve users' problems. You must possess an expertise in both domains (API and user products) to design your API well.</p>
+<p>As for our speculative example, let us imagine that in near future some tectonic shift happened on coffee brewing market. Two distinct player groups took shape: some companies provide a ‘hardware’, i.e. coffee machines; other companies have an access to customer auditory. Something like flights market looks like: there are air companies, which actually transport passengers; and there are trip planning services where users are choosing between trip variants the system generates for them. We're aggregating a hardware access to allow app vendors for ordering fresh brewed coffee.</p>
+<h4 id="whatandhow">What and How</h4>
+<p>After finishing all these theoretical exercises, we should proceed right to designing and developing the API, having a decent understanding regarding two things:</p>
+<ul>
+<li><em>what</em> we're doing, exactly;</li>
+<li><em>how</em> we're doing it, exactly.</li>
+</ul>
+<p>In our coffee case, we are:</p>
+<ul>
+<li>providing an API to services with larger audience, so their users may order a cup of coffee in the most efficient and convenient manner;</li>
+<li>abstracting an access to coffee machines ‘hardware’ and delivering methods to select a beverage kind and some location to brew — and to make an order.</li>
+</ul><div class="page-break"></div></article>
     </body></html>
