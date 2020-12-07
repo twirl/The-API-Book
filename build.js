@@ -1,7 +1,9 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const mdHtml = new (require('showdown').Converter)();
-
+const langsToBuild = process.argv[2] && 
+    process.argv[2].split(',').map((s) => s.trim()) ||
+    ['ru', 'en'];
 const l10n = {
     en: {
         title: 'Sergey Konstantinov. The API',
@@ -15,16 +17,18 @@ const l10n = {
     }
 };
 
-buildDocs(l10n).then(() => {
+buildDocs(langsToBuild, l10n).then(() => {
+    console.log('Done!');
     process.exit(0);
 }, (e) => {
     console.error(e);
     process.exit(255);
 });
 
-function buildDocs (l10n) {
+function buildDocs (langsToBuild, l10n) {
+    console.log(`Building in following languages: ${langsToBuild.join(', ')}`);
     return Promise.all(
-        Object.entries(l10n).map(([lang, l10n]) => buildDoc(lang, l10n))
+        langsToBuild.map((lang) => buildDoc(lang, l10n[lang]))
     );
 }
 
@@ -39,7 +43,7 @@ function buildDoc (lang, l10n) {
         <meta charset="utf-8"/>
         <title>${l10n.title}</title>
         <meta name="author" content="${l10n.author}"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&family=PT+Sans&family=Inconsolata"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
         <style>${fs.readFileSync('src/style.css', 'utf-8')}</style>
     </head><body>
         <article>${content}</article>
