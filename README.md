@@ -1,8 +1,10 @@
 # The API Book
 
-This is the working repository for ‘The API’ book, being written by Sergey Konstantinov.
+This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:twirl-team@yandex.ru), [Linkedin profile](https://linkedin.com/in/twirl)).
 
-You may find .html or .pdf version of the book [NB: Warning! Work in progress] in the 'docs' folder, or at https://twirl.github.io/The-API-Book/docs/API.ru.html (Russian version).
+You may find `.html`, `.epub` or `.pdf` version of the book [NB: Warning! Work in progress] in the 'docs' folder, or read it online.
+  * In English: [html](https://twirl.github.io/The-API-Book/docs/API.en.html), [epub](https://twirl.github.io/The-API-Book/docs/API.en.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.en.pdf)
+  * In Russian: [html](https://twirl.github.io/The-API-Book/docs/API.ru.html), [epub](https://twirl.github.io/The-API-Book/docs/API.ru.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.ru.pdf)
 
 The book is distributed under Creative Commons Attribution-NonCommercial 4.0 license, meaning in general that you're totally free to use this book in any manner while complying with two rules:
   * you're not getting commercial profit from the book;
@@ -42,6 +44,6 @@ I will translate sections into English at the moment they're ready. Which means 
 
 ## Contributing
 
-I am accepting any inquiries. Fill free to open issues.
+I am accepting inquiries. Fill free to open issues.
 
 I am NOT accepting pull requests, since I'm willing to be the only author and contributor.
