@@ -2,6 +2,8 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const Epub = require('epub-gen');
 
+const css = fs.readFileSync('./src/epub.css', 'utf-8');
+
 module.exports = {
     html: function ({ html, path }) {
         return new Promise((resolve, reject) => {
@@ -29,10 +31,11 @@ module.exports = {
        
         await browser.close();
     },
-    epub: function ({ lang, l10n, structure, path}) {
+    epub: function ({ lang, l10n, structure, path }) {
         const epubData = {
             title: l10n.title,
             author: l10n.author,
+            css,
             tocTitle: l10n.toc,
             appendChapterTitles: false,
             content: structure.sections.reduce((content, section) => {

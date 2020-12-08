@@ -32,6 +32,7 @@ pre {
     box-shadow: .1em .1em .1em rgba(0,0,0,.45);
     page-break-inside: avoid;
     overflow-x: auto;
+    font-size: 90%;
 }
 
 pre code {
@@ -106,12 +107,12 @@ h4, h5 {
         text-align: left;
     }
 
-    code {
-        font-size: 11pt;
-    }
-
     pre {
         margin: 0;
         padding: 0.2em;
+    }
+
+    ul, ol {
+        padding-left: 1em;
     }
 }

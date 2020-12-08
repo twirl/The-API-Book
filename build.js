@@ -30,6 +30,8 @@ const l10n = {
         frontPage: 'Титульный лист'
     }
 };
+const css = fs.readFileSync('src/style.css', 'utf-8');
+
 const builders = require('./builders');
 
 buildDocs(langsToBuild, targets, l10n).then(() => {
@@ -75,7 +77,7 @@ function buildDoc (lang, targets, l10n) {
         <title>${l10n.author}. ${l10n.title}</title>
         <meta name="author" content="${l10n.author}"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
-        <style>${fs.readFileSync('src/style.css', 'utf-8')}</style>
+        <style>${css}</style>
     </head><body>
         <article>${htmlContent}</article>
     </body></html>`;
