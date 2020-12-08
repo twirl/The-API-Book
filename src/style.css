@@ -1,23 +1,13 @@
+html {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'PT Serif';
     font-size: 14pt;
     text-align: justify;
-}
-
-@media screen {
-    body {
-        margin: 20px auto;
-        max-width: 60%;
-    }
-}
-
-@media print {
-    h1 {
-        margin: 4.5in 0 5.2in 0;
-    }
-    body {
-        font-size: 20pt;
-    }
 }
 
 .cc-by-nc {
@@ -41,6 +31,7 @@ pre {
     border-left: 1px solid rgba(0,0,0,.45);
     box-shadow: .1em .1em .1em rgba(0,0,0,.45);
     page-break-inside: avoid;
+    overflow-x: auto;
 }
 
 pre code {
@@ -68,10 +59,12 @@ h1 {
 
 h2 {
     font-size: 160%;
+    text-transform: uppercase;
 }
 
 h3 {
     font-size: 140%;
+    font-variant: small-caps;
 }
 
 h4, h5 {
@@ -87,4 +80,38 @@ h4, h5 {
 	--main-font: 'PT Serif';
 	--alt-font: 'PT Serif';
 	--code-font: Inconsolata;
+}
+
+@media screen {
+    body {
+        margin: 2em auto;
+        max-width: 60%;
+    }
+}
+
+@media print {
+    h1 {
+        margin: 4in 0 4in 0;
+    }
+    body {
+        font-size: 14pt;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    body {
+        padding: 2em;
+        margin: 0;
+        max-width: none;
+        text-align: left;
+    }
+
+    code {
+        font-size: 11pt;
+    }
+
+    pre {
+        margin: 0;
+        padding: 0.2em;
+    }
 }

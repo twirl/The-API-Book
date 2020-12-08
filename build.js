@@ -1,23 +1,38 @@
-const puppeteer = require('puppeteer');
 const fs = require('fs');
 const mdHtml = new (require('showdown').Converter)();
+const path = require('path');
+
 const langsToBuild = process.argv[2] && 
     process.argv[2].split(',').map((s) => s.trim()) ||
     ['ru', 'en'];
+
+    const targets = (process.argv[3] && 
+        process.argv[3].split(',') ||
+        ['html', 'pdf', 'epub']
+    ).reduce((targets, arg) => {
+        targets[arg.trim()] = true;
+        return targets;
+    }, {});
+
 const l10n = {
     en: {
-        title: 'Sergey Konstantinov. The API',
+        title: 'The API',
         author: 'Sergey Konstantinov',
-        chapter: 'Chapter'
+        chapter: 'Chapter',
+        toc: 'Table of Contents',
+        frontPage: 'Front Page'
     },
     ru: {
-        title: 'Сергей Константинов. API',
+        title: 'API',
         author: 'Сергей Константинов',
-        chapter: 'Глава'
+        chapter: 'Глава',
+        toc: 'Содержание',
+        frontPage: 'Титульный лист'
     }
 };
+const builders = require('./builders');
 
-buildDocs(langsToBuild, l10n).then(() => {
+buildDocs(langsToBuild, targets, l10n).then(() => {
     console.log('Done!');
     process.exit(0);
 }, (e) => {
@@ -25,77 +40,88 @@ buildDocs(langsToBuild, l10n).then(() => {
     process.exit(255);
 });
 
-function buildDocs (langsToBuild, l10n) {
-    console.log(`Building in following languages: ${langsToBuild.join(', ')}`);
+function buildDocs (langsToBuild, targets, l10n) {
+    console.log(`Building in following languages: ${
+        langsToBuild.join(', ')
+    }, targets: ${
+        Object.keys(targets).join(', ')
+    }`);
+
     return Promise.all(
-        langsToBuild.map((lang) => buildDoc(lang, l10n[lang]))
+        langsToBuild.map((lang) => buildDoc(lang, targets, l10n[lang]))
     );
 }
 
-function buildDoc (lang, l10n) {
-    const content = getParts({
+function buildDoc (lang, targets, l10n) {
+    const structure = getStructure({
         path: `./src/${lang}/clean-copy/`,
         l10n,
         pageBreak:'<div class="page-break"></div>'
-    }).join('');
+    });
+    const htmlContent = [
+        structure.frontPage,
+        ...structure.sections
+            .map((section) => section.chapters.reduce((content, chapter) => {
+                if (chapter.title) {
+                    content.push(`<h3>${chapter.title}</h3>`);
+                }
+                content.push(chapter.content);
+                return content;
+            }, [section.title ? `<h2>${section.title}</h2>` : '']).join(''))
+    ].join('\n');
 
     const html = `<html><head>
         <meta charset="utf-8"/>
-        <title>${l10n.title}</title>
+        <title>${l10n.author}. ${l10n.title}</title>
         <meta name="author" content="${l10n.author}"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
         <style>${fs.readFileSync('src/style.css', 'utf-8')}</style>
     </head><body>
-        <article>${content}</article>
+        <article>${htmlContent}</article>
     </body></html>`;
 
-    fs.writeFileSync(`./docs/API.${lang}.html`, html);
-
-    return buildPdf(`./docs/API.${lang}.pdf`, html);
+    return Promise.all(['html', 'pdf', 'epub'].map((target) => {
+        return targets[target] ? builders[target]({
+            lang,
+            structure,
+            html,
+            l10n,
+            path: path.join(__dirname, 'docs', `API.${lang}.${target}`)
+        }) : Promise.resolve();
+    }));
 }
 
-function getParts ({ path, l10n: { chapter }, pageBreak}) {
-    const parts = [
-        fs.readFileSync(`${path}intro.html`, 'utf-8') + pageBreak
-    ];
+function getStructure ({ path, l10n: { chapter }, pageBreak}) {
+    const structure = {
+        frontPage: fs.readFileSync(`${path}intro.html`, 'utf-8') + pageBreak,
+        sections: []
+    };
     let counter = 1;
     fs.readdirSync(path)
         .filter((p) => fs.statSync(`${path}${p}`).isDirectory())
         .sort()
         .forEach((dir) => {
             const name = dir.split('-')[1];
-            parts.push(`<h2>${name}</h2>`);
+            const section = {
+                title: name,
+                chapters: []
+            }
 
             const subdir = `${path}${dir}/`;
             fs.readdirSync(subdir)
                 .filter((p) => fs.statSync(`${subdir}${p}`).isFile() && p.indexOf('.md') == p.length - 3)
                 .sort()
                 .forEach((file) => {
-                    const md = fs.readFileSync(`${subdir}${file}`, 'utf-8');
-                    parts.push(
-                        mdHtml.makeHtml(
-                            md.trim()
-                                .replace(/^### /, `### ${chapter} ${counter++}. `)
-                        ) + pageBreak
-                    );
+                    const md = fs.readFileSync(`${subdir}${file}`, 'utf-8').trim();
+                    const [ title, ...paragraphs ] = md.split(/\r?\n/);
+                    section.chapters.push({
+                        title: title.replace(/^### /, `${chapter} ${counter++}. `),
+                        content: mdHtml.makeHtml(paragraphs.join('\n')) + pageBreak
+                    });
                 });
+            
+            structure.sections.push(section);
         });
     
-    return parts;
-}
-
-async function buildPdf (path, html) {
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-
-    await page.setContent(html, {
-        waitUntil: 'load'
-    });
-    const pdf = await page.pdf({
-        path,
-        preferCSSPageSize: true,
-        printBackground: true
-    });
-   
-    await browser.close();
+    return structure;
 }
