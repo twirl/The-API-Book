@@ -308,8 +308,8 @@ GET /v1/orders/{id}
 <p>Abstraction levels separation should go alongside three directions:</p>
 <ol>
 <li><p>From user scenarios to their internal representation: high-level entities and their method nomenclature must directly reflect API usage scenarios; low-level entities reflect the decomposition of scenarios into smaller parts.</p></li>
-<li><p>From user subject field terms to ‘raw’ data subject field terms — in our case from high-level terms like ‘order’, ‘recipe’, ‘cafe’ to low-level terms like ‘beverage temperature’, ‘coffee machine geographical coordinates’, etc.</p></li>
-<li><p>Finally, from data structures suitable for end users to ‘raw’ data structures — in our case, from ‘lungo recipe’ and ‘"Chamomile" cafe chain’ to raw byte data stream from ‘Good Morning’ coffee machine sensors.</p></li>
+<li><p>From user subject field terms to ‘raw’ data subject field terms — in our case from high-level terms like ‘order’, ‘recipe’, ‘café’ to low-level terms like ‘beverage temperature’, ‘coffee machine geographical coordinates’, etc.</p></li>
+<li><p>Finally, from data structures suitable for end users to ‘raw’ data structures — in our case, from ‘lungo recipe’ and ‘"Chamomile" café chain’ to raw byte data stream from ‘Good Morning’ coffee machine sensors.</p></li>
 </ol>
 <p>The more is the distance between programmable context which our API connects, the deeper is the hierarchy of the entities we are to develop.</p>
 <p>In our example with coffee readiness detection we clearly face the situation when we need an interim abstraction level:</p>
@@ -603,5 +603,247 @@ It is important to note that we don't calculate new variables out from sensor da
 <li>from one side, in an order context ‘leaked’ physical data (beverage volume prepared) is injected, therefore stirring abstraction levels irreversibly;</li>
 <li>from other side, an order context itself is deficient: it doesn't provide new meta-variables non-existent on low levels (order status, in particular), doesn't initialize them and don't provide game rules.</li>
 </ul>
-<p>We will discuss data context in more details in Section II. There we will just state that data flows and their transformations might be and must be examined as an API facet which, from one side, helps us to separate abstraction levels properly, and, from other side, to check if our theoretical structures work as intended.</p><div class="page-break"></div></article>
+<p>We will discuss data context in more details in Section II. There we will just state that data flows and their transformations might be and must be examined as an API facet which, from one side, helps us to separate abstraction levels properly, and, from other side, to check if our theoretical structures work as intended.</p><div class="page-break"></div><h3>Chapter 10. Isolating Responsibility Areas</h3><p>Based on previous chapter, we understand that an abstraction hierarchy in out hypothetical project would look like that:</p>
+<ul>
+<li>user level (those entities users directly interact with and which are formulated in terms, understandable by user: orders, coffee recipes);</li>
+<li>program execution control level (entities responsible for transforming orders into machine commands);</li>
+<li>runtime level for the second API kind (entities describing command execution state machine).</li>
+</ul>
+<p>We are now to define each entity's responsibility area: what's the reason in keeping this entity within our API boundaries; which operations are applicable to the entity itself (and which are delegated to other objects). In fact we are to apply the ‘why’-principle to every single API entity.</p>
+<p>To do so we must iterate over the API and formulate in subject area terms what every object is. Let us remind that abstraction levels concept implies that each level is some interim subject area per se; a step we take to traverse from describing a task in first connected context terms (‘a lungo ordered by a user’) to second connect context terms (‘a command performed by a coffee machine’)</p>
+<p>As for our fictional example, it would look like that:</p>
+<ol>
+<li>User level entities.<ul>
+<li>An <code>order</code> describes some logical unit in app-user interaction. An <code>order</code> might be:<ul>
+<li>created;</li>
+<li>checked for its status;</li>
+<li>retrieved;</li>
+<li>canceled;</li></ul></li>
+<li>A <code>recipe</code> describes an ‘ideal model’ of some coffee beverage type, its customer properties. A <code>recipe</code> is immutable entities for us, which means we could only read it.</li>
+<li>A <code>coffee-machine</code> is a model of a real world device. From coffee machine description we must be able to retrieve its geographical location and the options it support (will be discussed below).</li></ul></li>
+<li>Program execution control level entities.<ul>
+<li>A ‘program’ describes some general execution plan for a coffee machine. Program could only be read.</li>
+<li>A program matcher <code>programs/matcher</code> is capable of coupling a <code>recipe</code> and a <code>program</code>, which in fact means to retrieve a dataset needed to prepare a specific recipe on a specific coffee machine.</li>
+<li>A program execution <code>programs/run</code> describes a single fact of running a program on a coffee machine. <code>run</code> might be:<ul>
+<li>initialized (created);</li>
+<li>checked for its status;</li>
+<li>canceled.</li></ul></li></ul></li>
+<li>Runtime level entities.<ul>
+<li>A <code>runtime</code> describes a specific execution data context, i.e. the state of each variable. <code>runtime</code> might be:<ul>
+<li>initialized (created);</li>
+<li>checked for its status;</li>
+<li>terminated.</li></ul></li></ul></li>
+</ol>
+<p>If we look closely at each object, we may notice that each entity turns out to be a composite. For example a <code>program</code> will operate high-level data (<code>recipe</code> and <code>coffee-machine</code>), enhancing them with its level terms (<code>program_run_id</code> for instance). This is totally fine: connecting context is what APIs do.</p>
+<h4 id="usecasescenarios">Use Case Scenarios</h4>
+<p>At this point, when our API is in general clearly outlined and drafted, we must put ourselves into developer's shoes and try writing code. Our task is to look at the entities nomenclature and make some estimates regarding their future usage.</p>
+<p>So, let us imagine we've got a task to write an app for ordering a coffee, based upon our API. What code would we write?</p>
+<p>Obviously the first step is offering a choice to a user, to make them point out what they want. And this very first step reveals that our API is quite inconvenient. There are no methods allowing for choosing something. A developer has to do something like that:</p>
+<ul>
+<li>retrieve all possible recipes from <code>GET /v1/recipes</code>;</li>
+<li>retrieve a list of all available coffee machines from <code>GET /v1/coffee-machines</code>;</li>
+<li>write a code to traverse all this data.</li>
+</ul>
+<p>If we try writing a pseudocode, we will get something like that:</p>
+<pre><code>// Retrieve all possible recipes
+let recipes = api.getRecipes();
+// Retrieve a list of all available coffee machines
+let coffeeMachines = api.getCoffeeMachines();
+// Build spatial index
+let coffeeMachineRecipesIndex = buildGeoIndex(recipes, coffee-machines);
+// Select coffee machines matching user's needs
+let matchingCoffeeMachines = coffeeMachineRecipesIndex.query(
+  parameters,
+  { "sort_by": "distance" }
+);
+// Finally, show offers to user
+app.display(coffeeMachines);
+</code></pre>
+<p>As you see, developers are to write a lot of redundant code (to say nothing about difficulties of implementing spatial indexes). Besides, if we take into consideration our Napoleonic plans to cover all coffee machines in the world with our API, then we need to admit that this algorithm is just a waste of resources on retrieving lists and indexing them.</p>
+<p>A necessity of adding a new endpoint for searching becomes obvious. To design such an interface we must imagine ourselves being a UX designer and think about how an app could try to arouse users' interest. Two scenarios are evident:</p>
+<ul>
+<li>display cafes in the vicinity and types of coffee they offer (‘service discovery scenario’) — for new users or just users with no specific tastes;</li>
+<li>display nearby cafes where a user could order a particular type of coffee — for users seeking a certain beverage type.</li>
+</ul>
+<p>Then our new interface would look like:</p>
+<pre><code>POST /v1/coffee-machines/search
+{
+  // optional
+  "recipes": ["lungo", "americano"],
+  "position": &lt;geographical coordinates&gt;,
+  "sort_by": [
+    { "field": "distance" }
+  ],
+  "limit": 10
+}
+→
+{
+  "results": [
+    { "coffee_machine", "place", "distance", "offer" }
+  ],
+  "cursor"
+}
+</code></pre>
+<p>Here:</p>
+<ul>
+<li>an <code>offer</code> — is a marketing bid: on what conditions a user could order requested coffee beverage (if specified in request), or a some kind of marketing offering — prices for the most popular or interesting products (if no specific preference was set);</li>
+<li>a <code>place</code> — is a spot (café, restaurant, street vending machine) where the coffee machine is located; we never introduced this entity before, but it's quite obvious that users need more convenient guidance to find a proper coffee machine than just geographical coordinates.</li>
+</ul>
+<p><strong>NB</strong>. We could have been enriched the existing <code>/coffee-machines</code> endpoint instead of adding a new one. This decision, however, looks less semantically viable: coupling in one interface different modes of listing entities, by relevance and by order, is usually a bad idea, because these two types of rankings implies different usage features and scenarios.</p>
+<p>Coming back to the code developers are write, it would now look like that:</p>
+<pre><code>// Searching for coffee machines
+// matching a user's intent
+let coffeeMachines = api.search(parameters);
+// Display them to a user
+app.display(coffeeMachines);
+</code></pre>
+<h4 id="helpers">Helpers</h4>
+<p>Methods similar to newly invented <code>coffee-machines/search</code> are called <em>helpers</em>. The purposes they exist is to generalize known API usage scenarios and facilitate implementing them. By ‘facilitating’ we mean not only reducing wordiness (getting rid of ‘boilerplates’), but also helping developers to avoid common problems and mistakes.</p>
+<p>For instance, let's consider order price question. Our search function returns some ‘offers’ with prices. But ‘price’ is volatile; coffee could cost less during ‘happy hours’, for example. Implementing this functionality, developers could make a mistake thrice:</p>
+<ul>
+<li>cache search results on a client device for too long (as a result, the price will always be nonactual);</li>
+<li>contrary to previous, call search method excessively just to actualize prices, thus overloading network and the API servers;</li>
+<li>create an order with invalid price (therefore deceiving a user, displaying one sum and debiting another).</li>
+</ul>
+<p>To solve the third problem we could demand including displayed price in the order creation request, and return an error if it differs from the actual one. (Actually, any APY working with money <em>shall</em> do so.) But it isn't helping with first two problems, and makes user experience to degrade. Displaying actual price is always much more convenient behavior than displaying errors upon pushing the ‘place an order’ button.</p>
+<p>One solution is to provide a special identifier to an offer. This identifier must be specified in an order creation request.</p>
+<pre><code>{
+  "results": [
+    {
+      "coffee_machine", "place", "distance",
+      "offer": {
+        "id",
+        "price",
+        "currency_code",
+        // Date and time when the offer expires
+        "valid_until"
+      }
+    }
+  ],
+  "cursor"
+}
+</code></pre>
+<p>Doing so we're not only helping developers to grasp a concept of getting relevant price, but also solving a UX task of telling a user about ‘happy hours’.</p>
+<p>As an alternative we could split endpoints: one for searching, another one for obtaining offers. This second endpoint would only be needed to actualize prices in specific cafes.</p>
+<h4 id="errorhandling">Error Handling</h4>
+<p>And one more step towards making developers' life easier: how an invalid price’ error would look like?</p>
+<pre><code>POST /v1/orders
+{ … "offer_id" …}
+→ 409 Conflict
+{
+  "message": "Invalid price"
+}
+</code></pre>
+<p>Formally speaking, this error response is enough: users get ‘Invalid price’ message, and they have to repeat the order. But from a UX point of view that would be a horrible decision: user hasn't made any mistakes, and this message isn't helpful at all.</p>
+<p>The main rule of error interface in the APIs is: error response must help a client to understand <em>what to do with this error</em>. All other stuff is unimportant: if the error response was machine readable, there would be no need in user readable message.</p>
+<p>Error response content must address the following questions:</p>
+<ol>
+<li>Which party is the problem's source, client or server?<br />
+HTTP API traditionally employs <code>4xx</code> status codes to indicate client problems, <code>5xx</code> to indicates server problems (with the exception of a <code>404</code>, which is an uncertainty status).</li>
+<li>If the error is caused by a server, is there any sense to repeat the request? If yes, then when?</li>
+<li>If the error is caused by a client, is it resolvable, or not?<br />
+Invalid price is resolvable: client could obtain new price offer and create new order using it. But if the error occurred because of a client code containing a mistake, then eliminating the cause is impossible, and there is no need to make user push the ‘place an order’ button again: this request will never succeed.<br />
+Here and throughout we indicate resolvable problems with <code>409 Conflict</code> code, and unresolvable ones with <code>400 Bad Request</code>.</li>
+<li>If the error is resolvable, then what's the kind of the problem? Obviously, client couldn't resolve a problem it's unaware of. For every resolvable problem some <em>code</em> must be written (reobtaining the offer in our case), so a list of error descriptions must exist.</li>
+<li>If the same kind of errors arise because of different parameters being invalid, then which parameter value is wrong exactly?</li>
+<li>Finally, if some parameter value is unacceptable, then what values are acceptable?</li>
+</ol>
+<p>In our case, price mismatch error should look like:</p>
+<pre><code>409 Conflict
+{
+  // Error kind
+  "reason": "offer_invalid",
+  "localized_message":
+    "Something goes wrong. Try restarting the app."
+  "details": {
+    // What's wrong exactly?
+    // Which validity checks failed?
+    "checks_failed": [
+      "offer_lifetime"
+    ]
+  }
+}
+</code></pre>
+<p>After getting this mistake, a client is to check its kind (‘some problem with offer’), check specific error reason (‘order lifetime expired’) and send offer retrieve request again. If <code>checks_failed</code> field indicated another error reason (for example, the offer isn't bound to the specified user), client actions would be different (re-authorize the user, then get a new offer). If there were no error handler for this specific reason, a client would show <code>localized_message</code> to the user and invoke standard error recovery procedure.</p>
+<p>It is also worth mentioning that unresolvable errors are useless to a user at the time (since the client couldn't react usefully to unknown errors), but it doesn't mean that providing extended error data is excessive. A developer will read it when fixing the error in the code. Also check paragraphs 12&amp;13 in the next chapter.</p>
+<h4 id="decomposinginterfacesthe72rule">Decomposing Interfaces. The ‘7±2’ Rule</h4>
+<p>Out of our own API development experience, we can tell without any doubt, that the greatest final interfaces design mistake (and a greatest developers' pain accordingly) is an excessive overloading of entities interfaces with fields, methods, events, parameters and other attributes.</p>
+<p>Meanwhile, there is the ‘Golden Rule’ of interface design (applicable not only APIs, but almost to anything): humans could comfortably keep 7±2 entities in a short-term memory. Manipulating a larger number of chunks complicates things for most of humans. The rule is also known as <a href="https://en.wikipedia.org/wiki/Working_memory#Capacity">‘Miller's law’</a>.</p>
+<p>The only possible method of overcoming this law is decomposition. Entities should be grouped under single designation at every concept level of the API, so developers never operate more than 10 entities at a time.</p>
+<p>Let's take a look at a simple example: what coffee machine search function returns. To ensure adequate UX of the app, quite bulky datasets are required.</p>
+<pre><code>{
+  "results": [
+    {
+      "coffee_machine_type": "drip_coffee_maker",
+      "coffee_machine_brand",
+      "place_name": "Кафе «Ромашка»",
+      // Coordinates of a place
+      "place_location_latitude",
+      "place_location_longitude",
+      "place_open_now",
+      "working_hours",
+      // Walking route parameters
+      "walking_distance",
+      "walking_time",
+      // How to find the place
+      "place_location_tip",
+      "offers": [
+        {
+          "recipe": "lungo",
+          "recipe_name": "Our brand new Lungo®™",
+          "recipe_description",
+          "volume": "800ml",
+          "offer_id",
+          "offer_valid_until",
+          "localized_price": "Just $19 for a large coffee cup",
+          "price": "19.00",
+          "currency_code": "USD",
+          "estimated_waiting_time": "20s"
+        },
+        …
+      ]
+    },
+    {
+
+    }
+  ]
+}
+</code></pre>
+<p>This approach is quite normal, alas. Could be found in almost every API. As we see, a number of entities' fields exceeds recommended seven, and even 9. Fields are being mixed in a single list, often with similar prefixes.</p>
+<p>In this situation we are to split this structure into data domains: which fields are logically related to a single subject area. In our case we may identify at least following data clusters:</p>
+<ul>
+<li>data regarding a place where the coffee machine is located;</li>
+<li>properties of the coffee machine itself;</li>
+<li>route data;</li>
+<li>recipe data;</li>
+<li>recipe options specific to the particular place;</li>
+<li>offer data;</li>
+<li>pricing data.</li>
+</ul>
+<p>Let's try to group it together:</p>
+<pre><code>{
+  "results": {
+    // Place data
+    "place": { "name", "location" },
+    // Coffee machine properties
+    "coffee-machine": { "brand", "type" },
+    // Route data
+    "route": { "distance", "duration", "location_tip" },
+    "offers": {
+      // Recipe data
+      "recipe": { "id", "name", "description" },
+      // Recipe specific options
+      "options": { "volume" },
+      // Offer metadata
+      "offer": { "id", "valid_until" },
+      // Pricing
+      "pricing": { "currency_code", "price", "localized_price" },
+      "estimated_waiting_time"
+    }
+  }
+}
+</code></pre>
+<p>Such decomposed API is much easier to read than a long sheet of different attributes. Furthermore, it's probably better to group even more entities in advance. For example, <code>place</code> and <code>route</code> could be joined in a single <code>location</code> structure, or <code>offer</code> and <code>pricing</code> might be combined in a some generalized object.</p>
+<p>It is important to say that readability is achieved not only by simply grouping the entities. Decomposing must be performed in such a manner that a developer, while reading the interface, instantly understands: ‘here is the place description of no interest to me right now, no need to traverse deeper’. If the data fields needed to complete some action are split into different composites, the readability degrades, not improves.</p>
+<p>Proper decomposition also helps extending and evolving the API. We'll discuss the subject in the Section II.</p><div class="page-break"></div></article>
     </body></html>

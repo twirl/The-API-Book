@@ -15,7 +15,6 @@ code, pre {
 
 code {
     white-space: nowrap;
-    font-size: 10pt !important;
 }
 
 pre {
@@ -27,6 +26,7 @@ pre {
     box-shadow: .1em .1em .1em rgba(0,0,0,.45);
     page-break-inside: avoid;
     overflow-x: auto;
+    font-size: 80%;
 }
 
 pre code {
