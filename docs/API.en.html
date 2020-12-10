@@ -776,7 +776,7 @@ Here and throughout we indicate resolvable problems with <code>409 Conflict</cod
     {
       "coffee_machine_type": "drip_coffee_maker",
       "coffee_machine_brand",
-      "place_name": "Кафе «Ромашка»",
+      "place_name": "The Chamomile",
       // Coordinates of a place
       "place_location_latitude",
       "place_location_longitude",
@@ -845,5 +845,400 @@ Here and throughout we indicate resolvable problems with <code>409 Conflict</cod
 </code></pre>
 <p>Such decomposed API is much easier to read than a long sheet of different attributes. Furthermore, it's probably better to group even more entities in advance. For example, <code>place</code> and <code>route</code> could be joined in a single <code>location</code> structure, or <code>offer</code> and <code>pricing</code> might be combined in a some generalized object.</p>
 <p>It is important to say that readability is achieved not only by simply grouping the entities. Decomposing must be performed in such a manner that a developer, while reading the interface, instantly understands: ‘here is the place description of no interest to me right now, no need to traverse deeper’. If the data fields needed to complete some action are split into different composites, the readability degrades, not improves.</p>
-<p>Proper decomposition also helps extending and evolving the API. We'll discuss the subject in the Section II.</p><div class="page-break"></div></article>
+<p>Proper decomposition also helps extending and evolving the API. We'll discuss the subject in the Section II.</p><div class="page-break"></div><h3>Chapter 11. Describing Final Interfaces</h3><p>When all entities, their responsibility, and relations to each other are defined, we proceed to developing the API itself. We are to describe the objects, fields, methods, and functions nomenclature in details. In this chapter we're giving purely practical advice on making APIs usable and understandable.</p>
+<p>Important assertion at number 0:</p>
+<h5 id="0rulesarejustgeneralizations">0. Rules are just generalizations</h5>
+<p>Rules are not to be applied unconditionally. They are not making thinking redundant. Every rule has a rational reason to exist. If your situation doesn't justify following the rule — then you shouldn't do it.</p>
+<p>For example, demanding a specification being consistent exists to help developers spare time on reading docs. If you <em>need</em> developers to read some entity's doc, it is totally rational to make its signature deliberately inconsistent.</p>
+<p>This idea applies to every concept listed below. If you get an unusable, bulky, unobvious API because you follow the rules, it's a motive to revise the rules (or the API).</p>
+<p>It is important to understand that you always can introduce the concepts of your own. For example, some frameworks willfully reject paired <code>set_entity</code> / <code>get_entity</code> methods in a favor of a single <code>entity()</code> method, with an optional argument. The crucial part is being systematic in applying the concept. If it's rendered into life, you must apply it to every single API method, or at the very least elaborate a naming rule to discern such polymorphic methods from regular ones.</p>
+<h5 id="1explicitisalwaysbetterthanimplicit">1. Explicit is always better than implicit</h5>
+<p>Entity's name must explicitly tell what it does and what side effects to expect while using it.</p>
+<p><strong>Bad</strong>:  </p>
+<pre><code>// Cancels an order
+GET /orders/cancellation
+</code></pre>
+<p>It's quite a surprise that accessing the <code>cancellation</code> resource (what is it?) with non-modifying <code>GET</code> method actually cancels an order.</p>
+<p><strong>Better</strong>:  </p>
+<pre><code>// Cancels an order
+POST /orders/cancel
+</code></pre>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Returns aggregated statistics
+// since the beginning of time
+GET /orders/statistics
+</code></pre>
+<p>Even if the operation is non-modifying, but computationally expensive, you should explicitly indicate that, especially if clients got charged for computational resource usage. Even more so, default values must not be set in a manner leading to maximum resource consumption.</p>
+<p><strong>Better</strong>:</p>
+<pre><code>// Returns aggregated statistics
+// for a specified period of time
+POST /v1/orders/statistics/aggregate
+{ "begin_date", "end_date" }
+</code></pre>
+<p><strong>Try to design function signatures to be absolutely transparent about what the function does, what arguments takes and what's the result</strong>. While reading a code working with your API, it must be easy to understand what it does without reading docs.</p>
+<p>Two important implications:</p>
+<p><strong>1.1.</strong> If the operation is modifying, it must be obvious from the signature. In particular, there might be no modifying operations using <code>GET</code> verb.</p>
+<p><strong>1.2.</strong> If your API's nomenclature contains both synchronous and asynchronous operations, then (a)synchronicity must be apparent from signatures, <strong>or</strong> a naming convention must exist.</p>
+<h5 id="2specifywhichstandardsareused">2. Specify which standards are used</h5>
+<p>Regretfully, the humanity is unable to agree on the most trivial things, like which day starts the week, to say nothing about more sophisticated standards.</p>
+<p>So <em>always</em> specify exactly which standard is applied. Exceptions are possible, if you 100% sure that only one standard for this entity exists in the world, and every person on Earth is totally aware of it.</p>
+<p><strong>Bad</strong>: <code>"date": "11/12/2020"</code> — there are tons of date formatting standards; you can't even tell which number means the day number and which number means the month.</p>
+<p><strong>Better</strong>: <code>"iso_date": "2020-11-12"</code>.</p>
+<p><strong>Bad</strong>: <code>"duration": 5000</code> — five thousands of what?</p>
+<p><strong>Better</strong>:<br />
+    <code>"duration_ms": 5000</code><br />
+    or<br />
+    <code>"duration": "5000ms"</code><br />
+    or<br />
+    <code>"duration": {"unit": "ms", "value": 5000}</code>.</p>
+<p>One particular implication from this rule is that money sums must <em>always</em> be accompanied with currency code.</p>
+<p>It is also worth saying that in some areas the situation with standards is so spoiled that, whatever you do, someone got upset. A ‘classical’ example is geographical coordinates order (latitude-longitude vs longitude-latitude). Alas, the only working method of fighting with frustration there is a ‘serenity notepad’ to be discussed in Section II.</p>
+<h5 id="3keepfractionalnumbersprecisionintact">3. Keep fractional numbers precision intact</h5>
+<p>If the protocol allows, fractional numbers with fixed precision (like money sums) must be represented as a specially designed type like Decimal or its equivalent.</p>
+<p>If there is no Decimal type in the protocol (for instance, JSON doesn't have one), you should either use integers (e.g. apply a fixed multiplicator) or strings.</p>
+<h5 id="4entitiesmusthaveconcretenames">4. Entities must have concrete names</h5>
+<p>Avoid single amoeba-like words, such as get, apply, make.</p>
+<p><strong>Bad</strong>: <code>user.get()</code> — hard to guess what is actually returned.</p>
+<p><strong>Better</strong>: <code>user.get_id()</code>.</p>
+<h5 id="5dontsparetheletters">5. Don't spare the letters</h5>
+<p>In XXI century there's no need to shorten entities' names.</p>
+<p><strong>Bad</strong>: <code>order.time()</code> — unclear, what time is actually returned: order creation time, order preparation time, order waiting time?…</p>
+<p><strong>Better</strong>: <code>order.get_estimated_delivery_time()</code></p>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Returns a pointer to the first occurrence
+// in str1 of any of the characters
+// that are part of str2
+strpbrk (str1, str2)
+</code></pre>
+<p>Possibly, an author of this API thought that <code>pbrk</code> abbreviature would mean something to readers; clearly mistaken. Also it's hard to tell from the signature which string (<code>str1</code> or <code>str2</code>) stands for a character set.</p>
+<p><strong>Better</strong>: <code>str_search_for_characters (lookup_character_set, str)</code><br />
+— though it's highly disputable whether this function should exist at all; a feature-rich search function would be much more convenient. Also, shortening <code>string</code> to <code>str</code> bears no practical sense, regretfully being a routine in many subject areas.</p>
+<h5 id="6namingimpliestyping">6. Naming implies typing</h5>
+<p>Field named <code>recipe</code> must be of <code>Recipe</code> type. Field named <code>recipe_id</code> must contain a recipe identifier which we could find within <code>Recipe</code> entity.</p>
+<p>Same for primitive types. Arrays must be named in a plural form or as collective nouns, i.e. <code>objects</code>, <code>children</code>. If that's impossible, better add a prefix or a postfix to avoid doubt.</p>
+<p><strong>Bad</strong>: <code>GET /news</code> — unclear whether a specific news item is returned, or a list of them.</p>
+<p><strong>Better</strong>: <code>GET /news-list</code>.</p>
+<p>Similarly, if a Boolean value is expected, entity naming must describe some qualitative state, i.e. <code>is_ready</code>, <code>open_now</code>.</p>
+<p><strong>Bad</strong>: <code>"task.status": true</code><br />
+— statuses are not explicitly binary; also such API isn't extendable.</p>
+<p><strong>Better</strong>: <code>"task.is_finished": true</code>.</p>
+<p>Specific platforms imply specific additions to this rule with regard to first class citizen types they provide. For examples, entities of <code>Date</code> type (if such type is present) would benefit from being indicated with <code>_at</code> or <code>_date</code> postfix, i.e. <code>created_at</code>, <code>occurred_at</code>.</p>
+<p>If entity name is a polysemantic term itself, which could confuse developers, better add an extra prefix or postfix to avoid misunderstanding.</p>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Returns a list of coffee machine builtin functions
+GET /coffee-machines/{id}/functions
+</code></pre>
+<p>Word ‘function’ is many-valued. It could mean builtin functions, but also ‘a piece of code’, or a state (machine is functioning).</p>
+<p><strong>Better</strong>: <code>GET /v1/coffee-machines/{id}/builtin-functions-list</code></p>
+<h5 id="7matchingentitiesmusthavematchingnamesandbehavealike">7. Matching entities must have matching names and behave alike</h5>
+<p><strong>Bad</strong>: <code>begin_transition</code> / <code>stop_transition</code><br />
+— <code>begin</code> and <code>stop</code> doesn't match; developers will have to dig into the docs.</p>
+<p><strong>Better</strong>: either <code>begin_transition</code> / <code>end_transition</code> or <code>start_transition</code> / <code>stop_transition</code>.</p>
+<p><strong>Bad</strong>:  </p>
+<pre><code>// Find the position of the first occurrence
+// of a substring in a string
+strpos(haystack, needle)
+</code></pre>
+<pre><code>// Replace all occurrences
+// of the search string with the replacement string
+str_replace(needle, replace, haystack)
+</code></pre>
+<p>Several rules are violated:</p>
+<ul>
+<li>inconsistent underscore using;</li>
+<li>functionally close methods have different <code>needle</code>/<code>haystack</code> argument order;</li>
+<li>first function finds the first occurrence while second one finds them all, and there is no way to deduce that fact out of the function signatures.</li>
+</ul>
+<p>We're leaving the exercise of making these signatures better to the reader.</p>
+<h5 id="8clientsmustalwaysknowfullsystemstate">8. Clients must always know full system state</h5>
+<p>This rule could be reformulated as ‘don't make clients guess’.</p>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Creates a comment and returns its id
+POST /comments
+{ "content" }
+→
+{ "comment_id" }
+</code></pre>
+<pre><code>// Returns a comment by its id
+GET /comments/{id}
+→
+{
+  // The comment isn't published
+  // until the captcha is solved
+  "published": false,
+  "action_required": "solve_captcha",
+  "content"
+}
+</code></pre>
+<p>— though the operation pretends to be successful, clients must perform an additional action to understand the comment's real state. In between <code>POST /comments</code> and <code>GET /comments/{id}</code> calls client remains in ‘Schrödinger's cat’ state: it is unknown whether the comment is published or not, and how to display this state to a user.</p>
+<p><strong>Better</strong>:</p>
+<pre><code>// Creates a comment and returns it
+POST /v1/comments
+{ "content" }
+→
+{ "comment_id", "published", "action_required", "content" }
+</code></pre>
+<pre><code>// Returns a comment by its id
+GET /v1/comments/{id}
+→
+{ /* exactly the same format, 
+    as in `POST /comments` reponse */
+    …
+}
+</code></pre>
+<p>Generally speaking, in 9 cases out of 10 it is better to return a full entity state from any modifying operation, sharing the format with read access endpoint. Actually, you should <em>always</em> do this unless response size affects performance.</p>
+<p>Same observation applies to filling default values either. Don't make client guess what default values are, or, even worse, hardcode them — return the values of all non-required fields in creation / rewriting endpoints response.</p>
+<h5 id="9idempotency">9. Idempotency</h5>
+<p>All API operations must be idempotent. Let us recall that idempotency is the following property: repeated calls to the same function with the same parameters don't change the resource state. Since we're discussing client-server interaction in a first place, repeating request in case of network failure isn't an exception, but a norm of life.</p>
+<p>If endpoint's idempotency can't be assured naturally, explicit idempotency parameters must be added, in a form of either a token or a resource version.</p>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Creates an order
+POST /orders
+</code></pre>
+<p>Second order will be produced if the request is repeated!</p>
+<p><strong>Better</strong>:</p>
+<pre><code>// Creates an order
+POST /v1/orders
+X-Idempotency-Token: &lt;random string&gt;
+</code></pre>
+<p>A client on its side must retain <code>X-Idempotency-Token</code> in case of automated endpoint retrying. A server on its side must check whether an order created with this token exists.</p>
+<p><strong>An alternative</strong>:</p>
+<pre><code>// Creates order draft
+POST /v1/orders/drafts
+→
+{ "draft_id" }
+</code></pre>
+<pre><code>// Confirms the draft
+PUT /v1/orders/drafts/{draft_id}
+{ "confirmed": true }
+</code></pre>
+<p>Creating order drafts is a non-binding operation since it doesn't entail any consequences, so it's fine to create drafts without idempotency token.</p>
+<p>Confirming drafts is a naturally idempotent operation, with <code>draft_if</code> being its idempotency key.</p>
+<p>Also worth mentioning that adding idempotency tokens to naturally idempotent handlers isn't meaningless either, since it allows to distinguish two situations:</p>
+<ul>
+<li>a client didn't get the response because of some network issues, and is now repeating the request;</li>
+<li>a client's mistaken, trying to make conflicting changes.</li>
+</ul>
+<p>Consider the following example: imagine there is a shared resource, characterized by a revision number, and a client tries updating it.</p>
+<pre><code>POST /resource/updates
+{
+  "resource_revision": 123
+  "updates"
+}
+</code></pre>
+<p>The server retrieves the actual resource revision and find it to be 124. How to respond correctly? <code>409 Conflict</code> might be returned, but then the client will be forced to understand the nature of the conflict and somehow resolve it, potentially confusing the user. It's also unwise to fragment conflict resolving algorithms, allowing each client to implement it independently.</p>
+<p>The server may compare request bodies, assuming that identical <code>updates</code> values means retrying, but this assumption might be dangerously wrong (for example if the resource is a counter of some kind, then repeating identical requests are routine).</p>
+<p>Adding idempotency token (either directly as a random string, or indirectly in a form of drafts) solves this problem.</p>
+<pre><code>POST /resource/updates
+X-Idempotency-Token: &lt;token&gt;
+{
+  "resource_revision": 123
+  "updates"
+}
+→ 201 Created
+</code></pre>
+<p>— the server found out that the same token was used in creating revision 124, which means the client is retrying the request.</p>
+<p>Or:</p>
+<pre><code>POST /resource/updates
+X-Idempotency-Token: &lt;token&gt;
+{
+  "resource_revision": 123
+  "updates"
+}
+→ 409 Conflict
+</code></pre>
+<p>— the server found out that a different token was used in creating revision 124, which means an access conflict.</p>
+<p>Furthermore, adding idempotency tokens not only resolves the issue, but also makes possible to make an advanced optimization. If the server detects an access conflict, it could try to resolve it, ‘rebasing’ the update like modern version control systems do, and return <code>200 OK</code> instead of <code>409 Conflict</code>. This logics dramatically improves user experience, being fully backwards compatible (providing your API embraces the rule #9) and avoiding conflict resolving code fragmentation.</p>
+<p>Also, be warned: clients are bad at implementing idempotency tokens. Two problems are common:</p>
+<ul>
+<li>you can't really expect that clients generate truly random tokens — they may share the same seed or simply use weak algorithms or entropy sources; therefore you must put constraints on token checking: token must be unique to specific user and resource, not globally;</li>
+<li>clients tend to misunderstand the concept and either generate new tokens each time they repeat the request (which deteriorates the UX, but otherwise healthy) or conversely use one token in several requests (not healthy at all and could lead to catastrophic disasters; another reason to implement the suggestion in the previous clause); writing detailed doc and/or client library is highly recommended.</li>
+</ul>
+<h5 id="10caching">10. Caching</h5>
+<p>Client-server interaction usually implies that network and server resources are limited, therefore caching operation results on client devices is a standard practice.</p>
+<p>So it's highly desirable to make caching options clear, if not from functions' signatures then at least from docs.</p>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Returns lungo price in cafes
+// closest to the specified location
+GET /price?recipe=lungo&amp;longitude={longitude}&amp;latitude={latitude}
+→
+{ "currency_code", "price" }
+</code></pre>
+<p>Two questions arise:</p>
+<ul>
+<li>until when the price is valid?</li>
+<li>in what vicinity of the location the price is valid?</li>
+</ul>
+<p><strong>Better</strong>: you may use standard protocol capabilities to denote cache options, like <code>Cache-Control</code> header. If you need caching in both temporal and spatial dimensions, you should do something like that:</p>
+<pre><code>// Returns an offer: for what money sum
+// our service commits to make a lungo
+GET /price?recipe=lungo&amp;longitude={longitude}&amp;latitude={latitude}
+→
+{
+  "offer": {
+    "id",
+    "currency_code",
+    "price",
+    "conditions": {
+      // Until when the price is valid
+      "valid_until",
+      // What vicinity the price is valid within
+      // * city
+      // * geographical object
+      // * …
+      "valid_within"
+    }
+  }
+}
+</code></pre>
+<h5 id="11paginationfiltrationandcursors">11. Pagination, filtration, and cursors</h5>
+<p>Any endpoints returning data collections must be paginated. No exclusions exist.</p>
+<p>Any paginated endpoint must provide an interface to iterate over all the data.</p>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Returns a limited number of records
+// sorted by creation date
+// starting with a record with an index
+// equals to `offset`
+GET /v1/records?limit=10&amp;offset=100
+</code></pre>
+<p>At the first glance, this the most standard way of organizing the pagination in APIs. But let's ask some questions to ourselves.  </p>
+<ol>
+<li>How clients could learn about new records being added in the beginning of the list?
+Obviously a client could only retry the initial request (<code>offset=0</code>) and compare identifiers to those it already knows. But what if the number of new records exceeds the <code>limit</code>? Imagine the situation:<ul>
+<li>the client process records sequentially;</li>
+<li>some problem occurred, and a batch of new records awaits processing;</li>
+<li>the client requests new records (<code>offset=0</code>) but can't find any known records on the first page;</li>
+<li>the client continues iterating over records, page by page, until it finds the last known identifier; all this time the order processing is idle;</li>
+<li>the client might never start processing, being preoccupied with chaotic page requests to restore records sequence.</li></ul></li>
+<li>What happens if some record is deleted from the head of the list?<br />
+Easy: the client will miss one record and will never learn this.</li>
+<li>What cache parameters to set for this endpoint?<br />
+None could be set: repeating the request with the same <code>limit</code> and <code>offset</code> each time produces new records set.</li>
+</ol>
+<p><strong>Better</strong>: in such unidirectional lists the pagination must use that key which implies the order. Like this:</p>
+<pre><code>// Returns a limited number of records
+// sorted by creation date
+// starting with a record with an identifier
+// following the specified one
+GET /v1/records?older_than={record_id}&amp;limit=10
+// Returns a limited number of records
+// sorted by creation date
+// starting with a record with an identifier
+// preceding the specified one
+GET /v1/records?newer_than={record_id}&amp;limit=10
+</code></pre>
+<p>With the pagination organized like that, clients never bothers about record being added or removed in the processed part of the list: they continue to iterate over the records, either getting new ones (using <code>newer_than</code>) or older ones (using <code>older_than</code>). If there is no record removal operation, clients may easily cache responses — the URL will always return the same record set.</p>
+<p>Another way to organize such lists is returning a <code>cursor</code> to be used instead of <code>record_id</code>, making interfaces more versatile.</p>
+<pre><code>// Initial data request
+POST /v1/records/list
+{
+  // Some additional filtering options
+  "filter": {
+    "category": "some_category",
+    "created_date": {
+      "older_than": "2020-12-07"
+    }
+  }
+}
+→
+{
+  "cursor"
+}
+</code></pre>
+<pre><code>// Follow-up requests
+GET /v1/records?cursor=&lt;cursor value&gt;
+{ "records", "cursor" }
+</code></pre>
+<p>One advantage of this approach is the possibility to keep initial request parameters (i.e. <code>filter</code> in our example) embedded into the cursor itself, thus not copying them in follow-up requests. It might be especially actual if the initial request prepares full dataset, for example, moving it from a ‘cold’ storage to a ‘hot’ one (then <code>cursor</code> might simply contain the encoded dataset id and the offset).</p>
+<p>There are several approaches to implementing cursors (for example, making single endpoint for initial and follow-up requests, returning the first data portion in the first response). As usual, the crucial part is maintaining consistency across all such endpoints.</p>
+<p><strong>Bad</strong>:</p>
+<pre><code>// Returns a limited number of records
+// sorted by a specified field in a specified order
+// starting with a record with an index
+// equals to `offset`
+GET /records?sort_by=date_modified&amp;sort_order=desc&amp;limit=10&amp;offset=100
+</code></pre>
+<p>Sorting by the date of modification usually means that data might be modified. In other words, some records might change after the first data chunk is returned, but before the next chunk is requested. Modified record will simply disappear from the listing because of moving to the first page. Clients will never get those records which were changed during the iteration process, even if the <code>cursor</code> scheme is implemented, and they never learn the sheer fact of such an omission. Also, this particular interface isn't extendable as there is no way to add sorting by two or more fields.</p>
+<p><strong>Better</strong>: there is no general solution to this problem in this formulation. Listing records by modification time will always be unpredictably volatile, so we have to change the approach itself; we have two options.</p>
+<p><strong>Option one</strong>: fix the records order at the moment we've got initial request, e.g. our server produces the entire list and stores it in immutable form:</p>
+<pre><code>// Creates a view based on the parameters passed
+POST /v1/record-views
+{
+  sort_by: [
+    { "field": "date_modified", "order": "desc" }
+  ]
+}
+→
+{ "id", "cursor" }
+</code></pre>
+<pre><code>// Returns a portion of the view
+GET /v1/record-views/{id}?cursor={cursor}
+</code></pre>
+<p>Since the produced view is immutable, an access to it might be organized in any form, including a limit-offset scheme, cursors, <code>Range</code> header, etc. However there is a downside: records modified after the view was generated will be misplaced or outdated.</p>
+<p><strong>Option two</strong>: guarantee a strict records order, for example, by introducing a concept of record change events:</p>
+<pre><code>POST /v1/records/modified/list
+{
+  // Optional
+  "cursor"
+}
+→
+{
+  "modified": [
+    { "date", "record_id" }
+  ],
+  "cursor"
+}
+</code></pre>
+<p>This scheme's downsides are the necessity to create separate indexed event storage, and the multiplication of data items, since for a single record many events might exist.</p>
+<h5 id="12errorsmustbeinformative">12. Errors must be informative</h5>
+<p>While writing the code developers face problems, many of them quite trivial, like invalid parameter type or some boundary violation. The more convenient are error responses your API return, the less time developers waste in struggling with it, and the more comfortable is working with the API.</p>
+<p><strong>Bad</strong>:</p>
+<pre><code>POST /v1/coffee-machines/search
+{
+  "recipes": ["lngo"],
+  "position": {
+    "latitude": 110,
+    "longitude": 55
+  }
+}
+→ 400 Bad Request
+{}
+</code></pre>
+<p>— of course, the mistakes (typo in <code>"lngo"</code> and wrong coordinates) are obvious. But the handler checks them anyway, why not return readable descriptions?</p>
+<p><strong>Better</strong>:</p>
+<pre><code>{
+  "reason": "wrong_parameter_value",
+  "localized_message":
+    "Something is wrong. Contact the developer of the app."
+  "details": {
+    "checks_failed": [
+      {
+        "field": "recipe",
+        "error_type": "wrong_value",
+        "message":
+          "Unknown value: 'lngo'. Did you mean 'lungo'?"
+      },
+      {
+        "field": "position.latitude",
+        "error_type": "constraint_violation",
+        "constraints": {
+          "min": -180,
+          "max": 180
+        },
+        "message":
+          "'position.latitude' value must fall within [-180, 180] interval"
+      }
+    ]
+  }
+}
+</code></pre>
+<p>It is also a good practice to return all detectable errors at once to spare developers' time.</p>
+<h5 id="13localizationandinternationalization">13. Localization and internationalization</h5>
+<p>All endpoints must accept language parameters (for example, in a form of the <code>Accept-Language</code> header), even if they are not being used currently.</p>
+<p>It is important to understand that user's language and user's jurisdiction are different things. Your API working cycle must always store user's location. It might be stated either explicitly (requests contain geographical coordinates) or implicitly (initial location-bound request initiates session creation which stores the location), bit no correct localization is possible in absence of location data. In most cases reducing the location to just a country code is enough.</p>
+<p>The thing is that lots of parameters potentially affecting data formats depend not on language, but user location. To name a few: number formatting (integer and fractional part delimiter, digit groups delimiter), date formatting, first day of week, keyboard layout, measurement units system (which might be non-decimal!), etc. In some situations you need to store two locations: user residence location and user ‘viewport’. For example, if US citizen is planning a European trip, it's convenient to show prices in local currency, but measure distances in miles and feet.</p>
+<p>Sometimes explicit location passing is not enough since there are lots of territorial conflicts in a world. How the API should behave when user coordinates lie within disputed regions is a legal matter, regretfully. Author of this books once had to implement a ‘state A territory according to state B official position’ concept.</p>
+<p><strong>Important</strong>: mark a difference between localization for end users and localization for developers. Take a look at the example in #12 rule: <code>localized_message</code> is meant for the user; the app should show it if there is no specific handler for this error exists in code. This message must be written in user's language and formatted according to user's location. But <code>details.checks_failed[].message</code> is meant to be read by developers examining the problem. So it must be written and formatted in a manner which suites developers best. In a software development world it usually means ‘in English’.</p>
+<p>Worth mentioning is that <code>localized_</code> prefix in the example is used to differentiate messages to users from messages to developers. A concept like that must be, of course, explicitly stated in your API docs.</p>
+<p>And one more thing: all strings must be UTF-8, no exclusions.</p><div class="page-break"></div></article>
     </body></html>

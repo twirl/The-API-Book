@@ -16,7 +16,14 @@ See full license in LICENSE.md file or at [Creative Commons Website](http://crea
 
 Right now Section I (‘API Design’) is finished. The Section is lacking readable schemes, I'll draw them later.
 
-Book will contain two more sections.
+TODO for Section I:
+  * double negations;
+  * eventual consistency;
+  * truthy default values;
+  * partial updates;
+  * errors order.
+
+The book will contain two more sections.
   * Section II ‘Backwards Compatibility’ will cover growth issues. Major themes are:
     * major sources of problems leading to backwards compatibility breach;
     * interface decomposing allowing for third-party plugins and switching underlying technologies;
