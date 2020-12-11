@@ -54,3 +54,5 @@ I will translate sections into English at the moment they're ready. Which means 
 I am accepting inquiries. Fill free to open issues.
 
 I am NOT accepting pull requests introducing any new content, since I'm willing to be the only author and contributor. I would gratefully accept typo fixes, though.
+
+Thanks @tholman for https://github.com/tholman/github-corners
