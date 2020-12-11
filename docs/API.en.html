@@ -128,15 +128,15 @@ h4, h5 {
 <p class="cc-by-nc">This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p>
 <div class="page-break"></div>
 <h2>Introduction</h2><h3>Chapter 1. On the Structure of This Book</h3><p>The book you're holding in your hands comprises this Introduction and three large sections.</p>
-<p>In Section I we'll discuss designing the API as a concept: how to build the architecture properly, from a high-level planning down to final interfaces.</p>
-<p>Section II is dedicated to API's lifecycle: how interfaces evolve over time, and how to elaborate the product to match users' needs.</p>
+<p>In Section I we'll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces.</p>
+<p>Section II is dedicated to an API's lifecycle: how interfaces evolve over time, and how to elaborate the product to match users' needs.</p>
 <p>Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.</p>
-<p>First two sections are the most interesting to engineers, while third section is being more relevant to both engineers and product managers. But we insist that this section is the most important for the API software developer. Since API is the product for engineers, you cannot simply pronounce non-engineering team responsible for its product planning and support. Nobody but you understands more what product features your API is capable of.</p>
-<p>Let's start.</p><div class="page-break"></div><h3>Chapter 2. The API Definition</h3><p>Before we start talking about the API design, we need to explicitly define what the API is. Encyclopedia tells us that API is an acronym for ‘Application Program Interface’. This definition is fine, but useless. Much like ‘Man’ definition by Plato: Man stood upright on two legs without feathers. This definition is fine again, but it gives us no understanding what's so important about a Man. (Actually, not ‘fine’ either. Diogenes of Sinope once brought a plucked chicken, saying ‘That's Plato's Man’. And Plato had to add ‘with broad nails’ to his definition.)</p>
+<p>First two sections are interesting to engineers mostly, while the third section is more relevant to both engineers and product managers. However, we insist that the third section is the most important for the API software developer. Since an API is a product for engineers, you cannot simply pronounce non-engineering team responsible for product planning and support. Nobody but you understands more about your API's product features.</p>
+<p>Let's start.</p><div class="page-break"></div><h3>Chapter 2. The API Definition</h3><p>Before we start talking about the API design, we need to explicitly define what the API is. Encyclopedia tells us that ‘API’ is an acronym for ‘Application Program Interface’. This definition is fine, but useless. Much like ‘Man’ definition by Plato: Man stood upright on two legs without feathers. This definition is fine again, but it gives us no understanding what's so important about a Man. (Actually, not ‘fine’ either. Diogenes of Sinope once brought a plucked chicken, saying ‘That's Plato's Man’. And Plato had to add ‘with broad nails’ to his definition.)</p>
 <p>What API <em>means</em> apart from the formal definition?</p>
 <p>You're possibly reading this book using a Web browser. To make the browser display this page correctly, a bunch of stuff must work correctly: parsing the URL according to the specification; DNS service; TLS handshake protocol; transmitting the data over HTTP protocol; HTML document parsing; CSS document parsing; correct HTML+CSS rendering.</p>
-<p>But those are just a tip of an iceberg. To make HTTP protocol work you need the entire network stack (comprising 4-5 or even more different level protocols) work correctly. HTML document parsing is being performed according to hundreds of different specifications. Document rendering calls the underlying operating system API, or even directly graphical processor API. And so on: down to contemporary CISC processor commands implemented on top of microcommands API.</p>
-<p>In other words, hundreds or even thousands of different APIs must work correctly to make possible basic actions like viewing a webpage. Contemporary internet technologies simply couldn't exist without these tons of API working fine.</p>
+<p>But those are just a tip of an iceberg. To make HTTP protocol work you need the entire network stack (comprising 4-5 or even more different level protocols) work correctly. HTML document parsing is being performed according to hundreds of different specifications. Document rendering calls the underlying operating system API, or even directly graphical processor API. And so on: down to modern CISC processor commands being implemented on top of the microcommands API.</p>
+<p>In other words, hundreds or even thousands of different APIs must work correctly to make basic actions possible, like viewing a webpage. Modern internet technologies simply couldn't exist without these tons of API working fine.</p>
 <p><strong>An API is an obligation</strong>. A formal obligation to connect different programmable contexts.</p>
 <p>When I'm asked of an example of a well-designed API, I usually show the picture of a Roman viaduct:</p>
 <ul>
@@ -144,33 +144,33 @@ h4, h5 {
 <li>backwards compatibility being broken not a single time in two thousand years.</li>
 </ul>
 <p>What differs between a Roman viaduct and a good API is that APIs presume a contract being <em>programmable</em>. To connect two areas some <em>coding</em> is needed. The goal of this book is to help you in designing APIs which serve their purposes as solidly as a Roman viaduct does.</p>
-<p>A viaduct also illustrates another problem of the API design: your customers are engineers themselves. You are not supplying water to end-users: suppliers are plugging their pipes to you engineering structure, building their own structures upon it. From one side, you may provide water access to much more people through them, not spending your time on plugging each individual house to your network. But from other side, you can't control the quality of suppliers' solutions, and you are to be blamed every time there is a water problem caused by their incompetence.</p>
-<p>That's why designing the API implies a larger area of responsibilities. <strong>API is a multiplier to both your opportunities and mistakes</strong>.</p><div class="page-break"></div><h3>Chapter 3. API Quality Criteria</h3><p>Before we start laying out the recommendations, we ought to specify what API we consider ‘fine’, and what's the profit of having a ‘fine’ API.</p>
+<p>A viaduct also illustrates another problem of the API design: your customers are engineers themselves. You are not supplying water to end-users: suppliers are plugging their pipes to you engineering structure, building their own structures upon it. From one side, you may provide an access to the water to much more people through them, not spending your time on plugging each individual house to your network. But from other side, you can't control the quality of suppliers' solutions, and you are to be blamed every time there is a water problem caused by their incompetence.</p>
+<p>That's why designing the API implies a larger area of responsibility. <strong>API is a multiplier to both your opportunities and mistakes</strong>.</p><div class="page-break"></div><h3>Chapter 3. API Quality Criteria</h3><p>Before we start laying out the recommendations, we ought to specify what API we consider ‘fine’, and what's the profit of having a ‘fine’ API.</p>
 <p>Let's discuss second question first. Obviously, API ‘finesse’ is first of all defined through its capability to solve developers' problems. (One may reasonably say that solving developers' problem might not be the main purpose of offering the API of ours to developers. However, manipulating public opinion is out of this book's author interest. Here we assume that APIs exist primarily to help developers in solving their problems, not for some other covertly declared purposes.)</p>
-<p>So, how API design might help the developers? Quite simple: well-designed API must solve their problems in the most efficient and comprehensible manner. Distance from formulating the task to writing working code must be as short as possible. Among other things, it means that:</p>
+<p>So, how the API design might help the developers? Quite simple: a well-designed API must solve their problems in the most efficient and comprehensible manner. The distance from formulating the task to writing a working code must be as short as possible. Among other things, it means that:</p>
 <ul>
 <li>it must be totally obvious out of your API's structure how to solve a task; ideally, developers at first glance should be able to understand, what entities are meant to solve their problem;</li>
-<li>the API must be readable; ideally, developers write correct code after just looking at method nomenclature, never bothering about details (especially API implementation details!); it also also very important to mention, that not only problem solution should be obvious, but also possible errors and exceptions;</li>
-<li>the API must be consistent; while developing new functionality (i.e. while using unknown new API entities) developers may write new code similar to the code they already wrote using known API concepts, and this new code will work.</li>
+<li>the API must be readable; ideally, developers write correct code after just looking at the method nomenclature, never bothering about details (especially API implementation details!); it also also very important to mention, that not only problem solution (the ‘happy path’) should be obvious, but also possible errors and exceptions (the ‘unhappy path’);</li>
+<li>the API must be consistent; while developing new functionality (i.e. while using unknown API entities) developers may write new code similar to the code they already wrote using known API concepts, and this new code will work.</li>
 </ul>
-<p>However static convenience and clarity of APIs is a simple part. After all, nobody seeks for making an API deliberately irrational and unreadable. When we are developing an API, we always start with clear basic concepts. While possessing some experience in designing APIs it's quite hard to make an API core which fails to meet obviousness, readability, and consistency criteria.</p>
-<p>Problems begin we we start to expand our API. Adding new functionality sooner or later result in transforming once plain and simple API into a mess of conflicting concepts, and our efforts to maintain backwards compatibility lead to illogical, unobvious and simply bad design solutions. It is partly related to an inability to predict future completely: your understanding of ‘fine’ APIs will change over time, both in objective terms (what problems the API is to solve and what are the best practices) and in subjective ones too (what obviousness, readability and consistency <em>really means</em> regarding your API).</p>
-<p>Principles we are explaining below are specifically oriented to make APIs evolve smoothly over time, not being turned into a pile of mixed inconsistent interfaces. It is crucial to understand that this approach isn't free: a necessity to bear in mind all possible extension variants and keep essential growth points mean interface redundancy and possibly excessing abstractions being embedded in the API design. Besides both make developers' work harder. <strong>Providing excess design complexities being reserved for future use makes sense only when this future actually exists for your API. Otherwise it's simply an overengineering.</strong></p><div class="page-break"></div><h3>Chapter 4. Backwards Compatibility</h3><p>Backwards compatibility is a temporal characteristics of your API. An obligation to maintain backwards compatibility is the crucial point where API developments differs form software development in general.</p>
-<p>Of course, backwards compatibility isn't an absolute. In some subject areas shipping new backwards incompatible API versions is a routine. Nevertheless, every time you deploy new backwards incompatible API version, the developers need to make some non-zero effort to adapt their code to the new API version. In this sense, releasing new API versions puts a sort of a ‘tax’ on customers. They must spend quite real money just to make sure they product continue working.</p>
+<p>However static convenience and clarity of APIs is a simple part. After all, nobody seeks for making an API deliberately irrational and unreadable. When we are developing an API, we always start with clear basic concepts. Providing you've got some experience in APIs, it's quite hard to make an API core which fails to meet obviousness, readability, and consistency criteria.</p>
+<p>Problems begin when we start to expand our API. Adding new functionality sooner or later result in transforming once plain and simple API into a mess of conflicting concepts, and our efforts to maintain backwards compatibility lead to illogical, unobvious and simply bad design solutions. It is partly related to an inability to predict the future in details: your understanding of ‘fine’ APIs will change over time, both in objective terms (what problems the API is to solve, and what are the best practices) and in subjective ones too (what obviousness, readability and consistency <em>really means</em> regarding your API).</p>
+<p>Principles we are explaining below are specifically oriented to making APIs evolve smoothly over time, not being turned into a pile of mixed inconsistent interfaces. It is crucial to understand that this approach isn't free: a necessity to bear in mind all possible extension variants and to preserve essential growth points means interface redundancy and possibly excessing abstractions being embedded in the API design. Besides both make developers' work harder. <strong>Providing excess design complexities being reserved for future use makes sense only when this future actually exists for your API. Otherwise it's simply an overengineering.</strong></p><div class="page-break"></div><h3>Chapter 4. Backwards Compatibility</h3><p>Backwards compatibility is a <em>temporal</em> characteristics of your API. An obligation to maintain backwards compatibility is the crucial point where API development differs form software development in general.</p>
+<p>Of course, backwards compatibility isn't an absolute. In some subject areas shipping new backwards incompatible API versions is a routine. Nevertheless, every time you deploy new backwards incompatible API version, the developers need to make some non-zero effort to adapt their code to the new API version. In this sense, releasing new API versions puts a sort of a ‘tax’ on customers. They must spend quite real money just to make sure their product continue working.</p>
 <p>Large companies, which occupy firm market positions, could afford implying such a taxation. Furthermore, they may introduce penalties for those who refuse to adapt their code to new API versions, up to disabling their applications.</p>
 <p>From our point of view such practice cannot be justified. Don't imply hidden taxes on your customers. If you're able to avoid breaking backwards compatibility — never break it.</p>
-<p>Of course, maintaining old API versions is sort of a tax either. Technology changes, and you cannot foresee everything, regardless of how nice your API is initially designed. At some point keeping old API versions results in an inability to provide new functionality and support new platforms, and you will be forced to release new version. But at least you will be able to explain to your customers why they need to make an effort.</p>
+<p>Of course, maintaining old API versions is a sort of a tax either. Technology changes, and you cannot foresee everything, regardless of how nice your API is initially designed. At some point keeping old API versions results in an inability to provide new functionality and support new platforms, and you will be forced to release new version. But at least you will be able to explain to your customers why they need to make an effort.</p>
 <p>We will discuss API lifecycle and version policies in Section II.</p><div class="page-break"></div><h3>Chapter 5. On versioning</h3><p>Here and throughout we firmly stick to <a href="https://semver.org/">semver</a> principles of versioning:</p>
 <ol>
 <li>API versions are denoted with three numbers, i.e. <code>1.2.3</code>.</li>
-<li>First number (major version) when backwards incompatible changes in the API are shipped.</li>
+<li>First number (major version) increases when backwards incompatible changes in the API are shipped.</li>
 <li>Second Number (minor version) increases when new functionality is added to the API, keeping backwards compatibility intact.</li>
 <li>Third number (patch) increases when new API version contains bug fixes only.</li>
 </ol>
-<p>Terms ‘major API version’ and ‘new API version, containing backwards incompatible changes to functionality’ are therefore to be considered as equivalent.</p>
+<p>Sentences ‘major API version’ and ‘new API version, containing backwards incompatible changes’ are therefore to be considered as equivalent ones.</p>
 <p>In Section II we will discuss versioning policies in more details. In Section I we will just use semver versions designation, specifically <code>v1</code>, <code>v2</code>, etc.</p><div class="page-break"></div><h3>Chapter 6. Terms and Notation Keys</h3><p>Software development is being characterized, among other things, by an existence of many different engineering paradigms, whose adepts sometimes are quite aggressive towards other paradigms' adepts. While writing this book we are deliberately avoiding using terms like ‘method’, ‘object’, ‘function’, and so on, using a neutral term ‘entity’ instead. ‘Entity’ means some atomic functionality unit, like class, method, object, monad, prototype (underline what you think right).</p>
-<p>For entity's components we regretfully failed to find a proper term, so we will use words ‘fields’ and ‘methods’.</p>
-<p>Most of the examples of APIs in general will be provide in a form of JSON-over-HTTP endpoints. This is some sort of notation which, as we see it, helps to describe concepts in the most comprehensible manner. <code>GET /v1/orders</code> endpoint call could easily be replaced with <code>orders.get()</code> method call, local or remote. JSON could easily be replaced with any other data format. Meaning of assertions shouldn't change.</p>
+<p>As for an entity's components, we regretfully failed to find a proper term, so we will use words ‘fields’ and ‘methods’.</p>
+<p>Most of the examples of APIs will be provided in a form of JSON-over-HTTP endpoints. This is some sort of notation which, as we see it, helps to describe concepts in the most comprehensible manner. <code>GET /v1/orders</code> endpoint call could easily be replaced with <code>orders.get()</code> method call, local or remote; JSON could easily be replaced with any other data format. The meaning of assertions shouldn't change.</p>
 <p>Let's take a look at the following example:</p>
 <pre><code>// Method description
 POST /v1/bucket/{id}/some-resource
@@ -189,56 +189,56 @@ Cache-Control: no-cache
   "error_message"
 }
 </code></pre>
-<p>It should be read like:</p>
+<p>It should be read like this:</p>
 <ul>
-<li>client performs a POST-request to a <code>/v1/bucket/{id}/some-resource</code> resource, where <code>{id}</code> is to be replaced with some <code>bucket</code>'s identifier <code>{something}</code> should refer to the nearest term from the left, unless explicitly specified otherwise);</li>
+<li>a client performs a <code>POST</code> request to a <code>/v1/bucket/{id}/some-resource</code> resource, where <code>{id}</code> is to be replaced with some <code>bucket</code>'s identifier (<code>{something}</code> notation refers to the nearest term from the left, unless explicitly specified otherwise);</li>
 <li>a specific <code>X-Idempotency-Token</code> header is added to the request alongside with standard headers (which we omit);</li>
-<li>terms in angle brackets (<code>&lt;idempotency token&gt;</code>) describe the semantic of an entity value (field, header, parameter);</li>
-<li>a specific JSON, containing a <code>some_parameter</code> field with <code>example value</code> value and some other unspecified fields (indicated by ellipsis) is being sent as a request body payload;</li>
-<li>in response (marked with arrow symbol <code>→</code>) server returns a <code>404 Not Founds</code> status code; status might be omitted (treat it like <code>200 OK</code> if no status is provided);</li>
-<li>response could possibly contain additional notable headers;</li>
-<li>response body is a JSON comprising single <code>error_message</code> field; field value absence means that field contains exactly what you expect it should contain — some error message in this case.</li>
+<li>terms in angle brackets (<code>&lt;idempotency token&gt;</code>) describe the semantics of an entity value (field, header, parameter);</li>
+<li>a specific JSON, containing a <code>some_parameter</code> field and some other unspecified fields (indicated by ellipsis) is being sent as a request body payload;</li>
+<li>in response (marked with arrow symbol <code>→</code>) server returns a <code>404 Not Founds</code> status code; the status might be omitted (treat it like <code>200 OK</code> if no status is provided);</li>
+<li>the response could possibly contain additional notable headers;</li>
+<li>the response body is a JSON comprising single <code>error_message</code> field; field value absence means that field contains exactly what you expect it should contain — some error message in this case.</li>
 </ul>
 <p>Term ‘client’ here stands for an application being executed on a user's device, either native of web one. Terms ‘agent’ and ‘user agent’ are synonymous to ‘client’.</p>
 <p>Some request and response parts might be omitted if they are irrelevant to a topic being discussed.</p>
-<p>Simplified notation might be used to avoid redundancies, like <code>POST /some-resource</code> <code>{…,"some_parameter",…}</code> → <code>{ "operation_id" }</code>; request and response bodies might also be omitted.</p>
-<p>We will be using expressions like ‘<code>POST /v1/bucket/{id}/some-resource</code> method’ (or simply ‘<code>bucket/some-resource</code> method’, ‘<code>some-resource</code>’ method if no other <code>some-resource</code>s are specified throughout the chapter, so there is no ambiguity) to refer to such endpoint definition.</p>
-<p>Apart from HTTP API notation we will employ C-style pseudocode, or, to be more precise, JavaScript-like or Python-like since types are omitted. We assume such imperative structures being readable enough to skip detailed grammar explanations.</p><div class="page-break"></div>
-<h2>Section I. The API Design</h2><h3>Chapter 7. The API Contexts Pyramid</h3><p>The approach we use to design API comprises four steps:</p>
+<p>Simplified notation might be used to avoid redundancies, like <code>POST /some-resource</code> <code>{…, "some_parameter", …}</code> → <code>{ "operation_id" }</code>; request and response bodies might also be omitted.</p>
+<p>We will be using sentenses like ‘<code>POST /v1/bucket/{id}/some-resource</code> method’ (or simply ‘<code>bucket/some-resource</code> method’, ‘<code>some-resource</code>’ method — if there are no other <code>some-resource</code>s in the chapter, so there is no ambiguity) to refer to such endpoint definitions.</p>
+<p>Apart from HTTP API notation, we will employ C-style pseudocode, or, to be more precise, JavaScript-like or Python-like since types are omitted. We assume such imperative structures being readable enough to skip detailed grammar explanations.</p><div class="page-break"></div>
+<h2>Section I. The API Design</h2><h3>Chapter 7. The API Contexts Pyramid</h3><p>The approach we use to design APIs comprises four steps:</p>
 <ul>
 <li>defining an application field;</li>
 <li>separating abstraction levels;</li>
 <li>isolating responsibility areas;</li>
 <li>describing final interfaces.</li>
 </ul>
-<p>This for-step algorithm actually builds an API from top to bottom, from common requirements and use case scenarios down to refined entity nomenclature. In fact, moving this way you will eventually get a ready-to-use API — that's why we value this approach.</p>
-<p>It might seem that the most useful pieces of advice are given in a last chapter, but that's not true. The cost of a mistake made at certain levels differs. Fixing naming is simple; revising wrong understanding what the API stands for is practically impossible.</p>
-<p><strong>NB</strong>. Here and throughout we will illustrate API design concepts using a hypothetical example of an API allowing for ordering a cup of coffee in city cafes. Just in case: this example is totally synthetic. If we were to design such an API in a real world, it would probably have very few in common with our fictional example.</p><div class="page-break"></div><h3>Chapter 8. Defining an Application Field</h3><p>Key question you should ask yourself looks like that: what problem we solve? It should be asked four times, each time putting emphasis on another word.</p>
+<p>This four-step algorithm actually builds an API from top to bottom, from common requirements and use case scenarios down to a refined entity nomenclature. In fact, moving this way will eventually conclude with a ready-to-use API — that's why we value this approach highly.</p>
+<p>It might seem that the most useful pieces of advice are given in the last chapter, but that's not true. The cost of a mistake made at certain levels differs. Fixing the naming is simple; revising the wrong understanding of what the API stands for is practically impossible.</p>
+<p><strong>NB</strong>. Here and throughout we will illustrate API design concepts using a hypothetical example of an API allowing for ordering a cup of coffee in city cafes. Just in case: this example is totally synthetic. If we were to design such an API in a real world, it would probably have very few in common with our fictional example.</p><div class="page-break"></div><h3>Chapter 8. Defining an Application Field</h3><p>Key question you should ask yourself looks like that: what problem we solve? It should be asked four times, each time putting an emphasis on an another word.</p>
 <ol>
 <li><p><em>What</em> problem we solve? Could we clearly outline the situation in which our hypothetical API is needed by developers?</p></li>
 <li><p>What <em>problem</em> we solve? Are we sure that abovementioned situation poses a problem? Does someone really want to pay (literally or figuratively) to automate a solution for this problem?</p></li>
 <li><p>What problem <em>we</em> solve? Do we actually possess an expertise to solve the problem?</p></li>
 <li><p>What problem we <em>solve</em>? Is it true that the solution we propose solves the problem indeed? Aren't we creating another problem instead?</p></li>
 </ol>
-<p>So, let's imagine that we are going to develop an API for automated coffee ordering in city cafes, and let' apply the key question to it.</p>
+<p>So, let's imagine that we are going to develop an API for automated coffee ordering in city cafes, and let's apply the key question to it.</p>
 <ol>
 <li><p>Why would someone need an API to make a coffee? Why ordering a coffee via ‘human-to-human’ or ‘human-to-machine’ interface is inconvenient, why have ‘machine-to-machine’ interface?</p>
 <ul>
 <li>Possibly, we're solving knowledge and selection problems? To provide humans with a full knowledge what options they have right now and right here.</li>
-<li>Possibly, we're optimizing waiting times? To save the time people waste while waiting their beverages.</li>
+<li>Possibly, we're optimizing waiting times? To save the time people waste waiting their beverages.</li>
 <li>Possibly, we're reducing the number of errors? To help people get exactly what they wanted to order, stop losing information in imprecise conversational communication or in dealing with unfamiliar coffee machine interfaces?</li></ul>
 <p>‘Why’ question is the most important of all questions you must ask yourself. And not only about global project goals, but also locally about every single piece of functionality. <strong>If you can't briefly and clearly answer the question ‘what for this entity is needed’, then it's not needed</strong>.</p>
 <p>Here and throughout we assume, to make our example more complex and bizarre, that we are optimizing all three factors.</p></li>
-<li><p>Do the problems we outlined really exist? Do we really observe unequal coffee-machines utilization in mornings? Do people really suffer from inability to find nearby toffee nut latte they long for? Do they really care about minutes they spend in lines?</p></li>
+<li><p>Do the problems we outlined really exist? Do we really observe unequal coffee-machines utilization in mornings? Do people really suffer from inability to find nearby a toffee nut latte they long for? Do they really care about minutes they spend in lines?</p></li>
 <li><p>Do we actually have a resource to solve a problem? Do we have an access to sufficient number of coffee machines and users to ensure system's efficiency?</p></li>
 <li><p>Finally, will we really solve a problem? How we're going to quantify an impact our API makes? </p></li>
 </ol>
-<p>In general, there is no simple answers to those questions. Ideally, you should give answers having all relevant metrics measured: how much time is wasted exactly, and what numbers we're going to achieve having this coffee machines density? Let us also stress that in real life obtaining these numbers is only possibly when you're entering a stable market. If you try to create something new, your only option is to rely on your intuition.</p>
+<p>In general, there are no simple answers to those questions. Ideally, you should give answers having all the relevant metrics measured: how much time is wasted exactly, and what numbers we're going to achieve providing we have such coffee machines density? Let us also stress that in a real life obtaining these numbers is only possible if you're entering a stable market. If you try to create something new, your only option is to rely on your intuition.</p>
 <h4 id="whyanapi">Why an API?</h4>
-<p>Since our book is dedicated not to software development per se, but developing APIs, we should look at all those questions from different angle: why solving those problems specifically requires an API, not simply specialized software? In terms of our fictional example we should ask ourselves: why provide a service to developers to allow brewing coffee to end users instead of just making an app for end users?</p>
-<p>In other words, there must be a solid reason to split two software development domains: there are the operators which provide APIs; and there are the operators which develop services for end users. Their interests are somehow different to such an extent that coupling this two roles in one entity is undesirable. We will talk about the motivation to specifically provide APIs in more details in Section III.</p>
-<p>We should also note, that you should try making an API when and only when you wrote ‘because that's our area of expertise’ in question 2. Developing APIs is sort of meta-engineering: your writing some software to allow other companies to develop software to solve users' problems. You must possess an expertise in both domains (API and user products) to design your API well.</p>
-<p>As for our speculative example, let us imagine that in near future some tectonic shift happened on coffee brewing market. Two distinct player groups took shape: some companies provide a ‘hardware’, i.e. coffee machines; other companies have an access to customer auditory. Something like flights market looks like: there are air companies, which actually transport passengers; and there are trip planning services where users are choosing between trip variants the system generates for them. We're aggregating a hardware access to allow app vendors for ordering fresh brewed coffee.</p>
+<p>Since our book is dedicated not to software development per se, but to developing APIs, we should look at all those questions from a different angle: why solving those problems specifically requires an API, not simply a specialized software application? In terms of our fictional example we should ask ourselves: why provide a service to developers, allowing for brewing coffee to end users, instead of just making an app?</p>
+<p>In other words, there must be a solid reason to split two software development domains: there are the operators which provide APIs; and there are the operators which develop services for end users. Their interests are somehow different to such an extent, that coupling this two roles in one entity is undesirable. We will talk about the motivation to specifically provide APIs in more details in Section III.</p>
+<p>We should also note, that you should try making an API when and only when you wrote ‘because that's our area of expertise’ in question 2. Developing APIs is sort of meta-engineering: you're writing some software to allow other companies to develop software to solve users' problems. You must possess an expertise in both domains (APIs and user products) to design your API well.</p>
+<p>As for our speculative example, let us imagine that in the near future some tectonic shift happened within coffee brewing market. Two distinct player groups took shape: some companies provide a ‘hardware’, i.e. coffee machines; other companies have an access to customer auditory. Something like the flights market looks like: there are air companies, which actually transport passengers; and there are trip planning services where users are choosing between trip variants the system generates for them. We're aggregating a hardware access to allow app vendors for ordering the fresh brewed coffee.</p>
 <h4 id="whatandhow">What and How</h4>
 <p>After finishing all these theoretical exercises, we should proceed right to designing and developing the API, having a decent understanding regarding two things:</p>
 <ul>
@@ -249,18 +249,18 @@ Cache-Control: no-cache
 <ul>
 <li>providing an API to services with larger audience, so their users may order a cup of coffee in the most efficient and convenient manner;</li>
 <li>abstracting an access to coffee machines ‘hardware’ and delivering methods to select a beverage kind and some location to brew — and to make an order.</li>
-</ul><div class="page-break"></div><h3>Chapter 9. Separating Abstraction Levels</h3><p>‘Separate abstraction levels in your code’ is possibly the most general advice to software developers. However we don't think it would be a grave exaggeration to say that abstraction levels separation is also the most difficult task to API developers.</p>
-<p>Before proceeding to the theory we should formulate clearly, <em>why</em> abstraction levels are so imprtant and what goals we trying to achieve by separating them.</p>
-<p>Let us remember that software product is a medium connecting two outstanding context, thus transforming terms and operations belonging to one subject area into another area's concepts. The more these areas differ, the more interim connecting links we have to introduce.</p>
+</ul><div class="page-break"></div><h3>Chapter 9. Separating Abstraction Levels</h3><p>‘Separate abstraction levels in your code’ is possibly the most general advice to software developers. However, we don't think it would be a grave exaggeration to say that abstraction levels separation is also the most difficult task to API developers.</p>
+<p>Before proceeding to the theory, we should formulate clearly <em>why</em> abstraction levels are so important, and what goals we're trying to achieve by separating them.</p>
+<p>Let us remember that software product is a medium connecting two outstanding contexts, thus transforming terms and operations belonging to one subject area into another area's concepts. The more these areas differ, the more interim connecting links we have to introduce.</p>
 <p>Back to our coffee example. What entity abstraction levels we see?</p>
 <ol>
-<li>We're preparing an <code>order</code> via the API: one (or more) cup of coffee and take payments for this.</li>
+<li>We're preparing an <code>order</code> via the API: one (or more) cup of coffee, and receive payments for this.</li>
 <li>Each cup of coffee is being prepared according to some <code>recipe</code>, which implies the presence of different ingredients and sequences of preparation steps.</li>
-<li>Each beverage is being prepared on some physical <code>coffee machine</code> occupying some position in space.</li>
+<li>Each beverage is being prepared on some physical <code>coffee machine</code>, occupying some position in space.</li>
 </ol>
-<p>Every level presents a developer-facing ‘facet’ in our API. While elaboration abstractions hierarchy we first of all trying to reduce the interconnectivity of different entities. That would help us to reach several goals.</p>
+<p>Every level presents a developer-facing ‘facet’ in our API. While elaborating abstractions hierarchy, we first of all trying to reduce the interconnectivity of different entities. That would help us to reach several goals.</p>
 <ol>
-<li><p>Simplifying developers' work and learning curve. At each moment of time a developer is operating only those entities which are necessary for the task they're solving right now. And conversely, badly designed isolation leads to the situation when developers have to keep in mind lots of concepts mostly unrelated to the task being solved.</p></li>
+<li><p>Simplifying developers' work and the learning curve. At each moment of time a developer is operating only those entities which are necessary for the task they're solving right now. And conversely, badly designed isolation leads to the situation when developers have to keep in mind lots of concepts mostly unrelated to the task being solved.</p></li>
 <li><p>Preserving backwards compatibility. Properly separated abstraction levels allow for adding new functionality while keeping interfaces intact.</p></li>
 <li><p>Maintaining interoperability. Properly isolated low-level abstraction help us to adapt the API to different platforms and technologies without changing high-level entities.</p></li>
 </ol>
@@ -269,7 +269,7 @@ Cache-Control: no-cache
 GET /v1/recipes/lungo
 </code></pre>
 <pre><code>// Posts an order to make a lungo
-// using coffee-machine specified
+// using specified coffee-machine,
 // and returns an order identifier
 POST /v1/orders
 {
@@ -283,14 +283,14 @@ GET /v1/orders/{id}
 <p>Let's consider the question: how exactly developers should determine whether the order is ready or not? Let's say we do the following:</p>
 <ul>
 <li>add a reference beverage volume to the lungo recipe;</li>
-<li>add currently prepared volume of beverage to order state.</li>
+<li>add currently prepared volume of beverage to the order state.</li>
 </ul>
-<p>Then a developer just need to compare to numbers to find out whether the order is ready.</p>
-<p>This solutions intuitively looks bad, and it really is: it violates all abovementioned principles.</p>
-<p><strong>In first</strong>, to solve the task ‘order a lung’ a developer need to refer to the ‘recipe’ entity and learn that every recipe has an associated volume. Then they need to embrace the concept that order is ready at that particular moment when beverage volume becomes equal to reference one. This concept is simply unguessable and bears to particular sense in knowing it.</p>
-<p><strong>In second</strong>, we will automatically got problems if we need to vary beverage size. For example, if one day we decide to offer a choice to a customer how many milliliters of lungo they desire exactly, then we will have to performs one of the following tricks.</p>
-<p>Variant I: we have a list of possible volumes fixed and introduce bogus recipes like <code>/recipes/small-lungo</code> or <code>recipes/large-lungo</code>. Why ‘bogus’? Because it's still the same lungo recipe, same ingredients, same preparation steps, only volumes differ. We will have to start mass producing a bunch of recipes only different in volume, or introduce some recipe ‘inheritance’ to be able to specify ‘base’ recipe and just redefine the volume.</p>
-<p>Variant II: we modify an interface, pronouncing volumes stated in recipes being just default values. We allow to set different volume when placing an order:</p>
+<p>Then a developer just needs to compare two numbers to find out whether the order is ready.</p>
+<p>This solution intuitively looks bad, and it really is: it violates all abovementioned principles.</p>
+<p><strong>In first</strong>, to solve the task ‘order a lungo’ a developer needs to refer to the ‘recipe’ entity and learn that every recipe has an associated volume. Then they need to embrace the concept that an order is ready at that particular moment when the prepared beverage volume becomes equal to the reference one. This concept is simply unguessable, and knowing it is mostly useless.</p>
+<p><strong>In second</strong>, we will have automatically got problems if we need to vary the beverage size. For example, if one day we decide to offer a choice to a customer, how many milliliters of lungo they desire exactly, then we have to perform one of the following tricks.</p>
+<p>Variant I: we have a list of possible volumes fixed and introduce bogus recipes like <code>/recipes/small-lungo</code> or <code>recipes/large-lungo</code>. Why ‘bogus’? Because it's still the same lungo recipe, same ingredients, same preparation steps, only volumes differ. We will have to start the mass production of recipes, only different in volume, or introduce some recipe ‘inheritance’ to be able to specify the ‘base’ recipe and just redefine the volume.</p>
+<p>Variant II: we modify an interface, pronouncing volumes stated in recipes being just the default values. We allow to set different volume when placing an order:</p>
 <pre><code>POST /v1/orders
 {
   "coffee_machine_id",
@@ -298,12 +298,12 @@ GET /v1/orders/{id}
   "volume":"800ml"
 }
 </code></pre>
-<p>For those orders with arbitrary volume requested a developer will need to obtain requested volume not from <code>GET /v1/recipes</code>, but <code>GET /v1/orders</code>. Doing so we're getting a whole bunch of related problems:</p>
+<p>For those orders with an arbitrary volume requested, a developer will need to obtain the requested volume not from <code>GET /v1/recipes</code>, but <code>GET /v1/orders</code>. Doing so we're getting a whole bunch of related problems:</p>
 <ul>
-<li>there is a significant chance that developers will make mistakes in this functionality implementation if they add arbitrary volume support in a code working with the <code>POST /v1/orders</code> handler, but forget to make corresponding changes in an order readiness check code;</li>
-<li>the same field (coffee volume) now means different things in different interfaces. In <code>GET /v1/recipes</code> context <code>volume</code> field means ‘a volume to be prepared if no arbitrary volume is specified in <code>POST /v1/orders</code> request’; and it cannot simply be renamed to ‘default volume’, we now have to live with that.</li>
+<li>there is a significant chance that developers will make mistakes in this functionality implementation, if they add arbitrary volume support in the code working with the <code>POST /v1/orders</code> handler, but forget to make corresponding changes in the order readiness check code;</li>
+<li>the same field (coffee volume) now means different things in different interfaces. In <code>GET /v1/recipes</code> context <code>volume</code> field means ‘a volume to be prepared if no arbitrary volume is specified in <code>POST /v1/orders</code> request’; and it cannot be renamed to ‘default volume’ easily, we now have to live with that.</li>
 </ul>
-<p><strong>In third</strong>, the entire scheme becomes totally inoperable if different types of coffee machines produce different volumes of lungo. To introduce ‘lungo volume depends on machine type’ constraint we have to do quite a nasty thing: make recipes depend on coffee machine id. By doing so we start actively ‘stir’ abstraction levels: one part of our API (recipe endpoints) becomes unusable without explicit knowledge of another part (coffee machines parameters). And which is even worse, developers will have to change logics of their apps: previously it was possible to choose volume first, then a coffee-machine; but now this step must be rebuilt from scratch.</p>
+<p><strong>In third</strong>, the entire scheme becomes totally inoperable if different types of coffee machines produce different volumes of lungo. To introduce ‘lungo volume depends on machine type’ constraint we have to do quite a nasty thing: make recipes depend on coffee machine id. By doing so we start actively ‘stir’ abstraction levels: one part of our API (recipe endpoints) becomes unusable without explicit knowledge of another part (coffee machines listing). And what is even worse, developers will have to change the logic of their apps: previously it was possible to choose volume first, then a coffee-machine; but now this step must be rebuilt from scratch.</p>
 <p>Okay, we understood how to make things bad. But how to make them <em>nice</em>?</p>
 <p>Abstraction levels separation should go alongside three directions:</p>
 <ol>
@@ -311,13 +311,13 @@ GET /v1/orders/{id}
 <li><p>From user subject field terms to ‘raw’ data subject field terms — in our case from high-level terms like ‘order’, ‘recipe’, ‘café’ to low-level terms like ‘beverage temperature’, ‘coffee machine geographical coordinates’, etc.</p></li>
 <li><p>Finally, from data structures suitable for end users to ‘raw’ data structures — in our case, from ‘lungo recipe’ and ‘"Chamomile" café chain’ to raw byte data stream from ‘Good Morning’ coffee machine sensors.</p></li>
 </ol>
-<p>The more is the distance between programmable context which our API connects, the deeper is the hierarchy of the entities we are to develop.</p>
+<p>The more is the distance between programmable contexts our API connects, the deeper is the hierarchy of the entities we are to develop.</p>
 <p>In our example with coffee readiness detection we clearly face the situation when we need an interim abstraction level:</p>
 <ul>
 <li>from one side, an ‘order’ should not store the data regarding coffee machine sensors;</li>
 <li>from other side, a coffee machine should not store the data regarding order properties (and its API probably doesn't provide such functionality).</li>
 </ul>
-<p>A naïve approach to this situation is to design an interim abstraction level as a ‘connecting link’ which reformulates tasks from one abstraction level to another. For example, introduce a <code>task</code> entity like that:</p>
+<p>A naïve approach to this situation is to design an interim abstraction level as a ‘connecting link’, which reformulates tasks from one abstraction level to another. For example, introduce a <code>task</code> entity like that:</p>
 <pre><code>{
   …
   "volume_requested": "800ml",
@@ -328,18 +328,18 @@ GET /v1/orders/{id}
     "status": "executing",
     "operations": [
       // description of commands
-      // being executed on physical coffee machine
+      // being executed on a physical coffee machine
     ]
   }
   …
 }
 </code></pre>
-<p>We call this approach ‘naïve’ not because its wrong; on the contrary, that's quite logical ‘default’ solution if you don't know yet (or don't understand yet) how your API will look like. The problem with this approach lies in its speculativeness: it doesn't reflect subject area's organization.</p>
-<p>An experienced developer in this case must ask: what options do exist? How we really should determine beverage readiness? If it turns out that comparing volumes <em>is</em> the only working method to tell whether the beverage is ready, then all the speculations above are wrong. You may safely include readiness by volume detection into your interfaces, since no other method exists. Before abstraction something we need to learn what exactly we're abstracting.</p>
-<p>In our example let's assume that we have studied coffee machines API specs and learned that two device types exist:</p>
+<p>We call this approach ‘naïve’ not because it's wrong; on the contrary, that's quite a logical ‘default’ solution if you don't know yet (or don't understand yet) how your API will look like. The problem with this approach lies in its speculativeness: it doesn't reflect the subject area's organization.</p>
+<p>An experienced developer in this case must ask: what options do exist? How we really should determine beverage readiness? If it turns out that comparing volumes <em>is</em> the only working method to tell whether the beverage is ready, then all the speculations above are wrong. You may safely include readiness-by-volume detection into your interfaces, since no other methods exist. Before abstracting something we need to learn what exactly we're abstracting.</p>
+<p>In our example let's assume that we have studied coffee machines API specs, and learned that two device types exist:</p>
 <ul>
-<li>coffee machines capable of executing programs coded in the firmware, and the only customizable options are some beverage parameters, like desired volume, syrup flavor and kind of milk;</li>
-<li>coffee machines with builtin functions like ‘grind specified coffee volume’, ‘shed specified amount of water’, etc; such coffee machines lack ‘preparation programs’, but provide an access to commands and sensors.</li>
+<li>coffee machines capable of executing programs coded in the firmware; the only customizable options are some beverage parameters, like desired volume, a syrup flavor and a kind of milk;</li>
+<li>coffee machines with builtin functions, like ‘grind specified coffee volume’, ‘shed specified amount of water’, etc.; such coffee machines lack ‘preparation programs’, but provide an access to commands and sensors.</li>
 </ul>
 <p>To be more specific, let's assume those two kinds of coffee machines provide the following physical API.</p>
 <ul>
@@ -349,7 +349,7 @@ GET /programs
 →
 {
   // program identifier
-  "program": "01",
+  "program": 1,
   // coffee type
   "type": "lungo"
 }
@@ -374,11 +374,11 @@ POST /execute
 <pre><code>// Cancels current program
 POST /cancel
 </code></pre>
-<pre><code>// Returns execution status
-// Format is the same as in POST /execute
+<pre><code>// Returns execution status.
+// The format is the same as in `POST /execute`
 GET /execution/status
 </code></pre>
-<p><strong>NB</strong>. Just in case: this API violates a number of design principles, starting with a lack of versioning; it's described in such a manner because of two reasons: (1) to demonstrate how to design a more convenient API, (b) in real life you really get something like that from vendors, and this API is quite sane, actually.</p></li>
+<p><strong>NB</strong>. Just in case: this API violates a number of design principles, starting with a lack of versioning; it's described in such a manner because of two reasons: (1) to demonstrate how to design a more convenient API, (b) in a real life you really got something like that from vendors, and this API is quite sane, actually.</p></li>
 <li><p>Coffee machines with builtin functions:</p>
 <pre><code>// Returns a list of functions available
 GET /functions
@@ -426,14 +426,14 @@ GET /sensors
   ]
 }
 </code></pre>
-<p><strong>NB</strong>. The example is intentionally factitious to model a situation described above: to determine beverage readiness you have to compare requested volume with volume sensor state.</p></li>
+<p><strong>NB</strong>. The example is intentionally factitious to model a situation described above: to determine beverage readiness you have to compare the requested volume with volume sensor readings.</p></li>
 </ul>
-<p>Now the picture becomes more apparent: wee need to abstract coffee machine API calls, so that ‘execution level’ in our API provides general functions (like beverage readiness detection) in a unified form. We should also note that these two coffee machine kinds belong to different abstraction levels themselves: first one provide a higher level API than second one. Therefore, a ‘branch’ of our API working with second kind machines will be more intricate.</p>
-<p>The next step in abstraction level separating is determining what functionality we're abstracting. To do so we need to understand the tasks developers solve at the ‘order’ level, and to learn what problems they got if our interim level missed.</p>
+<p>Now the picture becomes more apparent: we need to abstract coffee machine API calls, so that ‘execution level’ in our API provides general functions (like beverage readiness detection) in a unified form. We should also note that these two coffee machine API kinds belong to different abstraction levels themselves: the first one provides a higher level API than the second one. Therefore, a ‘branch’ of our API working with second kind machines will be more intricate.</p>
+<p>The next step in abstraction level separating is determining what functionality we're abstracting. To do so we need to understand the tasks developers solve at the ‘order’ level, and to learn what problems they get if our interim level is missing.</p>
 <ol>
 <li>Obviously the developers desire to create an order uniformly: list high-level order properties (beverage kind, volume and special options like syrup or milk type), and don't think about how specific coffee machine executes it.</li>
-<li>Developers must be able to learn the execution state: is order ready? if not — when to expect it's ready (and is there any sense to wait in case of execution errors).</li>
-<li>Developers need to address an order's location in space and time — to explain to users where and when they should pick the order up.</li>
+<li>Developers must be able to learn the execution state: is the order ready? if not — when to expect it's ready (and is there any sense to wait in case of execution errors).</li>
+<li>Developers need to address the order's location in space and time — to explain to users where and when they should pick the order up.</li>
 <li>Finally, developers need to run atomic operations, like canceling orders.</li>
 </ol>
 <p>Note, that the first kind API is much closer to developers' needs than the second kind API. Indivisible ‘program’ is a way more convenient concept than working with raw commands and sensor data. There are only two problems we see in the first kind API:</p>
@@ -444,13 +444,13 @@ GET /sensors
 <p>But with the second kind API it's much worse. The main problem we foresee is an absence of ‘memory’ for actions being executed. Functions and sensors API is totally stateless, which means we don't event understand who called a function being currently executed, when, and which order it is related to.</p>
 <p>So we need to introduce two abstraction levels.</p>
 <ol>
-<li><p>Execution control level which provides uniform interface to indivisible programs. ‘Uniform interface’ means here that, regardless of a coffee machine kind, developers may expect:</p>
+<li><p>Execution control level, which provides uniform interface to indivisible programs. ‘Uniform interface’ means here that, regardless of a coffee machine's kind, developers may expect:</p>
 <ul>
 <li>statuses and other high-level execution parameters nomenclature (for example, estimated preparation time or possible execution error) being the same;</li>
 <li>methods nomenclature (for example, order cancellation method) and their behavior being the same.</li></ul></li>
 <li><p>Program runtime level. For the first kind API it will provide just a wrapper for existing programs API; for the second kind API the entire ‘runtime’ concept is to be developed from scratch by us.</p></li>
 </ol>
-<p>What does this mean in practical sense? Developers will still be creating orders dealing with high-level entities only:</p>
+<p>What does this mean in practical sense? Developers will still be creating orders, dealing with high-level entities only:</p>
 <pre><code>POST /v1/orders
 {
   "coffee_machin
@@ -460,13 +460,13 @@ GET /sensors
 →
 { "order_id" }
 </code></pre>
-<p>The <code>POST /orders</code> handler will check all order parameters, puts a hold of corresponding sum on user's credit card, forms a request to run and calls the execution level. First, correct execution program needs to be fetched:</p>
+<p>The <code>POST /orders</code> handler checks all order parameters, puts a hold of corresponding sum on user's credit card, forms a request to run, and calls the execution level. First, correct execution program needs to be fetched:</p>
 <pre><code>POST /v1/programs/match
 { "recipe", "coffee-machine" }
 →
 { "program_id" }
 </code></pre>
-<p>Now, after obtaining a correct <code>program</code> identifier the handler runs a program:</p>
+<p>Now, after obtaining a correct <code>program</code> identifier, the handler runs a program:</p>
 <pre><code>POST /v1/programs/{id}/run
 {
   "order_id",
@@ -481,17 +481,17 @@ GET /sensors
 →
 { "program_run_id" }
 </code></pre>
-<p>Please note that knowing the coffee machine API kind isn't required at all; that's why we're making abstractions! We could make interfaces more specific, implementing different <code>run</code> and <code>match</code> endpoints for different coffee machines:</p>
+<p>Please note that knowing the coffee machine API kind isn't required at all; that's why we're making abstractions! We could possibly make interfaces more specific, implementing different <code>run</code> and <code>match</code> endpoints for different coffee machines:</p>
 <ul>
 <li><code>POST /v1/programs/{api_type}/match</code></li>
 <li><code>POST /v1/programs/{api_type}/{program_id}/run</code></li>
 </ul>
 <p>This approach has some benefits, like a possibility to provide different sets of parameters, specific to the API kind. But we see no need in such fragmentation. <code>run</code> method handler is capable of extracting all the program metadata and perform one of two actions:</p>
 <ul>
-<li>call <code>POST /execute</code> physical API method passing internal program identifier — for the first API kind;</li>
+<li>call <code>POST /execute</code> physical API method, passing internal program identifier — for the first API kind;</li>
 <li>initiate runtime creation to proceed with the second API kind.</li>
 </ul>
-<p>Out of general concerns runtime level for the second kind API will be private, so we are more or less free in implementing it. The easiest solution would be to develop a virtual state machine which creates a ‘runtime’ (e.g. stateful execution context) to run a program and controls its state.</p>
+<p>Out of general concerns runtime level for the second kind API will be private, so we are more or less free in implementing it. The easiest solution would be to develop a virtual state machine which creates a ‘runtime’ (e.g. a stateful execution context) to run a program and control its state.</p>
 <pre><code>POST /v1/runtimes
 { "coffee_machine", "program", "parameters" }
 →
@@ -519,14 +519,15 @@ GET /sensors
   // * "ready_waiting" — beverage is ready
   // * "finished" — all operations done
   "status": "ready_waiting",
-  // Command being currently executed
+  // Command being currently executed.
+  // Similar to line numbers in computer programs
   "command_sequence_id",
-  // How the exectuion concluded:
+  // How the execution concluded:
   // * "success" — beverage prepared and taken
   // * "terminated" — execution aborted
   // * "technical_error" — preparation error
-  // * "waiting_time_exceeded" — beverage prepared
-  //   but not taken; timed out then disposed
+  // * "waiting_time_exceeded" — beverage prepared,
+  //     but not taken; timed out then disposed
   "resolution": "success",
   // All variables values,
   // including sensors state
@@ -535,82 +536,82 @@ GET /sensors
 </code></pre>
 <p><strong>NB</strong>: while implementing <code>orders</code> → <code>match</code> → <code>run</code> → <code>runtimes</code> call sequence we have two options:</p>
 <ul>
-<li>either <code>POST /orders</code> handler requests the data regarding recipe, coffee machine model, and program on its own behalf and forms a stateless request which contains all the necessary data (the API kind, command sequence, etc.);</li>
-<li>or the request contains only data identifiers, and next in chain handlers will request pieces of data they need via some internal APIs.</li>
+<li>either <code>POST /orders</code> handler requests the data regarding the recipe, the coffee machine model, and the program on its own behalf, and forms a stateless request which contains all the necessary data (the API kind, command sequence, etc.);</li>
+<li>or the request contains only data identifiers, and next in chain handler will request pieces of data it needs via some internal APIs.</li>
 </ul>
 <p>Both variants are plausible, selecting one of them depends on implementation details.</p>
 <h4 id="abstractionlevelsisolation">Abstraction Levels Isolation</h4>
 <p>Crucial quality of properly separated abstraction levels (and therefore a requirement to their design) is a level isolation restriction: <strong>only adjacent levels may interact</strong>. If ‘jumping over’ is needed in the API design, then clearly mistakes were made.</p>
-<p>Get back to our example. How retrieving order status operation would work? To obtain a status the following call chain is to be performed:</p>
+<p>Get back to our example. How retrieving order status would work? To obtain a status the following call chain is to be performed:</p>
 <ul>
-<li>user initiate a call to <code>GET /v1/orders</code> method;</li>
-<li><code>order</code> handler completes operations on its level of responsibility (for example, checks user authorization), finds <code>program_run_id</code> identifier and performs a call to <code>runs/{program_run_id}</code> endpoint;</li>
-<li><code>runs</code> endpoint in its turn completes operations corresponding to its level (for example, checks the coffee machine API kind) and, depending on the API kind, proceeds with one of two possible execution branches:<ul>
-<li>either calls <code>GET /execution/status</code> method of a physical coffee machine API, gets coffee volume and compares it to the reference value;</li>
-<li>or invokes <code>GET /v1/runtimes/{runtime_id}</code> to obtain <code>state.status</code> and convert it to order status;</li></ul></li>
-<li>in case of the second API kind the call chain continues: <code>GET /runtimes</code> handler invokes <code>GET /sensors</code> method of a physical coffee machine API and performs some manipulations on them, like comparing cup / ground coffee / shed water volume with those requested upon command execution and changing state and status if needed.</li>
+<li>user initiates a call to the <code>GET /v1/orders</code> method;</li>
+<li>the <code>orders</code> handler completes operations on its level of responsibility (for example, checks user authorization), finds <code>program_run_id</code> identifier and performs a call to the <code>runs/{program_run_id}</code> endpoint;</li>
+<li>the <code>runs</code> endpoint in its turn completes operations corresponding to its level (for example, checks the coffee machine API kind) and, depending on the API kind, proceeds with one of two possible execution branches:<ul>
+<li>either calls the <code>GET /execution/status</code> method of a physical coffee machine API, gets the coffee volume and compares it to the reference value;</li>
+<li>or invokes the <code>GET /v1/runtimes/{runtime_id}</code> method to obtain the <code>state.status</code> and converts it to the order status;</li></ul></li>
+<li>in case of the second API kind, the call chain continues: the <code>GET /runtimes</code> handler invokes the <code>GET /sensors</code> method of a physical coffee machine API and performs some manipulations with the data, like comparing the cup / ground coffee / shed water volumes with the reference ones, and changing the state and the status if needed.</li>
 </ul>
-<p><strong>NB</strong>: ‘Call chain’ wording shouldn't be treated literally. Each abstraction level might be organized differently in a technical sense:</p>
+<p><strong>NB</strong>: The ‘call chain’ wording shouldn't be treated literally. Each abstraction level might be organized differently in a technical sense:</p>
 <ul>
 <li>there might be explicit proxying of calls down the hierarchy;</li>
-<li>there might be a cache at each level being updated upon receiving a callback call or an event. In particular, low-level runtime execution cycle obviously must be independent from upper levels and renew its state in background, not waiting for an explicit call.</li>
+<li>there might be a cache at each level, being updated upon receiving a callback call or an event. In particular, a low-level runtime execution cycle obviously must be independent from upper levels and renew its state in background, not waiting for an explicit call.</li>
 </ul>
-<p>Note that what happens here: each abstraction level wields its own status (e.g. order, runtime, sensors status), being formulated in corresponding to this level subject area terms. Forbidding the ‘jumping over’ results in necessity to spawn statuses at each level independently.</p>
-<p>Let's now look how the order cancel operation springs through our abstraction level. In this case the call chain will look like that:</p>
+<p>Note what happens here: each abstraction level wields its own status (e.g. order, runtime, sensors status), being formulated in corresponding to this level subject area terms. Forbidding the ‘jumping over’ results in necessity to spawn statuses at each level independently.</p>
+<p>Let's now look how the order cancel operation flows through our abstraction levels. In this case the call chain will look like that:</p>
 <ul>
-<li>user initiates a call to <code>POST /v1/orders/{id}/cancel</code> method;</li>
+<li>user initiates a call to the <code>POST /v1/orders/{id}/cancel</code> method;</li>
 <li>the method handler completes operations on its level of responsibility:<ul>
 <li>checks the authorization;</li>
-<li>solves money issues, whether a refund is needed;</li>
-<li>finds <code>program_run_id</code> identifier and calls <code>runs/{program_run_id}/cancel</code> method;</li></ul></li>
+<li>solves money issues, i.e. whether a refund is needed;</li>
+<li>finds the <code>program_run_id</code> identifier and calls the <code>runs/{program_run_id}/cancel</code> method;</li></ul></li>
 <li>the <code>rides/cancel</code> handler completes operations on its level of responsibility and, depending on the coffee machine API kind, proceeds with one of two possible execution branches:<ul>
-<li>either calls <code>POST /execution/cancel</code> method of a physical coffee machine API;</li>
-<li>or invokes <code>POST /v1/runtimes/{id}/terminate</code>;</li></ul></li>
-<li>in a second case the call chain continues, <code>terminate</code> handler operates its internal state:<ul>
-<li>changes <code>resolution</code> to <code>"terminated"</code>;</li>
-<li>runs <code>"discard_cup"</code> command.</li></ul></li>
+<li>either calls the <code>POST /execution/cancel</code> method of a physical coffee machine API;</li>
+<li>or invokes the <code>POST /v1/runtimes/{id}/terminate</code> method;</li></ul></li>
+<li>in a second case the call chain continues, the <code>terminate</code> handler operates its internal state:<ul>
+<li>changes the <code>resolution</code> to <code>"terminated"</code>;</li>
+<li>runs the <code>"discard_cup"</code> command.</li></ul></li>
 </ul>
 <p>Handling state-modifying operations like <code>cancel</code> requires more advanced abstraction levels juggling skills compared to non-modifying calls like <code>GET /status</code>. There are two important moments:</p>
 <ol>
-<li><p>At every abstraction level the idea of ‘order canceling’ is reformulated:</p>
+<li><p>At each abstraction level the idea of ‘order canceling’ is reformulated:</p>
 <ul>
-<li>at <code>orders</code> level this action in fact splits into several ‘cancels’ of other levels: you need to cancel money holding and to cancel an order execution;</li>
-<li>while at a second API kind physical level a ‘cancel’ operation itself doesn't exist: ‘cancel’ means executing a <code>discard_cup</code> command, which is quite the same as any other command.
-The interim API level is need to make this transition between different level ‘cancels’ smooth and rational without jumping over principes.</li></ul></li>
-<li><p>From a high-level point of view, cancelling an order is a terminal action, since no further operations are possible. From a low-level point of view processing a request continues until the cup is discard, and then the machine is to be unlocked (e.g. new runtimes creation allowed). It's a task to execution control level to couple those two states, outer (the order is canceled) and inner (the execution continues).</p></li>
+<li>at the <code>orders</code> level this action in fact splits into several ‘cancels’ of other levels: you need to cancel money holding and to cancel an order execution;</li>
+<li>at the second API kind physical level a ‘cancel’ operation itself doesn't exist: ‘cancel’ means ‘executing the <code>discard_cup</code> command’, which is quite the same as any other command.
+The interim API level is need to make this transition between different level ‘cancels’ smooth and rational without jumping over canyons.</li></ul></li>
+<li><p>From a high-level point of view, canceling an order is a terminal action, since no further operations are possible. From a low-level point of view, the processing continues until the cup is discarded, and then the machine is to be unlocked (e.g. new runtimes creation allowed). It's a task to the execution control level to couple those two states, outer (the order is canceled) and inner (the execution continues).</p></li>
 </ol>
-<p>It might look like forcing the abstraction levels isolation is redundant and makes interfaces more complicated. In fact, it is: it's very important to understand that flexibility, consistency, readability and extensibility come with a price. One may construct an API with zero overhead, essentially just provide an access to coffee machine's microcontrollers. However using such an API would be a disaster, not mentioning and inability to expand it.</p>
+<p>It might look that forcing the abstraction levels isolation is redundant and makes interfaces more complicated. In fact, it is: it's very important to understand that flexibility, consistency, readability and extensibility come with a price. One may construct an API with zero overhead, essentially just provide an access to coffee machine's microcontrollers. However using such an API would be a disaster to a developer, not mentioning an inability to expand it.</p>
 <p>Separating abstraction levels is first of all a logical procedure: how we explain to ourselves and to developers what our API consists of. <strong>The abstraction gap between entities exists objectively</strong>, no matter what interfaces we design. Our task is just separate this gap into levels <em>explicitly</em>. The more implicitly abstraction levels are separated (or worse — blended into each other), the more complicated is your API's learning curve, and the worse is the code which use it.</p>
-<h4 id="dataflow">Data Flow</h4>
-<p>One useful exercise allowing to examine the entire abstraction hierarchy is excluding all the particulars and constructing (on a paper or just in your head) a data flow chart: what data is flowing through you API entities and how it's being altered at each step.</p>
-<p>This exercise doesn't just helps, but also allows to design really large APIs with huge entities nomenclatures. Human memory isn't boundless; any project which grows extensively will eventually become too big to keep the entire entities hierarchy in mind. But it's usually possible to keep in mind the data flow chart; or at least keep a much larger portion of the hierarchy.</p>
-<p>What data flows we have in our coffee API?</p>
+<h4 id="thedataflow">The Data Flow</h4>
+<p>One useful exercise allowing to examine the entire abstraction hierarchy is excluding all the particulars and constructing (on a paper or just in your head) a data flow chart: what data is flowing through you API entities, and how it's being altered at each step.</p>
+<p>This exercise doesn't just helps, but also allows to design really large APIs with huge entity nomenclatures. Human memory isn't boundless; any project which grows extensively will eventually become too big to keep the entire entities hierarchy in mind. But it's usually possible to keep in mind the data flow chart; or at least keep a much larger portion of the hierarchy.</p>
+<p>What data flow we have in our coffee API?</p>
 <ol>
-<li><p>Sensor data, i.e. volumes of coffee / water / cups. This is the lowest data level we have, and here we can't change anything.</p></li>
-<li><p>A continuous sensors data stream is being transformed into a discrete command execution statuses, injecting new concepts which don't exist within the subject area. A coffee machine API doesn't provide ‘coffee is being shed’ or ‘cup is being set’ notions. It's our software which treats incoming sensor data and introduces new terms: if the volume of coffee or water is less than target one, then the process isn't over yet. If the target value is reached, then this synthetic status is to be switched and next command to be executed.<br />
-It is important to note that we don't calculate new variables out from sensor data: we need to create new data set first, a context, an ‘execution program’ comprising a sequence of steps and conditions, and to fill it with initial values. If this context is missing, it's impossible to understand what's happening with the machine.</p></li>
-<li><p>Having a logical data on program execution state we can (again via creating new, high-level data context) merge two different data streams from two different kinds of APIs into a single stream in a unified form of executing a beverage preparation program with logical variables like recipe, volume, and readiness status.</p></li>
+<li><p>It starts with the sensors data, i.e. volumes of coffee / water / cups. This is the lowest data level we have, and here we can't change anything.</p></li>
+<li><p>A continuous sensors data stream is being transformed into a discrete command execution statuses, injecting new concepts which don't exist within the subject area. A coffee machine API doesn't provide a ‘coffee is being shed’ or a ‘cup is being set’ notion. It's our software which treats incoming sensors data and introduces new terms: if the volume of coffee or water is less than the target one, then the process isn't over yet. If the target value is reached, then this synthetic status is to be switched, and the next command to be executed.<br />
+It is important to note that we don't calculate new variables out from sensors data: we need to create a new dataset first, a context, an ‘execution program’ comprising a sequence of steps and conditions, and to fill it with initial values. If this context is missing, it's impossible to understand what's happening with the machine.</p></li>
+<li><p>Having a logical data about the program execution state, we can (again via creating a new high-level data context) merge two different data streams from two different kinds of APIs into a single stream, which provides in a unified form the data regarding executing a beverage preparation program with logical variables like recipe, volume, and readiness status.</p></li>
 </ol>
-<p>Each API abstraction level therefore corresponds to data flow generalization and enrichment, converting low-level (and in fact useless to end users) context terms into upper higher level context terms.</p>
+<p>Each API abstraction level therefore corresponds to some data flow generalization and enrichment, converting the low-level (and in fact useless to end users) context terms into the higher level context terms.</p>
 <p>We may also traverse the tree backwards.</p>
 <ol>
-<li><p>At an order level we set its logical parameters: recipe, volume, execution place and possible statuses set.</p></li>
-<li><p>At an execution level we read order level data and create lower level execution contest: a program as a sequence of steps, their parameters, transition rules, and initial state.</p></li>
-<li><p>At a runtime level we read target parameters (which operation to execute, what the target volume is) and translate them into coffee machine API microcommands and a status for each command.</p></li>
+<li><p>At the order level we set its logical parameters: recipe, volume, execution place and possible statuses set.</p></li>
+<li><p>At the execution level we read the order level data and create a lower level execution context: the program as a sequence of steps, their parameters, transition rules, and initial state.</p></li>
+<li><p>At the runtime level we read the target parameters (which operation to execute, what the target volume is) and translate them into coffee machine API microcommands and statuses for each command.</p></li>
 </ol>
-<p>Also, if we take a look into the ‘bad’ decision, being discussed in the beginning of this chapter (forcing developers to determine actual order status on their own), we could notice a data flow collision there:</p>
+<p>Also, if we take a deeper look into the ‘bad’ decision, being discussed in the beginning of this chapter (forcing developers to determine actual order status on their own), we could notice a data flow collision there:</p>
 <ul>
-<li>from one side, in an order context ‘leaked’ physical data (beverage volume prepared) is injected, therefore stirring abstraction levels irreversibly;</li>
-<li>from other side, an order context itself is deficient: it doesn't provide new meta-variables non-existent on low levels (order status, in particular), doesn't initialize them and don't provide game rules.</li>
+<li>from one side, in the order context ‘leaked’ physical data (beverage volume prepared) is injected, therefore stirring abstraction levels irreversibly;</li>
+<li>from other side, the order context itself is deficient: it doesn't provide new meta-variables, non-existent at the lower levels (the order status, in particular), doesn't initialize them and don't provide the game rules.</li>
 </ul>
-<p>We will discuss data context in more details in Section II. There we will just state that data flows and their transformations might be and must be examined as an API facet which, from one side, helps us to separate abstraction levels properly, and, from other side, to check if our theoretical structures work as intended.</p><div class="page-break"></div><h3>Chapter 10. Isolating Responsibility Areas</h3><p>Based on previous chapter, we understand that an abstraction hierarchy in out hypothetical project would look like that:</p>
+<p>We will discuss data contexts in more details in the Section II. Here we will just state that data flows and their transformations might be and must be examined as a specific API facet, which, from one side, helps us to separate abstraction levels properly, and, from other side, to check if our theoretical structures work as intended.</p><div class="page-break"></div><h3>Chapter 10. Isolating Responsibility Areas</h3><p>Basing on the previous chapter, we understand that the abstraction hierarchy in our hypothetical project would look like that:</p>
 <ul>
-<li>user level (those entities users directly interact with and which are formulated in terms, understandable by user: orders, coffee recipes);</li>
-<li>program execution control level (entities responsible for transforming orders into machine commands);</li>
-<li>runtime level for the second API kind (entities describing command execution state machine).</li>
+<li>the user level (those entities users directly interact with and which are formulated in terms, understandable by user: orders, coffee recipes);</li>
+<li>the program execution control level (the entities responsible for transforming orders into machine commands);</li>
+<li>the runtime level for the second API kind (the entities describing the command execution state machine).</li>
 </ul>
-<p>We are now to define each entity's responsibility area: what's the reason in keeping this entity within our API boundaries; which operations are applicable to the entity itself (and which are delegated to other objects). In fact we are to apply the ‘why’-principle to every single API entity.</p>
-<p>To do so we must iterate over the API and formulate in subject area terms what every object is. Let us remind that abstraction levels concept implies that each level is some interim subject area per se; a step we take to traverse from describing a task in first connected context terms (‘a lungo ordered by a user’) to second connect context terms (‘a command performed by a coffee machine’)</p>
+<p>We are now to define each entity's responsibility area: what's the reasoning in keeping this entity within our API boundaries; what operations are applicable to the entity directly (and which are delegated to other objects). In fact, we are to apply the ‘why’-principle to every single API entity.</p>
+<p>To do so we must iterate all over the API and formulate in subject area terms what every object is. Let us remind that the abstraction levels concept implies that each level is a some interim subject area per se; a step we take in the journey from describing a task in the first connected context terms (‘a lungo ordered by a user’) to the second connect context terms (‘a command performed by a coffee machine’).</p>
 <p>As for our fictional example, it would look like that:</p>
 <ol>
 <li>User level entities.<ul>
@@ -619,11 +620,11 @@ It is important to note that we don't calculate new variables out from sensor da
 <li>checked for its status;</li>
 <li>retrieved;</li>
 <li>canceled;</li></ul></li>
-<li>A <code>recipe</code> describes an ‘ideal model’ of some coffee beverage type, its customer properties. A <code>recipe</code> is immutable entities for us, which means we could only read it.</li>
-<li>A <code>coffee-machine</code> is a model of a real world device. From coffee machine description we must be able to retrieve its geographical location and the options it support (will be discussed below).</li></ul></li>
+<li>A <code>recipe</code> describes an ‘ideal model’ of some coffee beverage type, its customer properties. A <code>recipe</code> is an immutable entity for us, which means we could only read it.</li>
+<li>A <code>coffee-machine</code> is a model of a real world device. We must be able to retrieve the coffee machine's geographical location and the options it support from this model (will be discussed below).</li></ul></li>
 <li>Program execution control level entities.<ul>
-<li>A ‘program’ describes some general execution plan for a coffee machine. Program could only be read.</li>
-<li>A program matcher <code>programs/matcher</code> is capable of coupling a <code>recipe</code> and a <code>program</code>, which in fact means to retrieve a dataset needed to prepare a specific recipe on a specific coffee machine.</li>
+<li>A <code>program</code> describes some general execution plan for a coffee machine. Programs could only be read.</li>
+<li>The program matcher <code>programs/matcher</code> is capable of coupling a <code>recipe</code> and a <code>program</code>, which in fact means ‘to retrieve a dataset needed to prepare a specific recipe on a specific coffee machine’.</li>
 <li>A program execution <code>programs/run</code> describes a single fact of running a program on a coffee machine. <code>run</code> might be:<ul>
 <li>initialized (created);</li>
 <li>checked for its status;</li>
@@ -634,22 +635,22 @@ It is important to note that we don't calculate new variables out from sensor da
 <li>checked for its status;</li>
 <li>terminated.</li></ul></li></ul></li>
 </ol>
-<p>If we look closely at each object, we may notice that each entity turns out to be a composite. For example a <code>program</code> will operate high-level data (<code>recipe</code> and <code>coffee-machine</code>), enhancing them with its level terms (<code>program_run_id</code> for instance). This is totally fine: connecting context is what APIs do.</p>
+<p>If we look closely at the entities, we may notice that each entity turns out to be a composite. For example a <code>program</code> will operate high-level data (<code>recipe</code> and <code>coffee-machine</code>), enhancing them with its subject area terms (<code>program_run_id</code> for instance). This is totally fine: connecting contexts is what APIs do.</p>
 <h4 id="usecasescenarios">Use Case Scenarios</h4>
 <p>At this point, when our API is in general clearly outlined and drafted, we must put ourselves into developer's shoes and try writing code. Our task is to look at the entities nomenclature and make some estimates regarding their future usage.</p>
 <p>So, let us imagine we've got a task to write an app for ordering a coffee, based upon our API. What code would we write?</p>
 <p>Obviously the first step is offering a choice to a user, to make them point out what they want. And this very first step reveals that our API is quite inconvenient. There are no methods allowing for choosing something. A developer has to do something like that:</p>
 <ul>
-<li>retrieve all possible recipes from <code>GET /v1/recipes</code>;</li>
-<li>retrieve a list of all available coffee machines from <code>GET /v1/coffee-machines</code>;</li>
-<li>write a code to traverse all this data.</li>
+<li>retrieve all possible recipes from the <code>GET /v1/recipes</code> endpoint;</li>
+<li>retrieve a list of all available coffee machines from the <code>GET /v1/coffee-machines</code> endpoint;</li>
+<li>write a code which traverse all this data.</li>
 </ul>
 <p>If we try writing a pseudocode, we will get something like that:</p>
 <pre><code>// Retrieve all possible recipes
 let recipes = api.getRecipes();
 // Retrieve a list of all available coffee machines
 let coffeeMachines = api.getCoffeeMachines();
-// Build spatial index
+// Build a spatial index
 let coffeeMachineRecipesIndex = buildGeoIndex(recipes, coffee-machines);
 // Select coffee machines matching user's needs
 let matchingCoffeeMachines = coffeeMachineRecipesIndex.query(
@@ -659,10 +660,10 @@ let matchingCoffeeMachines = coffeeMachineRecipesIndex.query(
 // Finally, show offers to user
 app.display(coffeeMachines);
 </code></pre>
-<p>As you see, developers are to write a lot of redundant code (to say nothing about difficulties of implementing spatial indexes). Besides, if we take into consideration our Napoleonic plans to cover all coffee machines in the world with our API, then we need to admit that this algorithm is just a waste of resources on retrieving lists and indexing them.</p>
-<p>A necessity of adding a new endpoint for searching becomes obvious. To design such an interface we must imagine ourselves being a UX designer and think about how an app could try to arouse users' interest. Two scenarios are evident:</p>
+<p>As you see, developers are to write a lot of redundant code (to say nothing about the difficulties of implementing spatial indexes). Besides, if we take into consideration our Napoleonic plans to cover all coffee machines in the world with our API, then we need to admit that this algorithm is just a waste of resources on retrieving lists and indexing them.</p>
+<p>A necessity of adding a new endpoint for searching becomes obvious. To design such an interface we must imagine ourselves being a UX designer, and think about how an app could try to arouse users' interest. Two scenarios are evident:</p>
 <ul>
-<li>display cafes in the vicinity and types of coffee they offer (‘service discovery scenario’) — for new users or just users with no specific tastes;</li>
+<li>display all cafes in the vicinity and types of coffee they offer (a ‘service discovery’ scenario) — for new users or just users with no specific tastes;</li>
 <li>display nearby cafes where a user could order a particular type of coffee — for users seeking a certain beverage type.</li>
 </ul>
 <p>Then our new interface would look like:</p>
@@ -686,11 +687,11 @@ app.display(coffeeMachines);
 </code></pre>
 <p>Here:</p>
 <ul>
-<li>an <code>offer</code> — is a marketing bid: on what conditions a user could order requested coffee beverage (if specified in request), or a some kind of marketing offering — prices for the most popular or interesting products (if no specific preference was set);</li>
+<li>an <code>offer</code> — is a marketing bid: on what conditions a user could have the requested coffee beverage (if specified in request), or a some kind of marketing offering — prices for the most popular or interesting products (if no specific preference was set);</li>
 <li>a <code>place</code> — is a spot (café, restaurant, street vending machine) where the coffee machine is located; we never introduced this entity before, but it's quite obvious that users need more convenient guidance to find a proper coffee machine than just geographical coordinates.</li>
 </ul>
 <p><strong>NB</strong>. We could have been enriched the existing <code>/coffee-machines</code> endpoint instead of adding a new one. This decision, however, looks less semantically viable: coupling in one interface different modes of listing entities, by relevance and by order, is usually a bad idea, because these two types of rankings implies different usage features and scenarios.</p>
-<p>Coming back to the code developers are write, it would now look like that:</p>
+<p>Coming back to the code developers are writing, it would now look like that:</p>
 <pre><code>// Searching for coffee machines
 // matching a user's intent
 let coffeeMachines = api.search(parameters);
@@ -698,14 +699,14 @@ let coffeeMachines = api.search(parameters);
 app.display(coffeeMachines);
 </code></pre>
 <h4 id="helpers">Helpers</h4>
-<p>Methods similar to newly invented <code>coffee-machines/search</code> are called <em>helpers</em>. The purposes they exist is to generalize known API usage scenarios and facilitate implementing them. By ‘facilitating’ we mean not only reducing wordiness (getting rid of ‘boilerplates’), but also helping developers to avoid common problems and mistakes.</p>
-<p>For instance, let's consider order price question. Our search function returns some ‘offers’ with prices. But ‘price’ is volatile; coffee could cost less during ‘happy hours’, for example. Implementing this functionality, developers could make a mistake thrice:</p>
+<p>Methods similar to newly invented <code>coffee-machines/search</code> are called <em>helpers</em>. The purpose they exist is to generalize known API usage scenarios and facilitate implementing them. By ‘facilitating’ we mean not only reducing wordiness (getting rid of ‘boilerplates’), but also helping developers to avoid common problems and mistakes.</p>
+<p>For instance, let's consider the order price question. Our search function returns some ‘offers’ with prices. But ‘price’ is volatile; coffee could cost less during ‘happy hours’, for example. Developers could make a mistake thrice while implementing this functionality:</p>
 <ul>
 <li>cache search results on a client device for too long (as a result, the price will always be nonactual);</li>
-<li>contrary to previous, call search method excessively just to actualize prices, thus overloading network and the API servers;</li>
+<li>contrary to previous, call search method excessively just to actualize prices, thus overloading the network and the API servers;</li>
 <li>create an order with invalid price (therefore deceiving a user, displaying one sum and debiting another).</li>
 </ul>
-<p>To solve the third problem we could demand including displayed price in the order creation request, and return an error if it differs from the actual one. (Actually, any APY working with money <em>shall</em> do so.) But it isn't helping with first two problems, and makes user experience to degrade. Displaying actual price is always much more convenient behavior than displaying errors upon pushing the ‘place an order’ button.</p>
+<p>To solve the third problem we could demand including the displayed price in the order creation request, and return an error if it differs from the actual one. (In fact, any API working with money <em>shall</em> do so.) But it isn't helping with the first two problems, and makes user experience degrade. Displaying actual price is always a much more convenient behavior than displaying errors upon pressing the ‘place an order’ button.</p>
 <p>One solution is to provide a special identifier to an offer. This identifier must be specified in an order creation request.</p>
 <pre><code>{
   "results": [
@@ -723,10 +724,10 @@ app.display(coffeeMachines);
   "cursor"
 }
 </code></pre>
-<p>Doing so we're not only helping developers to grasp a concept of getting relevant price, but also solving a UX task of telling a user about ‘happy hours’.</p>
-<p>As an alternative we could split endpoints: one for searching, another one for obtaining offers. This second endpoint would only be needed to actualize prices in specific cafes.</p>
+<p>Doing so we're not only helping developers to grasp a concept of getting relevant price, but also solving a UX task of telling users about ‘happy hours’.</p>
+<p>As an alternative we could split endpoints: one for searching, another one for obtaining offers. This second endpoint would only be needed to actualize prices in the specified places.</p>
 <h4 id="errorhandling">Error Handling</h4>
-<p>And one more step towards making developers' life easier: how an invalid price’ error would look like?</p>
+<p>And one more step towards making developers' life easier: how an ‘invalid price’ error would look like?</p>
 <pre><code>POST /v1/orders
 { … "offer_id" …}
 → 409 Conflict
@@ -734,21 +735,21 @@ app.display(coffeeMachines);
   "message": "Invalid price"
 }
 </code></pre>
-<p>Formally speaking, this error response is enough: users get ‘Invalid price’ message, and they have to repeat the order. But from a UX point of view that would be a horrible decision: user hasn't made any mistakes, and this message isn't helpful at all.</p>
-<p>The main rule of error interface in the APIs is: error response must help a client to understand <em>what to do with this error</em>. All other stuff is unimportant: if the error response was machine readable, there would be no need in user readable message.</p>
-<p>Error response content must address the following questions:</p>
+<p>Formally speaking, this error response is enough: users get the ‘Invalid price’ message, and they have to repeat the order. But from a UX point of view that would be a horrible decision: the user hasn't made any mistakes, and this message isn't helpful at all.</p>
+<p>The main rule of error interfaces in the APIs is: an error response must help a client to understand <em>what to do with this error</em>. All other stuff is unimportant: if the error response was machine readable, there would be no need in the user readable message.</p>
+<p>An error response content must address the following questions:</p>
 <ol>
 <li>Which party is the problem's source, client or server?<br />
-HTTP API traditionally employs <code>4xx</code> status codes to indicate client problems, <code>5xx</code> to indicates server problems (with the exception of a <code>404</code>, which is an uncertainty status).</li>
+HTTP APIs traditionally employ <code>4xx</code> status codes to indicate client problems, <code>5xx</code> to indicates server problems (with the exception of a <code>404</code>, which is an uncertainty status).</li>
 <li>If the error is caused by a server, is there any sense to repeat the request? If yes, then when?</li>
 <li>If the error is caused by a client, is it resolvable, or not?<br />
-Invalid price is resolvable: client could obtain new price offer and create new order using it. But if the error occurred because of a client code containing a mistake, then eliminating the cause is impossible, and there is no need to make user push the ‘place an order’ button again: this request will never succeed.<br />
-Here and throughout we indicate resolvable problems with <code>409 Conflict</code> code, and unresolvable ones with <code>400 Bad Request</code>.</li>
+The invalid price error is resolvable: client could obtain a new price offer and create a new order with it. But if the error occurred because of a mistake in the client code, then eliminating the cause is impossible, and there is no need to make user push the ‘place an order’ button again: this request will never succeed.<br />
+<strong>NB</strong>: here and throughout we indicate resolvable problems with <code>409 Conflict</code> code, and unresolvable ones with <code>400 Bad Request</code>.</li>
 <li>If the error is resolvable, then what's the kind of the problem? Obviously, client couldn't resolve a problem it's unaware of. For every resolvable problem some <em>code</em> must be written (reobtaining the offer in our case), so a list of error descriptions must exist.</li>
 <li>If the same kind of errors arise because of different parameters being invalid, then which parameter value is wrong exactly?</li>
 <li>Finally, if some parameter value is unacceptable, then what values are acceptable?</li>
 </ol>
-<p>In our case, price mismatch error should look like:</p>
+<p>In our case, the price mismatch error should look like:</p>
 <pre><code>409 Conflict
 {
   // Error kind
@@ -764,13 +765,13 @@ Here and throughout we indicate resolvable problems with <code>409 Conflict</cod
   }
 }
 </code></pre>
-<p>After getting this mistake, a client is to check its kind (‘some problem with offer’), check specific error reason (‘order lifetime expired’) and send offer retrieve request again. If <code>checks_failed</code> field indicated another error reason (for example, the offer isn't bound to the specified user), client actions would be different (re-authorize the user, then get a new offer). If there were no error handler for this specific reason, a client would show <code>localized_message</code> to the user and invoke standard error recovery procedure.</p>
-<p>It is also worth mentioning that unresolvable errors are useless to a user at the time (since the client couldn't react usefully to unknown errors), but it doesn't mean that providing extended error data is excessive. A developer will read it when fixing the error in the code. Also check paragraphs 12&amp;13 in the next chapter.</p>
+<p>After getting this error, a client is to check the error's kind (‘some problem with offer’), check the specific error reason (‘order lifetime expired’) and send an offer retrieve request again. If <code>checks_failed</code> field indicated another error reason (for example, the offer isn't bound to the specified user), client actions would be different (re-authorize the user, then get a new offer). If there were no error handler for this specific reason, a client would show <code>localized_message</code> to the user, and invoke standard error recovery procedure.</p>
+<p>It is also worth mentioning that unresolvable errors are useless to a user at the time (since the client couldn't react usefully to unknown errors), but it doesn't mean that providing extended error data is excessive. A developer will read it when fixing the error in the code. Also, check paragraphs 12&amp;13 in the next chapter.</p>
 <h4 id="decomposinginterfacesthe72rule">Decomposing Interfaces. The ‘7±2’ Rule</h4>
-<p>Out of our own API development experience, we can tell without any doubt, that the greatest final interfaces design mistake (and a greatest developers' pain accordingly) is an excessive overloading of entities interfaces with fields, methods, events, parameters and other attributes.</p>
-<p>Meanwhile, there is the ‘Golden Rule’ of interface design (applicable not only APIs, but almost to anything): humans could comfortably keep 7±2 entities in a short-term memory. Manipulating a larger number of chunks complicates things for most of humans. The rule is also known as <a href="https://en.wikipedia.org/wiki/Working_memory#Capacity">‘Miller's law’</a>.</p>
-<p>The only possible method of overcoming this law is decomposition. Entities should be grouped under single designation at every concept level of the API, so developers never operate more than 10 entities at a time.</p>
-<p>Let's take a look at a simple example: what coffee machine search function returns. To ensure adequate UX of the app, quite bulky datasets are required.</p>
+<p>Out of our own API development experience, we can tell without any doubt that the greatest final interfaces design mistake (and the greatest developers' pain accordingly) is an excessive overloading of entities' interfaces with fields, methods, events, parameters, and other attributes.</p>
+<p>Meanwhile, there is the ‘Golden Rule’ of interface design (applicable not only to APIs, but almost to anything): humans could comfortably keep 7±2 entities in a short-term memory. Manipulating a larger number of chunks complicates things for most of humans. The rule is also known as <a href="https://en.wikipedia.org/wiki/Working_memory#Capacity">‘Miller's law’</a>.</p>
+<p>The only possible method of overcoming this law is decomposition. Entities should be grouped under single designation at every concept level of the API, so developers are never to operate more than 10 entities at a time.</p>
+<p>Let's take a look at a simple example: what the coffee machine search function returns. To ensure an adequate UX of the app, quite bulky datasets are required.</p>
 <pre><code>{
   "results": [
     {
@@ -803,14 +804,12 @@ Here and throughout we indicate resolvable problems with <code>409 Conflict</cod
         …
       ]
     },
-    {
-
-    }
+    …
   ]
 }
 </code></pre>
-<p>This approach is quite normal, alas. Could be found in almost every API. As we see, a number of entities' fields exceeds recommended seven, and even 9. Fields are being mixed in a single list, often with similar prefixes.</p>
-<p>In this situation we are to split this structure into data domains: which fields are logically related to a single subject area. In our case we may identify at least following data clusters:</p>
+<p>This approach is quite normal, alas; could be found in almost every API. As we see, a number of entities' fields exceeds recommended 7, and even 9. Fields are being mixed into one single list, often with similar prefixes.</p>
+<p>In this situation we are to split this structure into data domains: which fields are logically related to a single subject area. In our case we may identify at least 7 data clusters:</p>
 <ul>
 <li>data regarding a place where the coffee machine is located;</li>
 <li>properties of the coffee machine itself;</li>
@@ -843,9 +842,9 @@ Here and throughout we indicate resolvable problems with <code>409 Conflict</cod
   }
 }
 </code></pre>
-<p>Such decomposed API is much easier to read than a long sheet of different attributes. Furthermore, it's probably better to group even more entities in advance. For example, <code>place</code> and <code>route</code> could be joined in a single <code>location</code> structure, or <code>offer</code> and <code>pricing</code> might be combined in a some generalized object.</p>
-<p>It is important to say that readability is achieved not only by simply grouping the entities. Decomposing must be performed in such a manner that a developer, while reading the interface, instantly understands: ‘here is the place description of no interest to me right now, no need to traverse deeper’. If the data fields needed to complete some action are split into different composites, the readability degrades, not improves.</p>
-<p>Proper decomposition also helps extending and evolving the API. We'll discuss the subject in the Section II.</p><div class="page-break"></div><h3>Chapter 11. Describing Final Interfaces</h3><p>When all entities, their responsibility, and relations to each other are defined, we proceed to developing the API itself. We are to describe the objects, fields, methods, and functions nomenclature in details. In this chapter we're giving purely practical advice on making APIs usable and understandable.</p>
+<p>Such decomposed API is much easier to read than a long sheet of different attributes. Furthermore, it's probably better to group even more entities in advance. For example, <code>place</code> and <code>route</code> could be joined in a single <code>location</code> structure, or <code>offer</code> and <code>pricing</code> might be combined into a some generalized object.</p>
+<p>It is important to say that readability is achieved not only by mere grouping the entities. Decomposing must be performed in such a manner that a developer, while reading the interface, instantly understands: ‘here is the place description of no interest to me right now, no need to traverse deeper’. If the data fields needed to complete some action are scattered all over different composites, the readability degrades, not improves.</p>
+<p>Proper decomposition also helps extending and evolving the API. We'll discuss the subject in the Section II.</p><div class="page-break"></div><h3>Chapter 11. Describing Final Interfaces</h3><p>When all entities, their responsibilities, and relations to each other are defined, we proceed to developing the API itself. We are to describe the objects, fields, methods, and functions nomenclature in details. In this chapter we're giving purely practical advice on making APIs usable and understandable.</p>
 <p>Important assertion at number 0:</p>
 <h5 id="0rulesarejustgeneralizations">0. Rules are just generalizations</h5>
 <p>Rules are not to be applied unconditionally. They are not making thinking redundant. Every rule has a rational reason to exist. If your situation doesn't justify following the rule — then you shouldn't do it.</p>
