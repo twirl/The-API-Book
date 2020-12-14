@@ -47,6 +47,10 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 h1, h2, h3, h4, h5 {
     text-align: left;
     font-family: 'PT Sans';
@@ -70,6 +74,37 @@ h3 {
 
 h4, h5 {
     font-size: 120%;
+}
+
+ul.table-of-contents {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul.table-of-contents li {
+    text-transform: uppercase;
+}
+
+ul.table-of-contents ul {
+    list-style-type: none;
+}
+
+ul.table-of-contents ul li {
+    text-transform: none;
+}
+
+a.anchor {
+    color: lightgray;
+}
+
+a.anchor:hover {
+    color: black;
+}
+
+a.anchor:after {
+    display: inline-block;
+    content: '¶';
+    padding-right: 0.3em;
 }
 
 @page {

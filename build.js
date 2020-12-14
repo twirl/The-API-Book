@@ -20,14 +20,18 @@ const l10n = {
         author: 'Sergey Konstantinov',
         chapter: 'Chapter',
         toc: 'Table of Contents',
-        frontPage: 'Front Page'
+        frontPage: 'Front Page',
+        description: "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. The book comprises three large sections. In Section I we'll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces. Section II is dedicated to an API's lifecycle: how interfaces evolve over time, and how to elaborate the product to match users' needs. Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.",
+        locale: 'en_US'
     },
     ru: {
         title: 'API',
         author: 'Сергей Константинов',
         chapter: 'Глава',
         toc: 'Содержание',
-        frontPage: 'Титульный лист'
+        frontPage: 'Титульный лист',
+        description: 'Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики проектирования API. Книга состоит из трёх больших разделов. В первом разделе мы поговорим о проектировании API на стадии разработки концепции — как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел будет посвящён жизненному циклу API — как интерфейсы эволюционируют со временем и как развивать продукт так, чтобы отвечать потребностям пользователей. Наконец, третий раздел будет касаться больше не-разработческих сторон жизни API — поддержки, маркетинга, работы с комьюнити.',
+        locale: 'ru_RU'
     }
 };
 const css = fs.readFileSync('src/style.css', 'utf-8');
@@ -55,27 +59,47 @@ function buildDocs (langsToBuild, targets, l10n) {
 }
 
 function buildDoc (lang, targets, l10n) {
+    const pageBreak = '<div class="page-break"></div>';
     const structure = getStructure({
         path: `./src/${lang}/clean-copy/`,
         l10n,
-        pageBreak:'<div class="page-break"></div>'
+        pageBreak
     });
+    const tableOfContents = `<nav><h2>${l10n.toc}</h2><ul class="table-of-contents">${
+        structure.sections.map((section) => {
+            return `<li><a href="#${section.anchor}">${section.title}</a><ul>${
+                section.chapters.map((chapter) => {
+                    return `<li><a href="#${chapter.anchor}">${chapter.title}</a></li>`
+                }).join('')
+            }</ul></li>`;
+        }).join('')
+    }</ul></nav>${pageBreak}`;
+    const getRef = (anchor) => {
+        return `<a href="#${anchor}" class="anchor" name="${anchor}"></a>`;
+    }
     const htmlContent = [
         structure.frontPage,
+        tableOfContents,
         ...structure.sections
             .map((section) => section.chapters.reduce((content, chapter) => {
                 if (chapter.title) {
-                    content.push(`<h3>${chapter.title}</h3>`);
+                    content.push(`<h3>${getRef(chapter.anchor)}${chapter.title}</h3>`);
                 }
                 content.push(chapter.content);
                 return content;
-            }, [section.title ? `<h2>${section.title}</h2>` : '']).join(''))
+            }, [section.title ? `<h2>${getRef(section.anchor)}${section.title}</h2>` : '']).join(''))
     ].join('\n');
 
     const html = `<html><head>
         <meta charset="utf-8"/>
         <title>${l10n.author}. ${l10n.title}</title>
         <meta name="author" content="${l10n.author}"/>
+        <meta name="description" content="${l10n.description}"/>
+        <meta property="og:title" content="${l10n.author}. ${l10n.title}"/>
+        <meta property="og:url" content="https://twirl.github.io/The-API-Book/docs/API.${lang}.html"/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:description" content="${l10n.description}"/>
+        <meta property="og:locale" content="${l10n.locale}"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
         <style>${css}</style>
     </head><body>
@@ -102,10 +126,11 @@ function getStructure ({ path, l10n: { chapter }, pageBreak}) {
     fs.readdirSync(path)
         .filter((p) => fs.statSync(`${path}${p}`).isDirectory())
         .sort()
-        .forEach((dir) => {
+        .forEach((dir, index) => {
             const name = dir.split('-')[1];
             const section = {
                 title: name,
+                anchor: `section-${index + 1}`,
                 chapters: []
             }
 
@@ -117,9 +142,11 @@ function getStructure ({ path, l10n: { chapter }, pageBreak}) {
                     const md = fs.readFileSync(`${subdir}${file}`, 'utf-8').trim();
                     const [ title, ...paragraphs ] = md.split(/\r?\n/);
                     section.chapters.push({
-                        title: title.replace(/^### /, `${chapter} ${counter++}. `),
+                        anchor: `chapter-${counter}`,
+                        title: title.replace(/^### /, `${chapter} ${counter}. `),
                         content: mdHtml.makeHtml(paragraphs.join('\n')) + pageBreak
                     });
+                    counter++;
                 });
             
             structure.sections.push(section);
