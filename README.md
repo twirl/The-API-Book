@@ -2,11 +2,17 @@
 
 This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:twirl-team@yandex.ru), [Linkedin profile](https://linkedin.com/in/twirl)).
 
-You may find `.html`, `.epub` or `.pdf` version of the book [NB: Warning! Work in progress] in the 'docs' folder, or read it online.
+You may find `.html`, `.epub` or `.pdf` version of the book in the `docs` folder, or read it online.
   * In English: [html](https://twirl.github.io/The-API-Book/docs/API.en.html), [epub](https://twirl.github.io/The-API-Book/docs/API.en.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.en.pdf)
   * In Russian: [html](https://twirl.github.io/The-API-Book/docs/API.ru.html), [epub](https://twirl.github.io/The-API-Book/docs/API.ru.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.ru.pdf)
 
-The book is distributed under Creative Commons Attribution-NonCommercial 4.0 license, meaning in general that you're totally free to use this book in any manner while complying with two rules:
+These text are only contain clean-copies. Drafts could be found in the `src` folder. Complete new chapters will be published on:
+  * my [medium](https://twirl.medium.com/) blog in English;
+  * my [habr](https://habr.com/ru/users/forgotten/posts/) blog in Russian.
+
+I'd appreciate if you share them on reddit, for I personally can't do that: reddit bans me for ‘self-promotion’.
+
+The work is distributed under Creative Commons Attribution-NonCommercial 4.0 license, meaning in general that you're totally free to use this book in any manner while complying with two rules:
   * you're not getting commercial profit from the book;
   * you're not forgetting to mention the author.
 
@@ -21,6 +27,7 @@ TODO for Section I:
   * eventual consistency;
   * truthy default values;
   * partial updates;
+  * empty arrays;
   * errors order.
 
 The book will contain two more sections.
