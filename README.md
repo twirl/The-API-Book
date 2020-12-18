@@ -6,15 +6,15 @@ You may find `.html`, `.epub` or `.pdf` version of the book in the `docs` folder
   * In English: [html](https://twirl.github.io/The-API-Book/docs/API.en.html), [epub](https://twirl.github.io/The-API-Book/docs/API.en.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.en.pdf)
   * In Russian: [html](https://twirl.github.io/The-API-Book/docs/API.ru.html), [epub](https://twirl.github.io/The-API-Book/docs/API.ru.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.ru.pdf)
 
-These text are only contain clean-copies. Drafts could be found in the `src` folder. Complete new chapters will be published on:
+Pre-compiled books above comprise clean-copy texts only. Drafts could be found in the `src` folder. Complete new chapter drafts will be published on:
   * my [medium](https://twirl.medium.com/) blog in English;
   * my [habr](https://habr.com/ru/users/forgotten/posts/) blog in Russian.
 
 I'd appreciate if you share them on reddit, for I personally can't do that: reddit bans me for ‘self-promotion’.
 
-The work is distributed under Creative Commons Attribution-NonCommercial 4.0 license, meaning in general that you're totally free to use this book in any manner while complying with two rules:
+The work is distributed under a Creative Commons Attribution-NonCommercial 4.0 license, meaning in general that you're totally free to use this book in any manner while complying with two rules:
   * you're not getting commercial profit from the book;
-  * you're not forgetting to mention the author.
+  * you're not forgetting to mention the author properly.
 
 See full license in LICENSE.md file or at [Creative Commons Website](http://creativecommons.org/licenses/by-nc/4.0/).
 
@@ -60,6 +60,6 @@ I will translate sections into English at the moment they're ready. Which means 
 
 I am accepting inquiries. Fill free to open issues.
 
-I am NOT accepting pull requests introducing any new content, since I'm willing to be the only author and contributor. I would gratefully accept typo fixes, though.
+I am NOT accepting pull requests introducing any new content, since I'm willing to be the only author. I would gratefully accept typo fixes, though.
 
 Thanks @tholman for https://github.com/tholman/github-corners
