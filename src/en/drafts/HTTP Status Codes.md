@@ -6,7 +6,7 @@ As we discussed in the [Chapter 10](https://twirl.github.io/The-API-Book/docs/AP
 
 What the RFC fails to describe is what to do with the error. As we discussed, errors could be resolvable or not. If the error is unresolvable, all this status codes and headers stuff is simply irrelevant to clients, even more so to interim proxies. In fact, three error codes are enough:
   * `400` to denote persistent situation (error couldn't be resolved by just repeating the request);
-  * `404` to denote ‘uncertainity’ cases (the request could be repeated — possibly with different outcomes);
+  * `404` to denote ‘uncertainty’ cases (the request could be repeated — possibly with different outcomes);
   * `500` to denote server-side problems, with `Retry-After` header to indicate the desirable retry period.
 
 **Aside note:** mark a design flaw here. All `4xx` status codes are by default not cacheable, except for `404`, `405`, `410` and `414`, which are cacheable. We presume that editors of the spec did this with the best intentions, but the number of people who knows this nuance is probably quite close to the number of the spec editors. As a result, there are lots of cases (the author of this book had to deal with one) when `404`s were returned erroneously and cached on clients, thus prolonging the outage for an indefinite time.
@@ -34,6 +34,12 @@ The conclusion seems to be: use status codes just to indicate a general error cl
 Not only the number of status codes soared, but also their semantic meaning stirs. Many developers simply never read specs. The most evident example is the `401 Unauthorized` code: the spec prescribes the servers to return `WWW-Authenticate` header, which they never do — for obvious reasons, since the only usable value for this header is `Basic`. Furthermore, the spec is extensible at this point, new authentication realms could be introduced and standardized — but nobody cares. Right now using `401` to indicate an absence of authorization headers is a common practice — omitting the `WWW-Authenticate` header, of course.
 
 In a modern world we have to deal with a literal mess: HTTP status codes are used not for the protocol's purity sake, but to build the graphs; their semantic meaning forgotten; and clients often don't even try to get some useful information from the status codes, reducing them to the first digit. It's also a common practice to return resolvable errors as `200`s.
+
+As an example, a real situation the author of this book had to deal with: let's imagine we have an app, and there is a mistake in the code. If an authorization token is stall, it will be never renewed. Tokens become stall, for example, in 30 days, so this mistake wasn't found by QA engineers, and the app was released, for example, on June, 1. The release procedure was incremental: 1% of users got the release initially, then, gradually, it was shipped to everyone.
+
+After 30 days passed, on July, 1, we started to get some troubling support tickets, literally one or two. Several percent of 1% of auditory had troubles with authentication, but we couldn't see it: our `403` graphs looked normal, and when we examined specific users' logs, they look simply like users got their token expired somehow. So we didn't ring the bell and considered the problem being minor issue.
+
+Several days passed, more and more users got involved in the problem, until at some moment (30 days after the release hit 100% users) we've got instantly overloaded with reports, and all graphs went red. We spent several stressful hours looking for a problem cause, making hotfixes, and shipping a new release. All of this would have never happened, if we had had our graphs grouped by logical error reason, not only HTTP codes. If we had had a separate graph for the ‘token expired’ error, we would have noticed the numbers increasing sharply. But we hadn't. There was always a considerable number of `403`s on our graphs: banned users, robots, revoked tokens, etc.; the problem involving just several percent of several percent of users simply had no chance to caught our attention.
 
 #### So, what are you proposing, pal?
 
