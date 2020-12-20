@@ -1,18 +1,11 @@
 const fs = require('fs');
-const mdHtml = new (require('showdown').Converter)();
 const path = require('path');
 
-const langsToBuild = process.argv[2] && 
-    process.argv[2].split(',').map((s) => s.trim()) ||
-    ['ru', 'en'];
+const builders = require('./src/lib/builders');
+const mdHtml = require('./src/lib/md-html');
+const htmlProcess = require('./src/lib/html-process');
 
-    const targets = (process.argv[3] && 
-        process.argv[3].split(',') ||
-        ['html', 'pdf', 'epub']
-    ).reduce((targets, arg) => {
-        targets[arg.trim()] = true;
-        return targets;
-    }, {});
+const css = fs.readFileSync('./src/style.css', 'utf-8');
 
 const l10n = {
     en: {
@@ -34,9 +27,18 @@ const l10n = {
         locale: 'ru_RU'
     }
 };
-const css = fs.readFileSync('src/style.css', 'utf-8');
 
-const builders = require('./builders');
+const langsToBuild = process.argv[2] && 
+    process.argv[2].split(',').map((s) => s.trim()) ||
+    ['ru', 'en'];
+
+    const targets = (process.argv[3] && 
+        process.argv[3].split(',') ||
+        ['html', 'pdf', 'epub']
+    ).reduce((targets, arg) => {
+        targets[arg.trim()] = true;
+        return targets;
+    }, {});
 
 buildDocs(langsToBuild, targets, l10n).then(() => {
     console.log('Done!');
@@ -58,9 +60,9 @@ function buildDocs (langsToBuild, targets, l10n) {
     );
 }
 
-function buildDoc (lang, targets, l10n) {
+async function buildDoc (lang, targets, l10n) {
     const pageBreak = '<div class="page-break"></div>';
-    const structure = getStructure({
+    const structure = await getStructure({
         path: `./src/${lang}/clean-copy/`,
         l10n,
         pageBreak
@@ -88,9 +90,9 @@ function buildDoc (lang, targets, l10n) {
                 content.push(chapter.content);
                 return content;
             }, [section.title ? `<h2>${getRef(section.anchor)}${section.title}</h2>` : '']).join(''))
-    ].join('\n');
+    ];
 
-    const html = `<html><head>
+    const html = targets.html || targets.pdf ? (await htmlProcess(`<html><head>
         <meta charset="utf-8"/>
         <title>${l10n.author}. ${l10n.title}</title>
         <meta name="author" content="${l10n.author}"/>
@@ -103,8 +105,10 @@ function buildDoc (lang, targets, l10n) {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
         <style>${css}</style>
     </head><body>
-        <article>${htmlContent}</article>
-    </body></html>`;
+        <article>${htmlContent.join('\n')}</article>
+    </body></html>`, {
+        base: __dirname
+    })).contents : '';
 
     return Promise.all(['html', 'pdf', 'epub'].map((target) => {
         return targets[target] ? builders[target]({
@@ -117,16 +121,18 @@ function buildDoc (lang, targets, l10n) {
     }));
 }
 
-function getStructure ({ path, l10n: { chapter }, pageBreak}) {
+async function getStructure ({ path, l10n, pageBreak}) {
     const structure = {
         frontPage: fs.readFileSync(`${path}intro.html`, 'utf-8') + pageBreak,
         sections: []
     };
     let counter = 1;
-    fs.readdirSync(path)
+
+    await fs.readdirSync(path)
         .filter((p) => fs.statSync(`${path}${p}`).isDirectory())
         .sort()
-        .forEach((dir, index) => {
+        .reduce(async (p, dir, index) => {
+            const structure = await p;
             const name = dir.split('-')[1];
             const section = {
                 title: name,
@@ -135,22 +141,30 @@ function getStructure ({ path, l10n: { chapter }, pageBreak}) {
             }
 
             const subdir = `${path}${dir}/`;
-            fs.readdirSync(subdir)
+            await fs.readdirSync(subdir)
                 .filter((p) => fs.statSync(`${subdir}${p}`).isFile() && p.indexOf('.md') == p.length - 3)
                 .sort()
-                .forEach((file) => {
+                .reduce(async (p, file) => {
+                    const section = await p;
                     const md = fs.readFileSync(`${subdir}${file}`, 'utf-8').trim();
-                    const [ title, ...paragraphs ] = md.split(/\r?\n/);
+                    const content = await mdHtml(md, {
+                        counter,
+                        l10n,
+                        base: __dirname
+                    });
                     section.chapters.push({
-                        anchor: `chapter-${counter}`,
-                        title: title.replace(/^### /, `${chapter} ${counter}. `),
-                        content: mdHtml.makeHtml(paragraphs.join('\n')) + pageBreak
+                        anchor: content.data.anchor,
+                        title: content.data.title,
+                        content: content.contents + pageBreak
                     });
                     counter++;
-                });
+                    return section;
+                }, Promise.resolve(section));
             
             structure.sections.push(section);
-        });
-    
+            return structure;
+        }, Promise.resolve(structure));
+ 
+
     return structure;
 }

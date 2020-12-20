@@ -6,8 +6,13 @@
     "repository": "github.com:twirl/The-API-Book",
     "devDependencies": {
         "puppeteer": "^5.5.0",
-        "showdown": "^1.9.1",
-        "epub-gen": "^0.1.0"
+        "epub-gen": "^0.1.0",
+        "unified": "^9.2.0",
+        "remark-parse": "^8.0.3",
+        "remark-rehype": "^7.0.0",
+        "rehype-parse": "^7.0.1",
+        "rehype-stringify": "^8.0.0",
+        "image-data-uri": "^2.0.1"
     },
     "scripts": {
         "build": "node build.js"

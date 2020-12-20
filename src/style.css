@@ -4,15 +4,24 @@ html {
     padding: 0;
 }
 
-body {
+body, h6 {
     font-family: 'PT Serif';
     font-size: 14pt;
     text-align: justify;
 }
 
+.cc-by-nc-img {
+    display: block;
+    float: left;
+    margin-top: 5px;
+}
+
 .cc-by-nc {
-    background: transparent url(https://i.creativecommons.org/l/by-nc/4.0/88x31.png) 0 5px no-repeat;
-    padding-left: 92px;
+    margin-left: 92px;
+}
+
+.cc-by-nc::after {
+    clear: left;
 }
 
 code, pre {
@@ -21,6 +30,10 @@ code, pre {
 
 code {
     white-space: nowrap;
+}
+
+p img {
+    max-width: 100%;
 }
 
 pre {
@@ -56,6 +69,20 @@ h1, h2, h3, h4, h5 {
     font-family: 'PT Sans';
     font-weight: bold;
     page-break-after: avoid;
+}
+
+h6 {
+    font-size: 80%;
+    color: darkgray;
+    text-align: center;
+    padding: 0;
+    margin: 0 1em 0 2em;
+    font-weight: normal;
+}
+
+h6 a {
+    color: darkgray;
+    font-weight: bolder;
 }
 
 h1 {
