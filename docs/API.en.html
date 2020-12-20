@@ -1,15 +1,15 @@
 <html><head>
-        <meta charset="utf-8">
-        <title>Sergey Konstantinov. The API</title>
-        <meta name="author" content="Sergey Konstantinov">
-        <meta name="description" content="Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. The book comprises three large sections. In Section I we&#x27;ll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces. Section II is dedicated to an API&#x27;s lifecycle: how interfaces evolve over time, and how to elaborate the product to match users&#x27; needs. Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.">
-        <meta property="og:title" content="Sergey Konstantinov. The API">
-        <meta property="og:url" content="https://twirl.github.io/The-API-Book/docs/API.en.html">
-        <meta property="og:type" content="article">
-        <meta property="og:description" content="Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. The book comprises three large sections. In Section I we&#x27;ll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces. Section II is dedicated to an API&#x27;s lifecycle: how interfaces evolve over time, and how to elaborate the product to match users&#x27; needs. Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.">
-        <meta property="og:locale" content="en_US">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&#x26;family=PT+Sans&#x26;family=Inconsolata">
-        <style>html {
+            <meta charset="utf-8">
+            <title>Sergey Konstantinov. The API</title>
+            <meta name="author" content="Sergey Konstantinov">
+            <meta name="description" content="Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. The book comprises three large sections. In Section I we&#x27;ll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces. Section II is dedicated to an API&#x27;s lifecycle: how interfaces evolve over time, and how to elaborate the product to match users&#x27; needs. Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.">
+            <meta property="og:title" content="Sergey Konstantinov. The API">
+            <meta property="og:url" content="https://twirl.github.io/The-API-Book/docs/API.en.html">
+            <meta property="og:type" content="article">
+            <meta property="og:description" content="Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. The book comprises three large sections. In Section I we&#x27;ll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces. Section II is dedicated to an API&#x27;s lifecycle: how interfaces evolve over time, and how to elaborate the product to match users&#x27; needs. Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.">
+            <meta property="og:locale" content="en_US">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&#x26;family=PT+Sans&#x26;family=Inconsolata">
+            <style>html {
     width: 100%;
     margin: 0;
     padding: 0;
@@ -57,6 +57,11 @@ pre {
     page-break-inside: avoid;
     overflow-x: auto;
     font-size: 90%;
+}
+
+img:not(.cc-by-nc-img) {
+    border: 1px solid darkgray;
+    box-shadow: .1em .1em .1em rgba(0,0,0,.45);
 }
 
 pre code {
@@ -132,17 +137,8 @@ ul.table-of-contents ul li {
 }
 
 a.anchor {
-    color: lightgray;
-}
-
-a.anchor:hover {
-    color: black;
-}
-
-a.anchor:after {
-    display: inline-block;
-    content: '¶';
-    padding-right: 0.3em;
+    color: inherit;
+    text-decoration: none;
 }
 
 @page {
@@ -164,6 +160,22 @@ a.anchor:after {
     .github-corner:hover .octo-arm {
         animation: octocat-wave 560ms ease-in-out;
     }
+
+    a.anchor:before {
+        display: inline-block;
+        content: '¶';
+        width: 0.8em;
+        color: lightgray;
+    }
+    
+    a.anchor:hover:before {
+        color: black;
+    }
+
+    h2:not(.toc), h3 {
+        margin-left: -0.8em;
+    }
+    
     @keyframes octocat-wave {
         0%,
         100% {
@@ -218,8 +230,9 @@ a.anchor:after {
     }
 }
 </style>
-    </head><body>
-        <article><h1>Sergey Konstantinov<br>The API</h1>
+        </head><body>
+            <article>
+                <h1>Sergey Konstantinov<br>The API</h1>
 
 <img class="cc-by-nc-img" src="data:image/png;base64,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">
 <p class="cc-by-nc">
@@ -238,15 +251,13 @@ a.anchor:after {
         <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
         <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px" class="octo-arm"></path>
         <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-<div class="page-break"></div>
-<nav><h2>Table of Contents</h2><ul class="table-of-contents"><li><a href="#section-1">Introduction</a><ul><li><a href="#chapter-1">Chapter 1. On the Structure of This Book</a></li><li><a href="#chapter-2">Chapter 2. The API Definition</a></li><li><a href="#chapter-3">Chapter 3. API Quality Criteria</a></li><li><a href="#chapter-4">Chapter 4. Backwards Compatibility</a></li><li><a href="#chapter-5">Chapter 5. On versioning</a></li><li><a href="#chapter-6">Chapter 6. Terms and Notation Keys</a></li></ul></li><li><a href="#section-2">Section I. The API Design</a><ul><li><a href="#chapter-7">Chapter 7. The API Contexts Pyramid</a></li><li><a href="#chapter-8">Chapter 8. Defining an Application Field</a></li><li><a href="#chapter-9">Chapter 9. Separating Abstraction Levels</a></li><li><a href="#chapter-10">Chapter 10. Isolating Responsibility Areas</a></li><li><a href="#chapter-11">Chapter 11. Describing Final Interfaces</a></li></ul></li></ul></nav><div class="page-break"></div>
-<h2><a href="#section-1" class="anchor" name="section-1"></a>Introduction</h2><h3><a href="#chapter-1" class="anchor" name="chapter-1"></a>Chapter 1. On the Structure of This Book</h3>
+<div class="page-break"></div><nav><h2 class="toc">Table of Contents</h2><ul class="table-of-contents"><li><a href="#section-1">Introduction</a><ul><li><a href="#chapter-1">Chapter 1. On the Structure of This Book</a></li><li><a href="#chapter-2">Chapter 2. The API Definition</a></li><li><a href="#chapter-3">Chapter 3. API Quality Criteria</a></li><li><a href="#chapter-4">Chapter 4. Backwards Compatibility</a></li><li><a href="#chapter-5">Chapter 5. On versioning</a></li><li><a href="#chapter-6">Chapter 6. Terms and Notation Keys</a></li></ul></li><li><a href="#section-2">Section I. The API Design</a><ul><li><a href="#chapter-7">Chapter 7. The API Contexts Pyramid</a></li><li><a href="#chapter-8">Chapter 8. Defining an Application Field</a></li><li><a href="#chapter-9">Chapter 9. Separating Abstraction Levels</a></li><li><a href="#chapter-10">Chapter 10. Isolating Responsibility Areas</a></li><li><a href="#chapter-11">Chapter 11. Describing Final Interfaces</a></li></ul></li></ul></nav><div class="page-break"></div><h2><a href="#section-1" class="anchor" name="section-1">Introduction</a></h2><h3><a href="#chapter-1" class="anchor" name="chapter-1">Chapter 1. On the Structure of This Book</a></h3>
 <p>The book you're holding in your hands comprises this Introduction and three large sections.</p>
 <p>In Section I we'll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces.</p>
 <p>Section II is dedicated to an API's lifecycle: how interfaces evolve over time, and how to elaborate the product to match users' needs.</p>
 <p>Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.</p>
 <p>First two sections are interesting to engineers mostly, while the third section is more relevant to both engineers and product managers. However, we insist that the third section is the most important for the API software developer. Since an API is a product for engineers, you cannot simply pronounce non-engineering team responsible for product planning and support. Nobody but you understands more about your API's product features.</p>
-<p>Let's start.</p><div class="page-break"></div><h3><a href="#chapter-2" class="anchor" name="chapter-2"></a>Chapter 2. The API Definition</h3>
+<p>Let's start.</p><div class="page-break"></div><h3><a href="#chapter-2" class="anchor" name="chapter-2">Chapter 2. The API Definition</a></h3>
 <p>Before we start talking about the API design, we need to explicitly define what the API is. Encyclopedia tells us that ‘API’ is an acronym for ‘Application Program Interface’. This definition is fine, but useless. Much like ‘Man’ definition by Plato: Man stood upright on two legs without feathers. This definition is fine again, but it gives us no understanding what's so important about a Man. (Actually, not ‘fine’ either. Diogenes of Sinope once brought a plucked chicken, saying ‘That's Plato's Man’. And Plato had to add ‘with broad nails’ to his definition.)</p>
 <p>What API <em>means</em> apart from the formal definition?</p>
 <p>You're possibly reading this book using a Web browser. To make the browser display this page correctly, a bunch of stuff must work correctly: parsing the URL according to the specification; DNS service; TLS handshake protocol; transmitting the data over HTTP protocol; HTML document parsing; CSS document parsing; correct HTML+CSS rendering.</p>
@@ -262,7 +273,7 @@ a.anchor:after {
 </ul>
 <p>What differs between a Roman aqueduct and a good API is that APIs presume a contract being <em>programmable</em>. To connect two areas some <em>coding</em> is needed. The goal of this book is to help you in designing APIs which serve their purposes as solidly as a Roman aqueduct does.</p>
 <p>An aqueduct also illustrates another problem of the API design: your customers are engineers themselves. You are not supplying water to end-users: suppliers are plugging their pipes to you engineering structure, building their own structures upon it. From one side, you may provide an access to the water to much more people through them, not spending your time on plugging each individual house to your network. But from other side, you can't control the quality of suppliers' solutions, and you are to be blamed every time there is a water problem caused by their incompetence.</p>
-<p>That's why designing the API implies a larger area of responsibility. <strong>API is a multiplier to both your opportunities and mistakes</strong>.</p><div class="page-break"></div><h3><a href="#chapter-3" class="anchor" name="chapter-3"></a>Chapter 3. API Quality Criteria</h3>
+<p>That's why designing the API implies a larger area of responsibility. <strong>API is a multiplier to both your opportunities and mistakes</strong>.</p><div class="page-break"></div><h3><a href="#chapter-3" class="anchor" name="chapter-3">Chapter 3. API Quality Criteria</a></h3>
 <p>Before we start laying out the recommendations, we ought to specify what API we consider ‘fine’, and what's the profit of having a ‘fine’ API.</p>
 <p>Let's discuss second question first. Obviously, API ‘finesse’ is first of all defined through its capability to solve developers' problems. (One may reasonably say that solving developers' problem might not be the main purpose of offering the API of ours to developers. However, manipulating public opinion is out of this book's author interest. Here we assume that APIs exist primarily to help developers in solving their problems, not for some other covertly declared purposes.)</p>
 <p>So, how the API design might help the developers? Quite simple: a well-designed API must solve their problems in the most efficient and comprehensible manner. The distance from formulating the task to writing a working code must be as short as possible. Among other things, it means that:</p>
@@ -273,13 +284,13 @@ a.anchor:after {
 </ul>
 <p>However static convenience and clarity of APIs is a simple part. After all, nobody seeks for making an API deliberately irrational and unreadable. When we are developing an API, we always start with clear basic concepts. Providing you've got some experience in APIs, it's quite hard to make an API core which fails to meet obviousness, readability, and consistency criteria.</p>
 <p>Problems begin when we start to expand our API. Adding new functionality sooner or later result in transforming once plain and simple API into a mess of conflicting concepts, and our efforts to maintain backwards compatibility lead to illogical, unobvious and simply bad design solutions. It is partly related to an inability to predict the future in details: your understanding of ‘fine’ APIs will change over time, both in objective terms (what problems the API is to solve, and what are the best practices) and in subjective ones too (what obviousness, readability and consistency <em>really means</em> regarding your API).</p>
-<p>Principles we are explaining below are specifically oriented to making APIs evolve smoothly over time, not being turned into a pile of mixed inconsistent interfaces. It is crucial to understand that this approach isn't free: a necessity to bear in mind all possible extension variants and to preserve essential growth points means interface redundancy and possibly excessing abstractions being embedded in the API design. Besides both make developers' work harder. <strong>Providing excess design complexities being reserved for future use makes sense only when this future actually exists for your API. Otherwise it's simply an overengineering.</strong></p><div class="page-break"></div><h3><a href="#chapter-4" class="anchor" name="chapter-4"></a>Chapter 4. Backwards Compatibility</h3>
+<p>Principles we are explaining below are specifically oriented to making APIs evolve smoothly over time, not being turned into a pile of mixed inconsistent interfaces. It is crucial to understand that this approach isn't free: a necessity to bear in mind all possible extension variants and to preserve essential growth points means interface redundancy and possibly excessing abstractions being embedded in the API design. Besides both make developers' work harder. <strong>Providing excess design complexities being reserved for future use makes sense only when this future actually exists for your API. Otherwise it's simply an overengineering.</strong></p><div class="page-break"></div><h3><a href="#chapter-4" class="anchor" name="chapter-4">Chapter 4. Backwards Compatibility</a></h3>
 <p>Backwards compatibility is a <em>temporal</em> characteristics of your API. An obligation to maintain backwards compatibility is the crucial point where API development differs form software development in general.</p>
 <p>Of course, backwards compatibility isn't an absolute. In some subject areas shipping new backwards incompatible API versions is a routine. Nevertheless, every time you deploy new backwards incompatible API version, the developers need to make some non-zero effort to adapt their code to the new API version. In this sense, releasing new API versions puts a sort of a ‘tax’ on customers. They must spend quite real money just to make sure their product continue working.</p>
 <p>Large companies, which occupy firm market positions, could afford implying such a taxation. Furthermore, they may introduce penalties for those who refuse to adapt their code to new API versions, up to disabling their applications.</p>
 <p>From our point of view such practice cannot be justified. Don't imply hidden taxes on your customers. If you're able to avoid breaking backwards compatibility — never break it.</p>
 <p>Of course, maintaining old API versions is a sort of a tax either. Technology changes, and you cannot foresee everything, regardless of how nice your API is initially designed. At some point keeping old API versions results in an inability to provide new functionality and support new platforms, and you will be forced to release new version. But at least you will be able to explain to your customers why they need to make an effort.</p>
-<p>We will discuss API lifecycle and version policies in Section II.</p><div class="page-break"></div><h3><a href="#chapter-5" class="anchor" name="chapter-5"></a>Chapter 5. On versioning</h3>
+<p>We will discuss API lifecycle and version policies in Section II.</p><div class="page-break"></div><h3><a href="#chapter-5" class="anchor" name="chapter-5">Chapter 5. On versioning</a></h3>
 <p>Here and throughout we firmly stick to <a href="https://semver.org/">semver</a> principles of versioning:</p>
 <ol>
 <li>API versions are denoted with three numbers, i.e. <code>1.2.3</code>.</li>
@@ -288,7 +299,7 @@ a.anchor:after {
 <li>Third number (patch) increases when new API version contains bug fixes only.</li>
 </ol>
 <p>Sentences ‘major API version’ and ‘new API version, containing backwards incompatible changes’ are therefore to be considered as equivalent ones.</p>
-<p>In Section II we will discuss versioning policies in more details. In Section I we will just use semver versions designation, specifically <code>v1</code>, <code>v2</code>, etc.</p><div class="page-break"></div><h3><a href="#chapter-6" class="anchor" name="chapter-6"></a>Chapter 6. Terms and Notation Keys</h3>
+<p>In Section II we will discuss versioning policies in more details. In Section I we will just use semver versions designation, specifically <code>v1</code>, <code>v2</code>, etc.</p><div class="page-break"></div><h3><a href="#chapter-6" class="anchor" name="chapter-6">Chapter 6. Terms and Notation Keys</a></h3>
 <p>Software development is being characterized, among other things, by an existence of many different engineering paradigms, whose adepts sometimes are quite aggressive towards other paradigms' adepts. While writing this book we are deliberately avoiding using terms like ‘method’, ‘object’, ‘function’, and so on, using a neutral term ‘entity’ instead. ‘Entity’ means some atomic functionality unit, like class, method, object, monad, prototype (underline what you think right).</p>
 <p>As for an entity's components, we regretfully failed to find a proper term, so we will use words ‘fields’ and ‘methods’.</p>
 <p>Most of the examples of APIs will be provided in a form of JSON-over-HTTP endpoints. This is some sort of notation which, as we see it, helps to describe concepts in the most comprehensible manner. <code>GET /v1/orders</code> endpoint call could easily be replaced with <code>orders.get()</code> method call, local or remote; JSON could easily be replaced with any other data format. The meaning of assertions shouldn't change.</p>
@@ -324,8 +335,7 @@ Cache-Control: no-cache
 <p>Some request and response parts might be omitted if they are irrelevant to a topic being discussed.</p>
 <p>Simplified notation might be used to avoid redundancies, like <code>POST /some-resource</code> <code>{…, "some_parameter", …}</code> → <code>{ "operation_id" }</code>; request and response bodies might also be omitted.</p>
 <p>We will be using sentences like ‘<code>POST /v1/bucket/{id}/some-resource</code> method’ (or simply ‘<code>bucket/some-resource</code> method’, ‘<code>some-resource</code>’ method — if there are no other <code>some-resource</code>s in the chapter, so there is no ambiguity) to refer to such endpoint definitions.</p>
-<p>Apart from HTTP API notation, we will employ C-style pseudocode, or, to be more precise, JavaScript-like or Python-like since types are omitted. We assume such imperative structures being readable enough to skip detailed grammar explanations.</p><div class="page-break"></div>
-<h2><a href="#section-2" class="anchor" name="section-2"></a>Section I. The API Design</h2><h3><a href="#chapter-7" class="anchor" name="chapter-7"></a>Chapter 7. The API Contexts Pyramid</h3>
+<p>Apart from HTTP API notation, we will employ C-style pseudocode, or, to be more precise, JavaScript-like or Python-like since types are omitted. We assume such imperative structures being readable enough to skip detailed grammar explanations.</p><div class="page-break"></div><h2><a href="#section-2" class="anchor" name="section-2">Section I. The API Design</a></h2><h3><a href="#chapter-7" class="anchor" name="chapter-7">Chapter 7. The API Contexts Pyramid</a></h3>
 <p>The approach we use to design APIs comprises four steps:</p>
 <ul>
 <li>defining an application field;</li>
@@ -335,7 +345,7 @@ Cache-Control: no-cache
 </ul>
 <p>This four-step algorithm actually builds an API from top to bottom, from common requirements and use case scenarios down to a refined entity nomenclature. In fact, moving this way will eventually conclude with a ready-to-use API — that's why we value this approach highly.</p>
 <p>It might seem that the most useful pieces of advice are given in the last chapter, but that's not true. The cost of a mistake made at certain levels differs. Fixing the naming is simple; revising the wrong understanding of what the API stands for is practically impossible.</p>
-<p><strong>NB</strong>. Here and throughout we will illustrate API design concepts using a hypothetical example of an API allowing for ordering a cup of coffee in city cafes. Just in case: this example is totally synthetic. If we were to design such an API in a real world, it would probably have very few in common with our fictional example.</p><div class="page-break"></div><h3><a href="#chapter-8" class="anchor" name="chapter-8"></a>Chapter 8. Defining an Application Field</h3>
+<p><strong>NB</strong>. Here and throughout we will illustrate API design concepts using a hypothetical example of an API allowing for ordering a cup of coffee in city cafes. Just in case: this example is totally synthetic. If we were to design such an API in a real world, it would probably have very few in common with our fictional example.</p><div class="page-break"></div><h3><a href="#chapter-8" class="anchor" name="chapter-8">Chapter 8. Defining an Application Field</a></h3>
 <p>Key question you should ask yourself looks like that: what problem we solve? It should be asked four times, each time putting an emphasis on an another word.</p>
 <ol>
 <li>
@@ -353,15 +363,16 @@ Cache-Control: no-cache
 </ol>
 <p>So, let's imagine that we are going to develop an API for automated coffee ordering in city cafes, and let's apply the key question to it.</p>
 <ol>
-<li>Why would someone need an API to make a coffee? Why ordering a coffee via ‘human-to-human’ or ‘human-to-machine’ interface is inconvenient, why have ‘machine-to-machine’ interface?</li>
-</ol>
-<pre><code>* Possibly, we're solving knowledge and selection problems? To provide humans with a full knowledge what options they have right now and right here.
-* Possibly, we're optimizing waiting times? To save the time people waste waiting their beverages.
-* Possibly, we're reducing the number of errors? To help people get exactly what they wanted to order, stop losing information in imprecise conversational communication or in dealing with unfamiliar coffee machine interfaces?
-</code></pre>
-<p>  ‘Why’ question is the most important of all questions you must ask yourself. And not only about global project goals, but also locally about every single piece of functionality. <strong>If you can't briefly and clearly answer the question ‘what for this entity is needed’, then it's not needed</strong>.</p>
-<p>  Here and throughout we assume, to make our example more complex and bizarre, that we are optimizing all three factors.</p>
-<ol start="2">
+<li>
+<p>Why would someone need an API to make a coffee? Why ordering a coffee via ‘human-to-human’ or ‘human-to-machine’ interface is inconvenient, why have ‘machine-to-machine’ interface?</p>
+<ul>
+<li>Possibly, we're solving knowledge and selection problems? To provide humans with a full knowledge what options they have right now and right here.</li>
+<li>Possibly, we're optimizing waiting times? To save the time people waste waiting their beverages.</li>
+<li>Possibly, we're reducing the number of errors? To help people get exactly what they wanted to order, stop losing information in imprecise conversational communication or in dealing with unfamiliar coffee machine interfaces?</li>
+</ul>
+<p>‘Why’ question is the most important of all questions you must ask yourself. And not only about global project goals, but also locally about every single piece of functionality. <strong>If you can't briefly and clearly answer the question ‘what for this entity is needed’, then it's not needed</strong>.</p>
+<p>Here and throughout we assume, to make our example more complex and bizarre, that we are optimizing all three factors.</p>
+</li>
 <li>
 <p>Do the problems we outlined really exist? Do we really observe unequal coffee-machines utilization in mornings? Do people really suffer from inability to find nearby a toffee nut latte they long for? Do they really care about minutes they spend in lines?</p>
 </li>
@@ -388,7 +399,7 @@ Cache-Control: no-cache
 <ul>
 <li>providing an API to services with larger audience, so their users may order a cup of coffee in the most efficient and convenient manner;</li>
 <li>abstracting an access to coffee machines ‘hardware’ and delivering methods to select a beverage kind and some location to brew — and to make an order.</li>
-</ul><div class="page-break"></div><h3><a href="#chapter-9" class="anchor" name="chapter-9"></a>Chapter 9. Separating Abstraction Levels</h3>
+</ul><div class="page-break"></div><h3><a href="#chapter-9" class="anchor" name="chapter-9">Chapter 9. Separating Abstraction Levels</a></h3>
 <p>‘Separate abstraction levels in your code’ is possibly the most general advice to software developers. However, we don't think it would be a grave exaggeration to say that abstraction levels separation is also the most difficult task to API developers.</p>
 <p>Before proceeding to the theory, we should formulate clearly <em>why</em> abstraction levels are so important, and what goals we're trying to achieve by separating them.</p>
 <p>Let us remember that software product is a medium connecting two outstanding contexts, thus transforming terms and operations belonging to one subject area into another area's concepts. The more these areas differ, the more interim connecting links we have to introduce.</p>
@@ -791,7 +802,7 @@ It is important to note that we don't calculate new variables out from sensors d
 <li>from one side, in the order context ‘leaked’ physical data (beverage volume prepared) is injected, therefore stirring abstraction levels irreversibly;</li>
 <li>from other side, the order context itself is deficient: it doesn't provide new meta-variables, non-existent at the lower levels (the order status, in particular), doesn't initialize them and don't provide the game rules.</li>
 </ul>
-<p>We will discuss data contexts in more details in the Section II. Here we will just state that data flows and their transformations might be and must be examined as a specific API facet, which, from one side, helps us to separate abstraction levels properly, and, from other side, to check if our theoretical structures work as intended.</p><div class="page-break"></div><h3><a href="#chapter-10" class="anchor" name="chapter-10"></a>Chapter 10. Isolating Responsibility Areas</h3>
+<p>We will discuss data contexts in more details in the Section II. Here we will just state that data flows and their transformations might be and must be examined as a specific API facet, which, from one side, helps us to separate abstraction levels properly, and, from other side, to check if our theoretical structures work as intended.</p><div class="page-break"></div><h3><a href="#chapter-10" class="anchor" name="chapter-10">Chapter 10. Isolating Responsibility Areas</a></h3>
 <p>Basing on the previous chapter, we understand that the abstraction hierarchy in our hypothetical project would look like that:</p>
 <ul>
 <li>the user level (those entities users directly interact with and which are formulated in terms, understandable by user: orders, coffee recipes);</li>
@@ -1050,7 +1061,7 @@ The invalid price error is resolvable: client could obtain a new price offer and
 </code></pre>
 <p>Such decomposed API is much easier to read than a long sheet of different attributes. Furthermore, it's probably better to group even more entities in advance. For example, <code>place</code> and <code>route</code> could be joined in a single <code>location</code> structure, or <code>offer</code> and <code>pricing</code> might be combined into a some generalized object.</p>
 <p>It is important to say that readability is achieved not only by mere grouping the entities. Decomposing must be performed in such a manner that a developer, while reading the interface, instantly understands: ‘here is the place description of no interest to me right now, no need to traverse deeper’. If the data fields needed to complete some action are scattered all over different composites, the readability degrades, not improves.</p>
-<p>Proper decomposition also helps extending and evolving the API. We'll discuss the subject in the Section II.</p><div class="page-break"></div><h3><a href="#chapter-11" class="anchor" name="chapter-11"></a>Chapter 11. Describing Final Interfaces</h3>
+<p>Proper decomposition also helps extending and evolving the API. We'll discuss the subject in the Section II.</p><div class="page-break"></div><h3><a href="#chapter-11" class="anchor" name="chapter-11">Chapter 11. Describing Final Interfaces</a></h3>
 <p>When all entities, their responsibilities, and relations to each other are defined, we proceed to developing the API itself. We are to describe the objects, fields, methods, and functions nomenclature in details. In this chapter we're giving purely practical advice on making APIs usable and understandable.</p>
 <p>Important assertion at number 0:</p>
 <h5>0. Rules are just generalizations</h5>
@@ -1449,5 +1460,6 @@ GET /v1/record-views/{id}?cursor={cursor}
 <p>Sometimes explicit location passing is not enough since there are lots of territorial conflicts in a world. How the API should behave when user coordinates lie within disputed regions is a legal matter, regretfully. Author of this books once had to implement a ‘state A territory according to state B official position’ concept.</p>
 <p><strong>Important</strong>: mark a difference between localization for end users and localization for developers. Take a look at the example in #12 rule: <code>localized_message</code> is meant for the user; the app should show it if there is no specific handler for this error exists in code. This message must be written in user's language and formatted according to user's location. But <code>details.checks_failed[].message</code> is meant to be read by developers examining the problem. So it must be written and formatted in a manner which suites developers best. In a software development world it usually means ‘in English’.</p>
 <p>Worth mentioning is that <code>localized_</code> prefix in the example is used to differentiate messages to users from messages to developers. A concept like that must be, of course, explicitly stated in your API docs.</p>
-<p>And one more thing: all strings must be UTF-8, no exclusions.</p><div class="page-break"></div></article>
-    </body></html>
+<p>And one more thing: all strings must be UTF-8, no exclusions.</p><div class="page-break"></div>
+            </article>
+        </body></html>

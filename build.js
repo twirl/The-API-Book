@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const templates = require('./src/templates');
 const builders = require('./src/lib/builders');
 const mdHtml = require('./src/lib/md-html');
 const htmlProcess = require('./src/lib/html-process');
@@ -8,24 +9,8 @@ const htmlProcess = require('./src/lib/html-process');
 const css = fs.readFileSync('./src/style.css', 'utf-8');
 
 const l10n = {
-    en: {
-        title: 'The API',
-        author: 'Sergey Konstantinov',
-        chapter: 'Chapter',
-        toc: 'Table of Contents',
-        frontPage: 'Front Page',
-        description: "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. The book comprises three large sections. In Section I we'll discuss designing APIs as a concept: how to build the architecture properly, from a high-level planning down to final interfaces. Section II is dedicated to an API's lifecycle: how interfaces evolve over time, and how to elaborate the product to match users' needs. Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.",
-        locale: 'en_US'
-    },
-    ru: {
-        title: 'API',
-        author: 'Сергей Константинов',
-        chapter: 'Глава',
-        toc: 'Содержание',
-        frontPage: 'Титульный лист',
-        description: 'Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики проектирования API. Книга состоит из трёх больших разделов. В первом разделе мы поговорим о проектировании API на стадии разработки концепции — как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел будет посвящён жизненному циклу API — как интерфейсы эволюционируют со временем и как развивать продукт так, чтобы отвечать потребностям пользователей. Наконец, третий раздел будет касаться больше не-разработческих сторон жизни API — поддержки, маркетинга, работы с комьюнити.',
-        locale: 'ru_RU'
-    }
+    en: require('./src/en/l10n.json'),
+    ru: require('./src/ru/l10n.json')
 };
 
 const langsToBuild = process.argv[2] && 
@@ -61,54 +46,31 @@ function buildDocs (langsToBuild, targets, l10n) {
 }
 
 async function buildDoc (lang, targets, l10n) {
-    const pageBreak = '<div class="page-break"></div>';
+    const pageBreak = templates.pageBreak;
     const structure = await getStructure({
         path: `./src/${lang}/clean-copy/`,
         l10n,
         pageBreak
     });
-    const tableOfContents = `<nav><h2>${l10n.toc}</h2><ul class="table-of-contents">${
-        structure.sections.map((section) => {
-            return `<li><a href="#${section.anchor}">${section.title}</a><ul>${
-                section.chapters.map((chapter) => {
-                    return `<li><a href="#${chapter.anchor}">${chapter.title}</a></li>`
-                }).join('')
-            }</ul></li>`;
-        }).join('')
-    }</ul></nav>${pageBreak}`;
-    const getRef = (anchor) => {
-        return `<a href="#${anchor}" class="anchor" name="${anchor}"></a>`;
-    }
+    const tableOfContents = templates.toc(structure, l10n);
     const htmlContent = [
         structure.frontPage,
         tableOfContents,
         ...structure.sections
             .map((section) => section.chapters.reduce((content, chapter) => {
                 if (chapter.title) {
-                    content.push(`<h3>${getRef(chapter.anchor)}${chapter.title}</h3>`);
+                    content.push(templates.chapterTitle(chapter));
                 }
                 content.push(chapter.content);
                 return content;
-            }, [section.title ? `<h2>${getRef(section.anchor)}${section.title}</h2>` : '']).join(''))
+            }, [templates.sectionTitle(section)]).join(''))
     ];
 
-    const html = targets.html || targets.pdf ? (await htmlProcess(`<html><head>
-        <meta charset="utf-8"/>
-        <title>${l10n.author}. ${l10n.title}</title>
-        <meta name="author" content="${l10n.author}"/>
-        <meta name="description" content="${l10n.description}"/>
-        <meta property="og:title" content="${l10n.author}. ${l10n.title}"/>
-        <meta property="og:url" content="https://twirl.github.io/The-API-Book/docs/API.${lang}.html"/>
-        <meta property="og:type" content="article"/>
-        <meta property="og:description" content="${l10n.description}"/>
-        <meta property="og:locale" content="${l10n.locale}"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
-        <style>${css}</style>
-    </head><body>
-        <article>${htmlContent.join('\n')}</article>
-    </body></html>`, {
-        base: __dirname
-    })).contents : '';
+    const html = targets.html || targets.pdf ? (await htmlProcess(
+        templates.html(htmlContent.join(''), css, l10n), {
+           base: __dirname
+        }
+    )).contents : '';
 
     return Promise.all(['html', 'pdf', 'epub'].map((target) => {
         return targets[target] ? builders[target]({

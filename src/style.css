@@ -48,6 +48,11 @@ pre {
     font-size: 90%;
 }
 
+img:not(.cc-by-nc-img) {
+    border: 1px solid darkgray;
+    box-shadow: .1em .1em .1em rgba(0,0,0,.45);
+}
+
 pre code {
     white-space: pre;
 }
@@ -121,17 +126,8 @@ ul.table-of-contents ul li {
 }
 
 a.anchor {
-    color: lightgray;
-}
-
-a.anchor:hover {
-    color: black;
-}
-
-a.anchor:after {
-    display: inline-block;
-    content: '¶';
-    padding-right: 0.3em;
+    color: inherit;
+    text-decoration: none;
 }
 
 @page {
@@ -153,6 +149,22 @@ a.anchor:after {
     .github-corner:hover .octo-arm {
         animation: octocat-wave 560ms ease-in-out;
     }
+
+    a.anchor:before {
+        display: inline-block;
+        content: '¶';
+        width: 0.8em;
+        color: lightgray;
+    }
+    
+    a.anchor:hover:before {
+        color: black;
+    }
+
+    h2:not(.toc), h3 {
+        margin-left: -0.8em;
+    }
+    
     @keyframes octocat-wave {
         0%,
         100% {

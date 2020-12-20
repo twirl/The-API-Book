@@ -23,7 +23,7 @@ module.exports = {
         const page = await browser.newPage();
     
         await page.setContent(html, {
-            waitUntil: 'load'
+            waitUntil: 'networkidle0'
         });
         const pdf = await page.pdf({
             path,
