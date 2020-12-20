@@ -611,13 +611,16 @@ GET /sensors
 <p>But with the second kind API it's much worse. The main problem we foresee is an absence of ‘memory’ for actions being executed. Functions and sensors API is totally stateless, which means we don't event understand who called a function being currently executed, when, and which order it is related to.</p>
 <p>So we need to introduce two abstraction levels.</p>
 <ol>
-<li>Execution control level, which provides uniform interface to indivisible programs. ‘Uniform interface’ means here that, regardless of a coffee machine's kind, developers may expect:</li>
-</ol>
-<pre><code>* statuses and other high-level execution parameters nomenclature (for example, estimated preparation time or possible execution error) being the same;
-* methods nomenclature (for example, order cancellation method) and their behavior being the same.
-</code></pre>
-<ol start="2">
-<li>Program runtime level. For the first kind API it will provide just a wrapper for existing programs API; for the second kind API the entire ‘runtime’ concept is to be developed from scratch by us.</li>
+<li>
+<p>Execution control level, which provides uniform interface to indivisible programs. ‘Uniform interface’ means here that, regardless of a coffee machine's kind, developers may expect:</p>
+<ul>
+<li>statuses and other high-level execution parameters nomenclature (for example, estimated preparation time or possible execution error) being the same;</li>
+<li>methods nomenclature (for example, order cancellation method) and their behavior being the same.</li>
+</ul>
+</li>
+<li>
+<p>Program runtime level. For the first kind API it will provide just a wrapper for existing programs API; for the second kind API the entire ‘runtime’ concept is to be developed from scratch by us.</p>
+</li>
 </ol>
 <p>What does this mean in practical sense? Developers will still be creating orders, dealing with high-level entities only:</p>
 <pre><code>POST /v1/orders
@@ -1101,7 +1104,7 @@ POST /v1/orders/statistics/aggregate
 <p>So <em>always</em> specify exactly which standard is applied. Exceptions are possible, if you 100% sure that only one standard for this entity exists in the world, and every person on Earth is totally aware of it.</p>
 <p><strong>Bad</strong>: <code>"date": "11/12/2020"</code> — there are tons of date formatting standards; you can't even tell which number means the day number and which number means the month.</p>
 <p><strong>Better</strong>: <code>"iso_date": "2020-11-12"</code>.</p>
-<p><strong>Bad</strong>: <code>"duration": 5000</code> — five thousands of what?</p>
+<p><strong>Bad</strong>: <code>"duration": 5000</code> — five thousand of what?</p>
 <p><strong>Better</strong>:<br>
 <code>"duration_ms": 5000</code><br>
 or<br>
