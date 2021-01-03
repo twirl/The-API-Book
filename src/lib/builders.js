@@ -1,22 +1,17 @@
 const fs = require('fs');
-const path = require('path');
+const fsPath = require('path');
 
 const puppeteer = require('puppeteer');
 const Epub = require('epub-gen');
 
-const css = fs.readFileSync(path.resolve(__dirname, '..', 'epub.css'), 'utf-8');
+const css = fs.readFileSync(fsPath.resolve(__dirname, '..', 'epub.css'), 'utf-8');
 
 module.exports = {
     html: function ({ html, path }) {
         return new Promise((resolve, reject) => {
-            fs.writeFile(path, html, (e) => {
-                if (e) {
-                    reject(e);
-                } else {
-                    resolve();
-                }
-            });
-        });
+            fs.writeFileSync(path, html);
+            resolve();
+        }); 
     },
     pdf: async function ({ path, html }) {
         const browser = await puppeteer.launch({ headless: true });

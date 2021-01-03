@@ -6,8 +6,6 @@ const builders = require('./src/lib/builders');
 const mdHtml = require('./src/lib/md-html');
 const htmlProcess = require('./src/lib/html-process');
 
-const css = fs.readFileSync('./src/style.css', 'utf-8');
-
 const l10n = {
     en: require('./src/en/l10n.json'),
     ru: require('./src/ru/l10n.json')
@@ -66,20 +64,20 @@ async function buildDoc (lang, targets, l10n) {
             }, [templates.sectionTitle(section)]).join(''))
     ];
 
-    const html = targets.html || targets.pdf ? (await htmlProcess(
-        templates.html(htmlContent.join(''), css, l10n), {
-           base: __dirname
-        }
-    )).contents : '';
-
     return Promise.all(['html', 'pdf', 'epub'].map((target) => {
-        return targets[target] ? builders[target]({
-            lang,
-            structure,
-            html,
-            l10n,
-            path: path.join(__dirname, 'docs', `API.${lang}.${target}`)
-        }) : Promise.resolve();
+        if (targets[target]) {
+            return prepareHtml(htmlContent.join(''), l10n, target).then((html) => {
+                return builders[target]({
+                    lang,
+                    structure,
+                    html,
+                    l10n,
+                    path: path.join(__dirname, 'docs', `API.${lang}.${target}`)
+                });           
+            });
+        } else {
+            return Promise.resolve();
+        }
     }));
 }
 
@@ -129,4 +127,16 @@ async function getStructure ({ path, l10n, pageBreak}) {
  
 
     return structure;
+}
+
+async function prepareHtml (content, l10n, target) {
+    if (target == 'epub') {
+        return '';
+    } else {
+        return (await htmlProcess(
+            templates[target == 'html' ? 'screenHtml' : 'printHtml'](content, l10n), {
+                base: __dirname
+            }
+        )).contents;
+    }
 }

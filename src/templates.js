@@ -1,5 +1,13 @@
+const fs = require('fs');
+const path = require('path');
+const css = fs.readFileSync(path.resolve(__dirname, 'style.css'), 'utf-8');
+
+const cssProcess = require('./lib/css-process');
+const printCss = cssProcess(fs.readFileSync(path.resolve(__dirname, 'print.css'), 'utf-8'));
+const screenCss = cssProcess(fs.readFileSync(path.resolve(__dirname, 'screen.css'), 'utf-8'));
+
 const templates = module.exports = {
-    html: (html, css, l10n) => {
+    screenHtml: (html, l10n) => {
         return `<html><head>
             <meta charset="utf-8"/>
             <title>${l10n.author}. ${l10n.title}</title>
@@ -12,6 +20,28 @@ const templates = module.exports = {
             <meta property="og:locale" content="${l10n.locale}"/>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
             <style>${css}</style>
+            <style>${screenCss}</style>
+        </head><body>
+            <article>
+                ${html}
+            </article>
+        </body></html>`;
+    },
+
+    printHtml: (html, l10n) => {
+        return `<html><head>
+            <meta charset="utf-8"/>
+            <title>${l10n.author}. ${l10n.title}</title>
+            <meta name="author" content="${l10n.author}"/>
+            <meta name="description" content="${l10n.description}"/>
+            <meta property="og:title" content="${l10n.author}. ${l10n.title}"/>
+            <meta property="og:url" content="${l10n.url}"/>
+            <meta property="og:type" content="article"/>
+            <meta property="og:description" content="${l10n.description}"/>
+            <meta property="og:locale" content="${l10n.locale}"/>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif&amp;family=PT+Sans&amp;family=Inconsolata"/>
+            <style>${css}</style>
+            <style>${printCss}</style>
         </head><body>
             <article>
                 ${html}

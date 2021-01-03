@@ -108,6 +108,10 @@ h4, h5 {
     font-size: 120%;
 }
 
+.annotation {
+    text-align: left;
+}
+
 ul.table-of-contents {
     list-style-type: none;
     padding-left: 0;
@@ -130,17 +134,6 @@ a.anchor {
     text-decoration: none;
 }
 
-@page {
-    size: 8.5in 11in;
-    margin: 0.5in;
-}
-
-:root {
-	--main-font: 'PT Serif';
-	--alt-font: 'PT Serif';
-	--code-font: Inconsolata;
-}
-
 @media screen {
     body {
         margin: 2em auto;
@@ -155,14 +148,19 @@ a.anchor {
         content: '¶';
         width: 0.8em;
         color: lightgray;
+        text-indent: 0;
+    }
+
+    h5 a.anchor:before {
+        color: transparent;
     }
     
     a.anchor:hover:before {
         color: black;
     }
 
-    h2:not(.toc), h3 {
-        margin-left: -0.8em;
+    h2:not(.toc), h3, h5 {
+        text-indent: -0.8em;
     }
     
     @keyframes octocat-wave {
@@ -178,19 +176,6 @@ a.anchor {
         80% {
             transform: rotate(10deg);
         }
-    }
-}
-
-@media print {
-    h1 {
-        margin: 4in 0 4in 0;
-    }
-    body {
-        font-size: 14pt;
-    }
-
-    .github-corner {
-        display: none;
     }
 }
 

@@ -27,11 +27,41 @@ const chapterProcessor = () => {
             }
         }
 
+        let h5counter = 0;
         tree.children.slice().forEach((node, index) => {
             switch (node.tagName) {
                 case 'h3':
                     title.push(node.children[0].value);
                     tree.children.splice(index, 1);
+                    h5counter = 0;
+                    break;
+                case 'h5':
+                    let value = node.children[0].value;
+                    let number;
+                    const match = value.match(/^\d+/);
+                    if (!match) {
+                        number = ++h5counter;
+                        value = `${number}. ${value}`;
+                    } else {
+                        number = match[0];
+                    }
+                    const anchor = `chapter-${counter}-paragraph-${number}`;
+
+                    node.children[0] = {
+                        type: 'element',
+                        tagName: 'a',
+                        properties: {
+                            href: '#' + anchor,
+                            name: anchor,
+                            className: ['anchor']
+                        },
+                        children: [{
+                            type: 'text',
+                            value
+                        }],
+                        position: node.children[0].position
+                    };
+                    
                     break;
             }
             imageProcess(node);

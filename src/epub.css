@@ -58,6 +58,10 @@ h3 {
     font-variant: small-caps;
 }
 
+h3 a, h5 a {
+    color: inherit;
+}
+
 h4, h5 {
     font-size: 120%;
 }
