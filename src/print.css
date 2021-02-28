@@ -12,8 +12,13 @@ pre, img {
     margin-right: 0.1em;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    page-break-after: never;
+}
+
 img {
     margin-top: 1em;
+    page-break-after: never;
 }
 
 :root {
@@ -34,7 +39,7 @@ img {
 }
 
 .annotation {
-    padding-top: 6in;
+    padding-top: 5in;
 }
 
 h1 {
