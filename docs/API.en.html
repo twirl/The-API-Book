@@ -250,7 +250,9 @@ a.anchor {
         The book is dedicated to designing APIs: how to build the architecture
         properly, from a high-level planning down to final interfaces.
     </p>
-    <p>Illustrations by Maria Konstantinova</p>
+    <p>
+        Illustrations by Maria Konstantinova<br><a href="https://www.instagram.com/art.mari.ka/">https://www.instagram.com/art.mari.ka/</a>
+    </p>
 
     <img class="cc-by-nc-img" src="data:image/png;base64,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">
     <p class="cc-by-nc">
@@ -579,7 +581,7 @@ GET /functions
       // Operation type:
       // * set_cup
       // * grind_coffee
-      // * shed_water
+      // * pour_water
       // * discard_cup
       "type": "set_cup",
       // Arguments available to each operation.
@@ -1019,6 +1021,7 @@ The invalid price error is resolvable: client could obtain a new price offer and
 <pre><code>{
   "results": [
     {
+      "coffee_machine_id",
       "coffee_machine_type": "drip_coffee_maker",
       "coffee_machine_brand",
       "place_name": "The Chamomile",
@@ -1069,7 +1072,7 @@ The invalid price error is resolvable: client could obtain a new price offer and
     // Place data
     "place": { "name", "location" },
     // Coffee machine properties
-    "coffee-machine": { "brand", "type" },
+    "coffee-machine": { "id", "brand", "type" },
     // Route data
     "route": { "distance", "duration", "location_tip" },
     "offers": {
@@ -1197,9 +1200,9 @@ str_replace(needle, replace, haystack)
 <h5><a href="#chapter-11-paragraph-8" name="chapter-11-paragraph-8" class="anchor">8. Use globally unique identifiers</a></h5>
 <p>It's considered good form to use globally unique strings as entity identifiers, either semantic (i.e. "lungo" for beverage types) or random ones (i.e. <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)">UUID-4</a>). It might turn out to be extremely useful if you need to merge data from several sources under single identifier.</p>
 <p>In general, we tend to advice using urn-like identifiers, e.g. <code>urn:order:&#x3C;uuid></code> (or just <code>order:&#x3C;uuid></code>). That helps a lot in dealing with legacy systems with different identifiers attached to the same entity. Namespaces in urns help to understand quickly which identifier is used, and is there a usage mistake.</p>
-<p>One important implication: <strong>never use increasing numbers as external identifiers</strong>. Apart from abovementioned reasons, it allows counting how many entities of each types there are in the system. You competitors will be able to calculate a precise number of orders you have each day, for example.</p>
+<p>One important implication: <strong>never use increasing numbers as external identifiers</strong>. Apart from abovementioned reasons, it allows counting how many entities of each type there are in the system. You competitors will be able to calculate a precise number of orders you have each day, for example.</p>
 <p><strong>NB</strong>: this book often use short identifiers like "123" in code examples; that's for reading the book on small screens convenience, do not replicate this practice in a real-world API.</p>
-<h5><a href="#chapter-11-paragraph-9" name="chapter-11-paragraph-9" class="anchor">9. Clients must always know full system state</a></h5>
+<h5><a href="#chapter-11-paragraph-9" name="chapter-11-paragraph-9" class="anchor">9. System state must be observable by clients</a></h5>
 <p>This rule could be reformulated as ‘don't make clients guess’.</p>
 <p><strong>Bad</strong>:</p>
 <pre><code>// Creates an order and returns its id
@@ -1353,7 +1356,7 @@ PATCH /v1/orders/123
 <li>introducing pagination and field value length limits;</li>
 <li>stopping saving bytes in all other cases.</li>
 </ul>
-<p><strong>In second</strong>, shortening response sizes will backfire exactly with sploiling collaborative editing: one client won't see the changes the other client have made. Generally speaking, in 9 cases out of 10 it is better to return a full entity state from any modifying operation, sharing the format with read access endpoint. Actually, you should always do this unless response size affects performance.</p>
+<p><strong>In second</strong>, shortening response sizes will backfire exactly with sploiling collaborative editing: one client won't see the changes the other client has made. Generally speaking, in 9 cases out of 10 it is better to return a full entity state from any modifying operation, sharing the format with read access endpoint. Actually, you should always do this unless response size affects performance.</p>
 <p><strong>In third</strong>, this approach might work if you need to rewrite a field's value. But how to unset the field, return its value to the default state? For example, how to <em>remove</em> <code>client_phone_number_ext</code>?</p>
 <p>In such cases special values are often being used, like <code>null</code>. But as we discussed above, this is a defective practice. Another variant is prohibiting non-required fields, but that would pose considerable obstacles in a way of expanding the API.</p>
 <p><strong>Better</strong>: one of the following two strategies might be used.</p>
@@ -1456,7 +1459,7 @@ X-Idempotency-Token: &#x3C;token>
 → 409 Conflict
 </code></pre>
 <p>— the server found out that a different token was used in creating revision 124, which means an access conflict.</p>
-<p>Furthermore, adding idempotency tokens not only resolves the issue, but also makes possible to make an advanced optimization. If the server detects an access conflict, it could try to resolve it, ‘rebasing’ the update like modern version control systems do, and return <code>200 OK</code> instead of <code>409 Conflict</code>. This logics dramatically improves user experience, being fully backwards compatible and avoiding conflict resolving code fragmentation.</p>
+<p>Furthermore, adding idempotency tokens not only resolves the issue, but also makes advanced optimizations possible. If the server detects an access conflict, it could try to resolve it, ‘rebasing’ the update like modern version control systems do, and return <code>200 OK</code> instead of <code>409 Conflict</code>. This logics dramatically improves user experience, being fully backwards compatible and avoiding conflict resolving code fragmentation.</p>
 <p>Also, be warned: clients are bad at implementing idempotency tokens. Two problems are common:</p>
 <ul>
 <li>you can't really expect that clients generate truly random tokens — they may share the same seed or simply use weak algorithms or entropy sources; therefore you must put constraints on token checking: token must be unique to specific user and resource, not globally;</li>
@@ -1701,6 +1704,13 @@ GET /v1/records?cursor=&#x3C;cursor value>
 </code></pre>
 <p>One advantage of this approach is the possibility to keep initial request parameters (i.e. <code>filter</code> in our example) embedded into the cursor itself, thus not copying them in follow-up requests. It might be especially actual if the initial request prepares full dataset, for example, moving it from a ‘cold’ storage to a ‘hot’ one (then <code>cursor</code> might simply contain the encoded dataset id and the offset).</p>
 <p>There are several approaches to implementing cursors (for example, making single endpoint for initial and follow-up requests, returning the first data portion in the first response). As usual, the crucial part is maintaining consistency across all such endpoints.</p>
+<p><strong>NB</strong>: some sources discourage this approach because in this case user can't see a list of all pages and can't choose an arbitrary one. We should note here that:</p>
+<ul>
+<li>such a case (pages list and page selection) exists if we deal with user interfaces; we could hardly imagine a <em>program</em> interface which needs to provide an access to random data pages;</li>
+<li>if we still talk about an API to some application, which has a ‘paging’ user control, then a proper approach would be to prepare ‘paging’ data on server, including generating links to pages;</li>
+<li>cursor-based solution doesn't prohibit using <code>offset</code>/<code>limit</code>; nothing could stop us from creating a dual interface, which might serve both <code>GET /items?cursor=…</code> and <code>GET /items?offset=…&#x26;limit=…</code> requests;</li>
+<li>finally, if there is a necessity to provide an access to arbitrary pages in user interface, we should ask ourselves a question, which problem is being solved that way; probably, users use this functionality to find something: a specific element on the list, or the position they ended while working with the list last time; probably, we should provide more convenient controls to solve those tasks than accessing data pages by their indexes.</li>
+</ul>
 <p><strong>Bad</strong>:</p>
 <pre><code>// Returns a limited number of records
 // sorted by a specified field in a specified order
@@ -1772,11 +1782,11 @@ GET /v1/record-views/{id}?cursor={cursor}
         "field": "position.latitude",
         "error_type": "constraint_violation",
         "constraints": {
-          "min": -180,
-          "max": 180
+          "min": -90,
+          "max": 90
         },
         "message":
-          "'position.latitude' value must fall within [-180, 180] interval"
+          "'position.latitude' value must fall within [-90, 90] interval"
       }
     ]
   }
@@ -1872,7 +1882,7 @@ POST /v1/orders
 </code></pre>
 <p>You may note that in this setup the error can't resolved in one step: this situation must be elaborated over, and either order calculation parameters must be changed (discounts should not be counted against the minimal order sum), or a special type of error must be introduced.</p>
 <h5><a href="#chapter-11-paragraph-19" name="chapter-11-paragraph-19" class="anchor">19. No results is a result</a></h5>
-<p>If a server processed a request correctly and no exceptional situation occurred — there must be no error. Regretfully, an antipattern is widespread — of throwing errors when zero results are found .</p>
+<p>If a server processed a request correctly and no exceptional situation occurred — there must be no error. Regretfully, an antipattern is widespread — of throwing errors when zero results are found.</p>
 <p><strong>Bad</strong></p>
 <pre><code>POST /search
 {
@@ -1903,7 +1913,7 @@ POST /v1/orders
 <p>It is important to understand that user's language and user's jurisdiction are different things. Your API working cycle must always store user's location. It might be stated either explicitly (requests contain geographical coordinates) or implicitly (initial location-bound request initiates session creation which stores the location), bit no correct localization is possible in absence of location data. In most cases reducing the location to just a country code is enough.</p>
 <p>The thing is that lots of parameters potentially affecting data formats depend not on language, but user location. To name a few: number formatting (integer and fractional part delimiter, digit groups delimiter), date formatting, first day of week, keyboard layout, measurement units system (which might be non-decimal!), etc. In some situations you need to store two locations: user residence location and user ‘viewport’. For example, if US citizen is planning a European trip, it's convenient to show prices in local currency, but measure distances in miles and feet.</p>
 <p>Sometimes explicit location passing is not enough since there are lots of territorial conflicts in a world. How the API should behave when user coordinates lie within disputed regions is a legal matter, regretfully. Author of this books once had to implement a ‘state A territory according to state B official position’ concept.</p>
-<p><strong>Important</strong>: mark a difference between localization for end users and localization for developers. Take a look at the example in #12 rule: <code>localized_message</code> is meant for the user; the app should show it if there is no specific handler for this error exists in code. This message must be written in user's language and formatted according to user's location. But <code>details.checks_failed[].message</code> is meant to be read by developers examining the problem. So it must be written and formatted in a manner which suites developers best. In a software development world it usually means ‘in English’.</p>
+<p><strong>Important</strong>: mark a difference between localization for end users and localization for developers. Take a look at the example in rule #19: <code>localized_message</code> is meant for the user; the app should show it if there is no specific handler for this error exists in code. This message must be written in user's language and formatted according to user's location. But <code>details.checks_failed[].message</code> is meant to be read by developers examining the problem. So it must be written and formatted in a manner which suites developers best. In a software development world it usually means ‘in English’.</p>
 <p>Worth mentioning is that <code>localized_</code> prefix in the example is used to differentiate messages to users from messages to developers. A concept like that must be, of course, explicitly stated in your API docs.</p>
 <p>And one more thing: all strings must be UTF-8, no exclusions.</p><div class="page-break"></div><h3><a href="#chapter-12" class="anchor" name="chapter-12">Chapter 12. Annex to Section I. Generic API Example</a></h3>
 <p>Let's summarize the current state of our API study.</p>
@@ -1924,7 +1934,7 @@ POST /v1/orders
     // Place data
     "place": { "name", "location" },
     // Coffee machine properties
-    "coffee-machine": { "brand", "type" },
+    "coffee-machine": { "id", "brand", "type" },
     // Route data
     "route": { "distance", "duration", "location_tip" },
     "offers": {
