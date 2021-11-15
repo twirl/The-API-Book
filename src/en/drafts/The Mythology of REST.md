@@ -39,7 +39,7 @@ Saying nothing about Fielding's loose interpretation of his own dissertation, le
 
 #### REST: The Good Part
 
-We don't actually know why of all overviews of abstract network-based architectures the Fielding's one became the most widely known. But it's clearly obvious that Fielding's theory being reflected in minds of millions of developers (including Fielding's own) morphed into a whole engineering subculture. Out of reducing the REST abstractions to the HTTP protocol and the URL standard, the chimaera of ‘RESTful API’ was born — the one which [nobody knowns the exact sense of](https://restfulapi.net/).
+We don't actually know why of all overviews of abstract network-based architectures the Fielding's one became the most widely known. But it's clearly obvious that Fielding's theory being reflected in minds of millions of developers (including Fielding's own) morphed into a whole engineering subculture. Out of reducing the REST abstractions to the HTTP protocol and the URL standard, the chimaera of ‘RESTful API’ was born — the one which [nobody knows the exact sense of](https://restfulapi.net/).
 
 Are we saying that REST concept is meaningless? Not at all. We were just trying to demonstrate that it allows for too loose interpretation, which is simultaneously its main power and its main flaw.
 
@@ -61,17 +61,17 @@ Why we say this is ‘right’? Because modern client-server interaction stack i
 
 (Actually, with regards to many technical aspects interim agents are taking many opportunities, not asking the developers about them. For example, freely changing `Accept-Encoding` and therefore `Content-Length` while proxying requests and responses.)
 
-Every REST principle, named by Fielding, allows for making interim software work better. The stateless paradigm is a key: proxies might be sure that request's metadata describe it unambiguosly.
+Every REST principle, named by Fielding, allows for making interim software work better. The stateless paradigm is a key: proxies might be sure that request's metadata describe it unambiguously.
 
 Let's explore a simple example. Imagine we have operations for getting and deleting user's profile in our system. We may organize them in different ways. For example, like this:
 
 ```
 // Get user's profile
 GET /me
-Cookie: session_id=<идентификатор сессии>
+Cookie: session_id=<session identifier>
 // Delete user's profile
 GET /delete-me
-Cookie: session_id=<идентификатор сессии>
+Cookie: session_id=<session identifier>
 ```
 
 Why this solution is defective from the interim agent's point of view?
