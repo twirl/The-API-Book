@@ -4,7 +4,7 @@
     "chapter": "Chapter",
     "toc": "Table of Contents",
     "frontPage": "Front Page",
-    "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. The book comprises three large sections. In Section I we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces. Section II is dedicated to an API's lifecycle: how interfaces evolve over time, and how to elaborate the product to match users' needs. Finally, Section III is more about un-engineering sides of the API, like API marketing, organizing support, and working with a community.",
+    "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. In Section I we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces.",
     "locale": "en_US",
     "file": "API",
     "url": "https://twirl.github.io/The-API-Book/docs/API.en.html",

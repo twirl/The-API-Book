@@ -18,6 +18,8 @@ The work is distributed under a Creative Commons Attribution-NonCommercial 4.0 l
 
 See full license in LICENSE.md file or at [Creative Commons Website](http://creativecommons.org/licenses/by-nc/4.0/).
 
+You might support this work [on Patreon](https://www.patreon.com/yatwirl).
+
 ## Current State and the Roadmap
 
 Right now Section I (‘API Design’) is finished. The Section is lacking readable schemes, I'll draw them later.
