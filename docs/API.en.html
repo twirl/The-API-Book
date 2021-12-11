@@ -404,14 +404,12 @@ Cache-Control: no-cache
 <li>Possibly, we're optimizing waiting times? To save the time people waste while waiting for their beverages.</li>
 <li>Possibly, we're reducing the number of errors? To help people get exactly what they wanted to order, stop losing information in imprecise conversational communication, or in dealing with unfamiliar coffee machine interfaces?</li>
 </ul>
+<p>‘Why’ question is the most important of all questions you must ask yourself. And not only about global project goals, but also locally about every single piece of functionality. <strong>If you can't briefly and clearly answer the question ‘what this entity is needed for’, then it's not needed</strong>.</p>
+<p>Here and throughout we assume, to make our example more complex and bizarre, that we are optimizing all three factors.</p>
 </li>
-</ol>
-<pre><code>‘Why’ question is the most important of all questions you must ask yourself. And not only about global project goals, but also locally about every single piece of functionality. **If you can't briefly and clearly answer the question ‘what this entity is needed for’, then it's not needed**.
-</code></pre>
-<pre><code>Here and throughout we assume, to make our example more complex and bizarre, that we are optimizing all three factors.
-</code></pre>
-<p>2. Do the problems we outlined really exist? Do we really observe unequal coffee-machines utilization in mornings? Do people really suffer from the inability to find nearby a toffee nut latte they long for? Do they really care about the minutes they spend in lines?</p>
-<ol start="3">
+<li>
+<p>Do the problems we outlined really exist? Do we really observe unequal coffee-machines utilization in mornings? Do people really suffer from the inability to find nearby a toffee nut latte they long for? Do they really care about the minutes they spend in lines?</p>
+</li>
 <li>
 <p>Do we actually have a resource to solve a problem? Do we have access to a sufficient number of coffee machines and users to ensure the system's efficiency?</p>
 </li>
@@ -1104,7 +1102,7 @@ The invalid price error is resolvable: a client could obtain a new price offer a
 <p>Proper decomposition also helps with extending and evolving the API. We'll discuss the subject in Section II.</p><div class="page-break"></div><h3><a href="#chapter-11" class="anchor" id="chapter-11">Chapter 11. Describing Final Interfaces</a></h3>
 <p>When all entities, their responsibilities, and relations to each other are defined, we proceed to the development of the API itself. We are to describe the objects, fields, methods, and functions nomenclature in detail. In this chapter, we're giving purely practical advice on making APIs usable and understandable.</p>
 <p>Important assertion at number 0:</p>
-<h5><a href="#chapter-11-paragraph-0" id="chapter-11-paragraph-0" class="anchor">0. 0. Rules are just generalizations</a></h5>
+<h5><a href="#chapter-11-paragraph-0" id="chapter-11-paragraph-0" class="anchor">0. Rules are just generalizations</a></h5>
 <p>Rules are not to be applied unconditionally. They are not making thinking redundant. Every rule has a rational reason to exist. If your situation doesn't justify following the rule — then you shouldn't do it.</p>
 <p>For example, demanding a specification being consistent exists to help developers spare time on reading docs. If you <em>need</em> developers to read some entity's doc, it is totally rational to make its signature deliberately inconsistent.</p>
 <p>This idea applies to every concept listed below. If you get an unusable, bulky, unobvious API because you follow the rules, it's a motive to revise the rules (or the API).</p>

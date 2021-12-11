@@ -5,7 +5,7 @@
     "author": "Sergey Konstantinov <twirl-team@yandex.ru>",
     "repository": "github.com:twirl/The-API-Book",
     "devDependencies": {
-        "@twirl/book-builder": "0.0.10",
+        "@twirl/book-builder": "0.0.11",
         "html-docx-js": "^0.3.1"
     },
     "scripts": {
