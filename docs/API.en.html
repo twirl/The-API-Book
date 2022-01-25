@@ -288,7 +288,7 @@ h1 {
         <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
         <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px" class="octo-arm"></path>
         <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-<div class="page-break"></div><nav><h2 class="toc">Table of Contents</h2><ul class="table-of-contents"><li><a href="#section-1">Introduction</a><ul><li><a href="#chapter-1">Chapter 1. On the Structure of This Book</a></li><li><a href="#chapter-2">Chapter 2. The API Definition</a></li><li><a href="#chapter-3">Chapter 3. API Quality Criteria</a></li><li><a href="#chapter-4">Chapter 4. Backwards Compatibility</a></li><li><a href="#chapter-5">Chapter 5. On Versioning</a></li><li><a href="#chapter-6">Chapter 6. Terms and Notation Keys</a></li></ul></li><li><a href="#section-2">Section I. The API Design</a><ul><li><a href="#chapter-7">Chapter 7. The API Contexts Pyramid</a></li><li><a href="#chapter-8">Chapter 8. Defining an Application Field</a></li><li><a href="#chapter-9">Chapter 9. Separating Abstraction Levels</a></li><li><a href="#chapter-10">Chapter 10. Isolating Responsibility Areas</a></li><li><a href="#chapter-11">Chapter 11. Describing Final Interfaces</a></li><li><a href="#chapter-12">Chapter 12. Annex to Section I. Generic API Example</a></li></ul></li></ul></nav><div style="page-break-after: always;"></div><h2><a href="#section-1" class="anchor" id="section-1">Introduction</a></h2><h3><a href="#chapter-1" class="anchor" id="chapter-1">Chapter 1. On the Structure of This Book</a></h3>
+<div class="page-break"></div><nav><h2 class="toc">Table of Contents</h2><ul class="table-of-contents"><li><a href="#section-1">Introduction</a><ul><li><a href="#chapter-1">Chapter 1. On the Structure of This Book</a></li><li><a href="#chapter-2">Chapter 2. The API Definition</a></li><li><a href="#chapter-3">Chapter 3. API Quality Criteria</a></li><li><a href="#chapter-4">Chapter 4. Backwards Compatibility</a></li><li><a href="#chapter-5">Chapter 5. On Versioning</a></li><li><a href="#chapter-6">Chapter 6. Terms and Notation Keys</a></li></ul></li><li><a href="#section-2">Section I. The API Design</a><ul><li><a href="#chapter-7">Chapter 7. The API Contexts Pyramid</a></li><li><a href="#chapter-8">Chapter 8. Defining an Application Field</a></li><li><a href="#chapter-9">Chapter 9. Separating Abstraction Levels</a></li><li><a href="#chapter-10">Chapter 10. Isolating Responsibility Areas</a></li><li><a href="#chapter-11">Chapter 11. Describing Final Interfaces</a></li><li><a href="#chapter-12">Chapter 12. Annex to Section I. Generic API Example</a></li></ul></li><li><a href="#section-3">Section II. Backwards Compatibility</a><ul><li><a href="#chapter-13">Chapter 13. The Backwards Compatibility Problem Statement</a></li><li><a href="#chapter-14">Chapter 14. On the Iceberg's Waterline</a></li><li><a href="#chapter-15">Chapter 15. Extending through Abstracting</a></li><li><a href="#chapter-16">Chapter 16. Strong coupling and related problems</a></li><li><a href="#chapter-17">Chapter 17. Weak coupling</a></li><li><a href="#chapter-18">Chapter 18. Interfaces as a Universal Pattern</a></li><li><a href="#chapter-19">Chapter 19. The Serenity Notepad</a></li></ul></li></ul></nav><div style="page-break-after: always;"></div><h2><a href="#section-1" class="anchor" id="section-1">Introduction</a></h2><h3><a href="#chapter-1" class="anchor" id="chapter-1">Chapter 1. On the Structure of This Book</a></h3>
 <p>The book you're holding in your hands comprises this Introduction and 'The API Design' Section. We will discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces.</p>
 <p>Two more sections are planned for the future revisions of this book: Section II will be dedicated to an API's lifecycle: how interfaces evolve over time, and how to elaborate the product to match users' needs. Finally, Section III will be more about the un-engineering sides of the API, like API marketing, organizing support, and working with a community.</p>
 <p>First, two sections are interesting to engineers mostly, while the third section is more relevant to both engineers and product managers. However, we insist that the third section is the most important for the API software developer. Since an API is a product for engineers, you cannot simply pronounce a non-engineering team responsible for product planning and support. Nobody but you understands more about your API's product features.</p>
@@ -2064,6 +2064,710 @@ GET /v1/runtimes/{runtime_id}/state
 </code></pre>
 <pre><code>// Terminates the runtime
 POST /v1/runtimes/{id}/terminate
-</code></pre><div class="page-break"></div>
+</code></pre><div class="page-break"></div><h2><a href="#section-3" class="anchor" id="section-3">Section II. Backwards Compatibility</a></h2><h3><a href="#chapter-13" class="anchor" id="chapter-13">Chapter 13. The Backwards Compatibility Problem Statement</a></h3>
+<p>As usual, let's conceptually define ‘backwards compatibility’ before we start.</p>
+<p>Backwards compatibility is a feature of the entire API system to be stable in time. It means the following: <strong>the code which developers have written using your API, continues working functionally correctly for a long period of time</strong>. There are two important questions to this definition, and two explanations:</p>
+<ol>
+<li>
+<p>What does ‘functionally correctly’ mean?</p>
+<p>It means that the code continues to serve its function, e.g. solve some users' problem. It doesn't mean it continues working indistinguishably: for example, if you're maintaining a UI library, changing functionally insignificant design details like shadow depth or border stoke type is backwards compatible, whereas changing visual components size is not.</p>
+</li>
+<li>
+<p>What does ‘a long period of time’ mean?</p>
+<p>From our point of view, backwards compatibility maintenance period should be reconciled with subject area applications lifetime. Platform LTS periods are a decent guidance in the most cases. Since apps will be rewritten anyway when the platform maintenance period ends, it is reasonable to expect developers to move to the new API version also. In mainstream subject areas (e.g. desktop and mobile operating systems) this period lasts several years.</p>
+</li>
+</ol>
+<p>From the definition becomes obvious why backwards compatibility needs to be maintained (including taking necessary measures at the API design stage). An outage, full or partial, caused by the API vendor, is an extremely uncomfortable situation for every developer, if not a disaster — especially if they pay money for the API usage.</p>
+<p>But let's take a look at the problem from another angle: why the maintaining backwards compatibility problem exists at all? Why would anyone <em>want</em> to break at? This question, though it looks quite trivial, is much more complicated than the previous one.</p>
+<p>We could say the <em>we break backwards compatibility to introduce new features to the API</em>. But that would be deceiving: new features are called <em>‘new’</em> just because they cannot affect existing implementations which are not using them. We must admit there are several associated problems, which lead to the aspiration to rewrite <em>our</em> code, the code of the API itself, and ship new major version:</p>
+<ul>
+<li>
+<p>the code eventually becomes outdated; making changes, even introducing totally new functionality, is impractical;</p>
+</li>
+<li>
+<p>the old interfaces aren't suited to encompass new features; we would love to extend existing entities with new properties, but simply couldn't;</p>
+</li>
+<li>
+<p>finally, with years passing since the initial release, we understood more about the subject area and API usage best practices, and we would implement many things differently.</p>
+</li>
+</ul>
+<p>These arguments could be summarized frankly as ‘the API developers don't want to support the old code’. But this explanation is still incomplete: even if you're not going to rewrite the API code to add new functionality, or you're not going to add it at all, you still have to ship new API versions, minor and major alike.</p>
+<p><strong>NB</strong>: in this chapter we don't make any difference between minor versions and patches: ‘minor version’ means any backwards compatible API release.</p>
+<p>Let us remind that <a href="(https://twirl.github.io/The-API-Book/docs/API.en.html#chapter-2)">an API is a bridge</a>, a meaning of connecting different programmable contexts. No matter how strong our desire to keep the bridge intact is, for our capabilities are limited: we could lock the bridge, but we cannot command the rifts and the canyon itself. That's the source of the problems: we can't guarantee <em>our own</em> code wouldn't change, so at some point we will have to ask the clients to change <em>their</em> code.</p>
+<p>Apart from our own aspirations to change the API architecture, three other tectonic processes are happening at the same time: user agents, subject areas, and underlying platforms erosion.</p>
+<h4>Consumer applications fragmentation</h4>
+<p>When you shipped the very first API version, and first clients started to use it, the situation was perfect. There was only one version, and all clients were using just it. When this perfection ends, two scenarios are possible.</p>
+<ol>
+<li>
+<p>If the platform allows for fetching code on-demand, like the good old Web does, and you weren't too lazy to implement that code-on-demand (in a form of a platform SDK — for example, JS API), then the evolution of your API is more or less under your control. Maintaining backwards compatibility effectively means keeping <em>the client library</em> backwards compatible. As for client-server interaction, you're free.</p>
+<p>It doesn't mean that you can't break backwards compatibility. You still can make a mess with cache control headers or just overlook a bug in the code. Besides, even code-on-demand systems don't get updated instantly. The author of this book faced the situation, when users were deliberately keeping a browser tab open <em>for weeks</em> to get rid of updates. But still, you usually don't have to support more than two API versions — the last one and the penultimate one. Furthermore, you may try to rewrite previous major version of the library, implementing it upon the actual version API.</p>
+</li>
+<li>
+<p>If code-on-demand isn't supported or is prohibited by the platform, as in modern mobile operating systems, then the situation becomes more severe. Each client effectively borrows a snapshot of the code, working with your API, frozen at the moment of compilation. Client application updates are scattered over time at much more extent than Web application updates. The most painful thing is that <em>some clients will never be up to date</em>, because of one of three reasons:</p>
+<ul>
+<li>developers simply don't want to update the app, its development stopped;</li>
+<li>users don't wont to get updates (sometimes because users think that developers ‘spoiled’ the app in new versions);</li>
+<li>users can't get updates because their devices are no longer supported.</li>
+</ul>
+<p>In modern times these three categories combined could easily constitute tens of percent of auditory. It implies that cutting the support of any API version might be remarkable — especially if developers' apps continue supporting a more broad spectrum of platforms than the API does.</p>
+<p>You could have never issued any SDK, providing just the server-side API, for example in a form of HTTP endpoints. You might think, given your API is less competitive on the market because of a lack of SDKs, that the backwards compatibility problem is mitigated. That's not true: if you don't provide an SDK, then developers will either adopt an unofficial one (if someone bothers to make it), or just write a framework of themselves — independently. ‘Your framework — your problems’ strategy, fortunately or not, works badly: if developers write poor quality code upon your API, then your API is of a poor quality itself. Definitely in the view of developers, possibly in the view of end users, if the API performance within the app is visible to them.</p>
+</li>
+</ol>
+<p>Certainly, if you provide a stateless API which doesn't need client SDKs (or they might be auto-generated from the spec), those problems will be much less noticeable, but not fully avoidable, unless you never issue any new API version. Otherwise you still had to deal with some distribution of users by API and SDK versions.</p>
+<h4>Subject area evolution</h4>
+<p>The other side of the canyon is the underlying functionality you're exposing via the API. It's, of course, not static and somehow evolves:</p>
+<ul>
+<li>new functionality emerges;</li>
+<li>older functionality shuts down;</li>
+<li>interfaces change.</li>
+</ul>
+<p>As usual, the API provides an abstraction to much more granular subject area. In case of our <a href="https://twirl.github.io/The-API-Book/docs/API.en.html#chapter-7">coffee machine API example</a> one might reasonably expect new models to pop up, which are to be supported by the platform. New models tend to provide new APIs, and it's hard to guarantee they might be included preserving the same high-level API. And anyway, the code needs to be altered, which might lead to incompatibility, albeit unintentional.</p>
+<p>Let us also stress that low-level API vendors are not always as resolute regarding maintaining backwards compatibility (actually, any software they provide) as (we hope so) you are. You should be prepared that keeping your API in an operational state, e.g. writing and supporting facades to the shifting subject area landscape, will be your problem, and rather a sudden one.</p>
+<h4>Platform drift</h4>
+<p>Finally, there is a third side to a story — the ‘canyon’ you're crossing over with a bridge of your API. Developers write code which is executed in some environment you can't control, and it's evolving. New versions of operating system, browsers, protocols, language SDKs emerge. New standards are being developed, new arrangements made, some of them being backwards incompatible, and nothing could be done about that.</p>
+<p>Older platform versions lead to the fragmentation, just like older apps versions do, because developers (including the API developers) are struggling with supporting older platforms, and users are struggling with platform updates — and often can't update at all, since newer platform versions require newer devices.</p>
+<p>The nastiest thing here is that not only incremental progress in a form of new platforms and protocols demands changing the API, but also a vulgar fashion does. Several years ago realistic 3d icons were popular, but since then the public taste changed in a favor of flat and abstract ones. UI components developers had to follow the fashion, rebuilding their libraries, either shipping new icons or replacing old ones. Similarly, right now ‘night mode’ support is introduced everywhere, demanding changes in a broad range of APIs.</p>
+<h4>Backwards compatibility policy</h4>
+<p>To summarize the above:</p>
+<ul>
+<li>you will have to deploy new API versions because of apps, platforms, and subject area evolution; different areas are evolving with different rate, but never a zero one;</li>
+<li>that will lead to fragmenting the API versions usage over different platforms and apps;</li>
+<li>you have to make decisions critically important to your API's sustainability in the customers view.</li>
+</ul>
+<p>Let's briefly describe these decisions and key factors of making them.</p>
+<ol>
+<li>
+<p>How often new major API versions should be developed?</p>
+<p>That's primarily a <em>product</em> question. New major API version is to be released when the critical mass of functionality is achieved — a critical mass of features which couldn't be introduced in the previous API versions, or introducing them is too expensive. On stable markets such a situation occurs once in several years, usually. On emerging markets new API major versions might be shipped more frequently, only depending on your capabilities of supporting the zoo of previous versions. However, we should note that deploying a new version before the previous one was stabilized (which commonly takes from several months up to a year) is always a troubling sign to developers, meaning they're risking dealing with the unfinished platform glitches permanently.</p>
+</li>
+<li>
+<p>How many <em>major</em> versions should be supported at a time?</p>
+<p>As for major versions, we gave <em>theoretical</em> advice earlier: ideally, the major API version lifecycle should be a bit longer than the platform's one. In stable niches like desktop operating systems it constitutes 5 to 10 years. In new and emerging ones it is less, but still measures in years. <em>Practically</em> speaking you should look at the size of auditory which continues using older versions.</p>
+</li>
+<li>
+<p>How many <em>minor</em> versions (within one major version) should be supported at a time?</p>
+<p>As for minor versions, there are two options:</p>
+<ul>
+<li>if you provide server-side APIs and compiled SDKs only, you may basically do not expose minor versions at all, just the actual one: the server-side API is totally within your control, and you may fix any problem efficiently;</li>
+<li>if you provide code-on-demand SDKs, it is considered a good form to provide an access to previous minor versions of SDK for a period of time sufficient enough for developers to test their application and fix some issues if necessary. Since full rewriting isn't necessary, it's fine to align with apps release cycle duration in your industry, which is usually several months in worst cases.</li>
+</ul>
+</li>
+</ol>
+<p>We will address these questions in more details in the next chapters. Additionally, in the Section III we will also discuss, how to communicate to customers about new versions releases and older versions support discontinuance, and how to stimulate them to adopt new API versions.</p><div class="page-break"></div><h3><a href="#chapter-14" class="anchor" id="chapter-14">Chapter 14. On the Iceberg's Waterline</a></h3>
+<p>Before we start talking about the extensible API design, we should discuss the hygienic minimum. A huge number of problems would have never happened if API vendors had paid more attention to marking their area of responsibility.</p>
+<h5><a href="#chapter-14-paragraph-1" id="chapter-14-paragraph-1" class="anchor">1. Provide a minimal amount of functionality</a></h5>
+<p>At any moment in its lifetime, your API is like an iceberg: it comprises an observable (e.g. documented) part and a hidden one, undocumented. If the API is designed properly, these two parts correspond to each other just like the above-water and under-water parts of a real iceberg do, i.e. one to ten. Why so? Because of two obvious reasons.</p>
+<ul>
+<li>
+<p>Computers exist to make complicated things easy, not vice versa. The code developers write upon your API must describe a complicated problem's solution in neat and straightforward sentences. If developers have to write more code than the API itself comprises, then there is something rotten here. Probably, this API simply isn't needed at all.</p>
+</li>
+<li>
+<p>Revoking the API functionality causes losses. If you've promised to provide some functionality, you will have to do so ‘forever’ (until this API version's maintenance period is over). Pronouncing some functionality deprecated is a tricky thing, potentially alienating your customers.</p>
+</li>
+</ul>
+<p>Rule #1 is the simplest: if some functionality might be withheld — then never expose it. It might be reformulated like: every entity, every field, every public API method is a <em>product solution</em>. There must be solid <em>product</em> reasons why some functionality is exposed.</p>
+<h5><a href="#chapter-14-paragraph-2" id="chapter-14-paragraph-2" class="anchor">2. Avoid gray zones and ambiguities</a></h5>
+<p>Your obligations to maintain some functionality must be stated as clearly as possible. Especially regarding those environments and platforms where no native capability to restrict access to undocumented functionality exists. Unfortunately, developers tend to consider some private features they found to be eligible for use, thus presuming the API vendor shall maintain them intact. Policy on such ‘findings’ must be articulated explicitly. At the very least, in case of such non-authorized usage of undocumented functionality, you might refer to the docs, and be in your own rights in the eyes of the community.</p>
+<p>However, API developers often legitimize such gray zones themselves, for example, by:</p>
+<ul>
+<li>returning undocumented fields in endpoints' responses;</li>
+<li>using private functionality in code examples — in the docs, responding to support messages, in conference talks, etc.</li>
+</ul>
+<p>One cannot make a partial commitment. Either you guarantee this code will always work or do not slip a slightest note such functionality exists.</p>
+<h5><a href="#chapter-14-paragraph-3" id="chapter-14-paragraph-3" class="anchor">3. Codify implicit agreements</a></h5>
+<p>The third principle is much less obvious. Pay close attention to the code which you're suggesting developers to develop: are there any conventions that you consider evident, but never wrote them down?</p>
+<p><strong>Example #1</strong>. Let's take a look at this order processing SDK example:</p>
+<pre><code>// Creates an order
+let order = api.createOrder();
+// Returns the order status
+let status = api.getStatus(order.id);
+</code></pre>
+<p>Let's imagine that you're struggling with scaling your service, and at some point moved to the asynchronous replication of the database. This would lead to the situation when querying for the order status right after order creating might return <code>404</code> if an asynchronous replica hasn't got the update yet. In fact, thus we abandon strict <a href="https://en.wikipedia.org/wiki/Consistency_model">consistency policy</a> in a favor of an eventual one.</p>
+<p>What would be the result? The code above will stop working. A developer creates an order, tries to get its status — but gets the error. It's very hard to predict what approach developers would implement to tackle this error. Probably, none at all.</p>
+<p>You may say something like, ‘But we've never promised the strict consistency in the first place’ — and that is obviously not true. You may say that if, and only if, you have really described the eventual consistency in the <code>createOrder</code> docs, and all your SDK examples look like:</p>
+<pre><code>let order = api.createOrder();
+let status;
+while (true) {
+    try {
+        status = api.getStatus(order.id);
+    } catch (e) {
+        if (e.httpStatusCode != 404 || timeoutExceeded()) {
+            break;
+        }
+    }
+}
+if (status) {
+    …
+}
+</code></pre>
+<p>We presume we may skip the explanations why such code must never be written under any circumstances. If you're really providing a non-strictly consistent API, then either <code>createOrder</code> operation must be asynchronous and return the result when all replicas are synchronized, or the retry policy must be hidden inside <code>getStatus</code> operation implementation.</p>
+<p>If you failed to describe the eventual consistency in the first place, then you simply can't make these changes in the API. You will effectively break backwards compatibility, which will lead to huge problems with your customers' apps, intensified by the fact they can't be simply reproduced.</p>
+<p><strong>Example #2</strong>. Take a look at the following code:</p>
+<pre><code>let resolve;
+let promise = new Promise(
+    function (innerResolve) {
+        resolve = innerResolve;
+    }
+);
+resolve();
+</code></pre>
+<p>This code presumes that the callback function passed to <code>new Promise</code> will be executed synchronously, and the <code>resolve</code> variable will be initialized before the <code>resolve()</code> function is called. But this assumption is based on nothing: there are no clues indicating that <code>new Promise</code> constructor executes the callback function synchronously.</p>
+<p>Of course, the developers of the language standard can afford such tricks; but you as an API developer cannot. You must at least document this behavior and make the signatures point to it; actually, good advice is to avoid such conventions, since they are simply unobvious while reading the code. And of course, under no circumstances you can actually change this behavior to an asynchronous one.</p>
+<p><strong>Example #3</strong>. Imagine you're providing animations API, which includes two independent functions:</p>
+<pre><code>// Animates object's width,
+// beginning with first value, ending with second
+// in a specified time period
+object.animateWidth('100px', '500px', '1s');
+// Observes object's width changes
+object.observe('widthchange', observerFunction);
+</code></pre>
+<p>A question arises: how frequently and at what time fractions the <code>observerFunction</code> will be called? Let's assume in the first SDK version we emulated step-by-step animation at 10 frames per second: then <code>observerFunction</code> will be called 10 times, getting values '140px', '180px', etc., up to '500px'. But then in a new API version, we switched to implementing both functions atop of a system's native functionality — and so you simply don't know, when and how frequently the <code>observerFunction</code> will be called.</p>
+<p>Just changing call frequency might result in making some code dysfunctional — for example, if the callback function makes some complex calculations, and no throttling is implemented since the developer just relied on your SDK's built-in throttling. And if the <code>observerFunction</code> ceases to be called when exactly '500px' is reached because of some system algorithms specifics, some code will be broken beyond any doubt.</p>
+<p>In this example, you should document the concrete contract (how often the observer function is called) and stick to it even if the underlying technology is changed.</p>
+<p><strong>Example #4</strong>. Imagine that customer orders are passing through a specific pipeline:</p>
+<pre><code>GET /v1/orders/{id}/events/history
+→
+{
+    "event_history": [
+        {
+            "iso_datetime": "2020-12-29T00:35:00+03:00",
+            "new_status": "created"
+        },
+        {
+            "iso_datetime": "2020-12-29T00:35:10+03:00",
+            "new_status": "payment_approved"
+        },
+        {
+            "iso_datetime": "2020-12-29T00:35:20+03:00",
+            "new_status": "preparing_started"
+        },
+        {
+            "iso_datetime": "2020-12-29T00:35:30+03:00",
+            "new_status": "ready"
+        }
+    ]
+}
+</code></pre>
+<p>Suppose at some moment we decided to allow trustworthy clients to get their coffee in advance before the payment is confirmed. So an order will jump straight to "preparing_started", or event "ready", without a "payment_approved" event being emitted. It might appear to you that this modification <em>is</em> backwards compatible since you've never really promised any specific event order being maintained, but it is not.</p>
+<p>Let's assume that a developer (probably, your company's business partner) wrote some code implementing some valuable business procedure, for example, gathering income and expenses analytics. It's quite logical to expect this code operates a state machine, which switches from one state to another depending on getting (or getting not) specific events. This analytical code will be broken if the event order changes. In the best-case scenario, a developer will get some exceptions and have to cope with the error's cause; worst-case, partners will operate wrong statistics for an indefinite period of time until they find a mistake.</p>
+<p>A proper decision would be, in first, documenting the event order and allowed states; in second, continuing generating "payment_approved" event before "preparing_started" (since you're making a decision to prepare that order, so you're in fact approving the payment) and add extended payment information.</p>
+<p>This example leads us to the last rule.</p>
+<h5><a href="#chapter-14-paragraph-4" id="chapter-14-paragraph-4" class="anchor">4. Product logic must be backwards compatible as well</a></h5>
+<p>State transition graph, event order, possible causes of status changes — such critical things must be documented. Not every piece of business logic might be defined in a form of a programmatical contract; some cannot be represented at all.</p>
+<p>Imagine that one day you start to take phone calls. A client may contact the call center to cancel an order. You might even make this functionality <em>technically</em> backwards compatible, introducing new fields to the ‘order’ entity. But the end-user might simply <em>know</em> the number, and call it even if the app wasn't suggesting anything like that. Partner's business analytical code might be broken likewise, or start displaying weather on Mars since it was written knowing nothing about the possibility of canceling orders somehow in circumvention of the partner's systems.</p>
+<p><em>Technically</em> correct decision would be adding ‘canceling via call center allowed’ parameter to the order creation function. Conversely, call center operators may only cancel those orders which were created with this flag set. But that would be a bad decision from a <em>product</em> point of view. The only ‘good’ decision in this situation is to foresee the possibility of external order cancels in the first place. If you haven't foreseen it, your only option is the ‘Serenity Notepad’ to be discussed in the last chapter of this Section.</p><div class="page-break"></div><h3><a href="#chapter-15" class="anchor" id="chapter-15">Chapter 15. Extending through Abstracting</a></h3>
+<p>In previous chapters, we have tried to outline theoretical rules and illustrate them with practical examples. However, understanding the principles of change-proof API design requires practice above all things. An ability to anticipate future growth problems comes from a handful of grave mistakes once made. One cannot foresee everything but can develop certain technical intuition.</p>
+<p>So in the following chapters, we will try to probe our study API from the previous Section, testing its robustness from every possible viewpoint, thus carrying out some ‘variational analysis’ of our interfaces. More specifically, we will apply a ‘What If?’ question to every entity, as if we are to provide a possibility to write an alternate implementation of every piece of logic.</p>
+<p><strong>NB</strong>. In our examples, the interfaces will be constructed in a manner allowing for dynamic real-time linking of different entities. In practice, such integrations usually imply writing an ad hoc server-side code in accordance with specific agreements made with specific partners. But for educational purposes, we will pursue more abstract and complicated ways. Dynamic real-time linking is more typical in complex program constructs like operating system APIs or embeddable libraries; giving educational examples based on such sophisticated systems would be too inconvenient.</p>
+<p>Let's start with the basics. Imagine that we haven't exposed any other functionality but searching for offers and making orders, thus providing an API of two methods: <code>POST /offers/search</code> and <code>POST /orders</code>.</p>
+<p>Let us make the next logical step there and suppose that partners will wish to dynamically plug their own coffee machines (operating some previously unknown types of API) into our platform. To allow doing so, we have to negotiate a callback format that would allow us to call partners' APIs and expose two new endpoints providing the following capabilities:</p>
+<ul>
+<li>registering new API types in the system;</li>
+<li>providing the list of the coffee machines and their API types;</li>
+</ul>
+<p>For example, we might provide the following methods.</p>
+<pre><code>// 1. Register a new API type
+PUT /v1/api-types/{api_type}
+{
+    "order_execution_endpoint": {
+        // Callback function description
+    }
+}
+</code></pre>
+<pre><code>// 2. Provide a list of coffee machines
+// with their API types
+PUT /v1/partners/{partnerId}/coffee-machines
+{
+    "coffee_machines": [{
+        "api_type",
+        "location",
+        "supported_recipes"
+    }, …]
+}
+</code></pre>
+<p>So the mechanics is like that:</p>
+<ul>
+<li>a partner registers their API types, coffee machines, and supported recipes;</li>
+<li>with each incoming order, our server will call the callback function, providing the order data in the stipulated format.</li>
+</ul>
+<p>Now the partners might dynamically plug their coffee machines in and get the orders. But we now will do the following exercise:</p>
+<ul>
+<li>enumerate all the implicit assumptions we have made;</li>
+<li>enumerate all the implicit coupling mechanisms we need to haven the platform functioning properly.</li>
+</ul>
+<p>It may look like there are no such things in our API since it's quite simple and basically just describes making some HTTP call — but that's not true.</p>
+<ol>
+<li>It is implied that every coffee machine supports every order option like varying the beverage volume.</li>
+<li>There is no need to display some additional data to the end-user regarding coffee being brewed on these new coffee machines.</li>
+<li>The price of the beverage doesn't depend on the selected partner or coffee machine type.</li>
+</ol>
+<p>We have written down this list having one purpose in mind: we need to understand, how exactly will we make these implicit arrangements explicit if we need it. For example, if different coffee machines provide different functionality — for example, some of them provide fixed beverage volumes only — what would change in our API?</p>
+<p>The universal approach to making such amendments is: to consider the existing interface as a reduction of some more general one like if some parameters were set to defaults and therefore omitted. So making a change is always a three-step process.</p>
+<ol>
+<li>Explicitly define the programmatical contract <em>as it works right now</em>.</li>
+<li>Extend the functionality: add a new method allowing for tackling those restrictions set in the previous paragraph.</li>
+<li>Pronounce the existing interfaces (those defined in #1) being ‘helpers’ to new ones (those defined in #2) which sets some options to default values.</li>
+</ol>
+<p>More specifically, if we talk about changing available order options, we should do the following.</p>
+<ol>
+<li>
+<p>Describe the current state. All coffee machines, plugged via the API, must support three options: sprinkling with cinnamon, changing the volume, and contactless delivery.</p>
+</li>
+<li>
+<p>Add new ‘with-options’ endpoint:</p>
+<pre><code>PUT /v1/partners/{partnerId}/coffee-machines-with-options
+{
+  "coffee_machines": [{
+    "api_type",
+    "location",
+    "supported_recipes",
+    "supported_options": [
+      {"type": "volume_change"}
+    ]
+  }, …]
+}
+</code></pre>
+</li>
+<li>
+<p>Pronounce <code>PUT /coffee-machines</code> endpoint as it now stands in the protocol being equivalent to calling <code>PUT /coffee-machines-with-options</code> if we pass those three options to it (sprinkling with cinnamon, changing the volume, contactless delivery) and therefore being a partial case — a helper to a more general call.</p>
+</li>
+</ol>
+<p>Usually, just adding a new optional parameter to the existing interface is enough; in our case, adding non-mandatory <code>options</code> to the <code>PUT /coffee-machines</code> endpoint.</p>
+<p><strong>NB</strong>. When we talk about defining the contract as it works right now, we're talking about <em>internal</em> agreements. We must have asked partners to support those three options while negotiating the interaction format. If we had failed to do so from the very beginning, and now are defining these in a course of expanding the public API, it's a very strong claim to break backwards compatibility, and we should never do that (see <a href="#chapter-14">Chapter 14</a>).</p>
+<h4>Limits of Applicability</h4>
+<p>Though this exercise looks very simple and universal, its consistent usage is possible only if the hierarchy of entities is well designed from the very beginning and, which is more important, the vector of the further API expansion is clear. Imagine that after some time passed, the options list got new items; let's say, adding syrup or a second espresso shot. We are totally capable of expanding the list — but not the defaults. So the ‘default’ <code>PUT /coffee-machines</code> interface will eventually become totally useless because the default set of three options will not only be any longer of use but will also look ridiculously: why these three options, what are the selection criteria? In fact, the defaults and the method list will be reflecting the historical stages of our API development, and that's totally not what you'd expect from the helpers and defaults nomenclature.</p>
+<p>Alas, this dilemma can't be easily resolved. From one side, we want developers to write neat and laconic code, so we must provide useful helpers and defaults. From the other side, we can't know in advance which options sets will be the most frequent after several years of the API expansion.</p>
+<p><strong>NB</strong>. We might mask this problem in the following manner: one day gather all these oddities and re-define all the defaults with one single parameter. For example, introduce a special method like <code>POST /use-defaults {"version": "v2"}</code> which would overwrite all the defaults with more suitable values. That will ease the learning curve, but your documentation will become even worse after that.</p>
+<p>In the real world, the only viable approach to somehow tackle the problem is the weak entity coupling, which we will discuss in the next chapter.</p><div class="page-break"></div><h3><a href="#chapter-16" class="anchor" id="chapter-16">Chapter 16. Strong coupling and related problems</a></h3>
+<p>To demonstrate the strong coupling problematics let us move to <em>really interesting</em> things. Let's continue our ‘variation analysis’: what if the partners wish to offer not only the standard beverages but their own unique coffee recipes to end-users? There is a catch in this question: the partner API as we described it in the previous chapter, does not expose the very existence of the partner network to the end-user, and thus describes a simple case. Once we start providing methods to alter the core functionality, not just API extensions, we will soon face next-level problems.</p>
+<p>So, let us add one more endpoint to register the partner's own recipe:</p>
+<pre><code>// Adds new recipe
+POST /v1/recipes
+{
+  "id",
+  "product_properties": {
+    "name",
+    "description",
+    "default_value"
+    // Other properties, describing
+    // a beverage to end-user
+    …
+  }
+}
+</code></pre>
+<p>At first glance, again, it looks like a reasonably simple interface, explicitly decomposed into abstraction levels. But let us imagine the future — what would happen with this interface when our system evolves further?</p>
+<p>The first problem is obvious to those who read <a href="#chapter-11-paragraph-20">chapter 11</a> thoroughly: product properties must be localized. That will lead us to the first change:</p>
+<pre><code>"product_properties": {
+  // "l10n" is a standard abbreviation
+  // for "localization"
+  "l10n" : [{
+    "language_code": "en", 
+    "country_code": "US", 
+    "name", 
+    "description" 
+  }, /* other languages and countries */ … ]
+]
+</code></pre>
+<p>And here the first big question arises: what should we do with the <code>default_volume</code> field? From one side, that's an objective quality measured in standardized units, and it's being passed to the program execution engine. On the other side, in countries like the United States, we had to specify beverage volume not like ‘300 ml’, but ‘10 fl oz’. We may propose two solutions:</p>
+<ul>
+<li>either the partner provides the corresponding number only, and we will make readable descriptions on our own behalf,</li>
+<li>or the partner provides both the number and all of its localized representations.</li>
+</ul>
+<p>The flaw in the first option is that a partner might be willing to use the service in some new country or language — and will be unable to do so until the API supports them. The flaw in the second option is that it works with predefined volumes only, so you can't order an arbitrary beverage volume. So the very first step we've made effectively has us trapped.</p>
+<p>The localization flaws are not the only problem of this API. We should ask ourselves a question — <em>why</em> do we really need these <code>name</code> and <code>description</code>? They are simply non-machine-readable strings with no specific semantics. At first glance, we need them to return them back in the <code>/v1/search</code> method response, but that's not a proper answer: why do we really return these strings from <code>search</code>?</p>
+<p>The correct answer lies a way beyond this specific interface. We need them <em>because some representation exists</em>. There is a UI for choosing beverage type. Probably the <code>name</code> and <code>description</code> fields are simply two designations of the beverage for a user to read, a short one (to be displayed on the search results page) and a long one (to be displayed in the extended product specification block). It actually means that we are setting the requirements to the API based on some very specific design. But <em>what if</em> a partner is making their own UI for their own app? Not only they might not actually need two descriptions, but we are also <em>deceiving</em> them. The <code>name</code> is not ‘just a name’ actually, it implies some restrictions: it has recommended length which is optimal to some specific UI, and it must look consistently on the search results page. Indeed, ‘our best quality™ coffee’ or ‘Invigorating Morning Freshness®’ designation would look very weird in-between ‘Cappuccino’, ‘Lungo’, and ‘Latte’.</p>
+<p>There is also another side to this story. As UIs (both ours and partners) tend to evolve, new visual elements will be eventually introduced. For example, a picture of a beverage, its energy value, allergen information, etc. <code>product_properties</code> will become a scrapyard for tons of optional fields, and learning how setting what field results in what effects in the UI will be an interesting quest, full of probes and mistakes.</p>
+<p>Problems we're facing are the problems of <em>strong coupling</em>. Each time we offer an interface like described above, we in fact prescript implementing one entity (recipe) based on implementations of other entities (UI layout, localization rules). This approach disrespects the very basic principle of the ‘top to bottom’ API design because <strong>low-level entities must not define high-level ones</strong>.</p>
+<h4>The rule of contexts</h4>
+<p>To make things worse, let us state that the inverse principle is actually correct either: high-level entities must not define low-level ones, since that simply isn't their responsibility. The exit from this logical labyrinth is: high-level entities must <em>define a context</em>, which other objects are to interpret. To properly design adding new recipe interface we shouldn't try to find a better data format; we need to understand what contexts, both explicit and implicit, exist in our subject area.</p>
+<p>We have already found a localization context. There is some set of languages and regions we support in our API, and there are requirements — what exactly the partner must provide to make our API work in a new region. More specifically, there must be some formatting function to represent beverage volume somewhere in our API code:</p>
+<pre><code>l10n.volume.format(value, language_code, country_code)
+// l10n.formatVolume('300ml', 'en', 'UK') → '300 ml'
+// l10n.formatVolume('300ml', 'en', 'US') → '10 fl oz'
+</code></pre>
+<p>To make our API work correctly with a new language or region, the partner must either define this function or point which pre-existing implementation to use. Like this:</p>
+<pre><code>// Add a general formatting rule
+// for Russian language
+PUT /formatters/volume/ru
+{
+  "template": "{volume} мл"
+}
+// Add a specific formatting rule
+// for Russian language in the ‘US’ region
+PUT /formatters/volume/ru/US
+{
+  // in US we need to recalculate
+  // the number, then add a postfix
+  "value_preparation": {
+    "action": "divide",
+    "divisor": 30
+  },
+  "template": "{volume} ун."
+}
+</code></pre>
+<p><strong>NB</strong>: we are more than aware that such a simple format isn't enough to cover real-world localization use-cases, and one either rely on existing libraries, or design a sophisticated format for such templating, which takes into account such things as grammatical cases and rules of rounding numbers up, or allow defining formatting rules in a form of function code. The example above is simplified for purely educational purposes.</p>
+<p>Let us deal with the <code>name</code> and <code>description</code> problem then. To lower the coupling level there we need to formalize (probably just to ourselves) a ‘layout’ concept. We are asking for providing <code>name</code> and <code>description</code> not because we just need them, but for representing them in some specific user interface. This specific UI might have an identifier or a semantic name.</p>
+<pre><code>GET /v1/layouts/{layout_id}
+{
+  "id",
+  // We would probably have lots of layouts,
+  // so it's better to enable extensibility
+  // from the beginning
+  "kind": "recipe_search",
+  // Describe every property we require
+  // to have this layout rendered properly
+  "properties": [{
+    // Since we learned that `name`
+    // is actually a title for a search
+    // result snippet, it's much more
+    // convenient to have explicit
+    // `search_title` instead
+    "field": "search_title",
+    "view": {
+      // Machine-readable description
+      // of how this field is rendered
+      "min_length": "5em",
+      "max_length": "20em",
+      "overflow": "ellipsis"
+    }
+  }, …],
+  // Which fields are mandatory
+  "required": [
+    "search_title", 
+    "search_description"
+  ]
+}
+</code></pre>
+<p>So the partner may decide, which option better suits them. They can provide mandatory fields for the standard layout:</p>
+<pre><code>PUT /v1/recipes/{id}/properties/l10n/{lang}
+{
+  "search_title", "search_description"
+}
+</code></pre>
+<p>or create a layout of their own and provide data fields it requires:</p>
+<pre><code>POST /v1/layouts
+{
+  "properties"
+}
+→
+{ "id", "properties" }
+</code></pre>
+<p>or they may ultimately design their own UI and don't use this functionality at all, defining neither layouts nor data fields.</p>
+<p>Then our interface would ultimately look like:</p>
+<pre><code>POST /v1/recipes
+{ "id" }
+→
+{ "id" }
+</code></pre>
+<p>This conclusion might look highly counter-intuitive, but lacking any fields in a ‘Recipe’ simply tells us that this entity possesses no specific semantics of its own, and is simply an identifier of a context; a method to point out where to look for the data needed by other entities. In the real world we should implement a builder endpoint capable of creating all the related contexts with a single request:</p>
+<pre><code>POST /v1/recipe-builder
+{
+  "id",
+  // Recipe's fixed properties
+  "product_properties": {
+    "default_volume",
+    "l10n"
+  },
+  // Create all the desirable layouts
+  "layouts": [{
+    "id", "kind", "properties"
+  }],
+  // Add all the formatters needed
+  "formatters": {
+    "volume": [
+      { "language_code", "template" },
+      { "language_code", "country_code", "template" }
+    ]
+  },
+  // Other actions needed to be done
+  // to register new recipe in the system
+  …
+}
+</code></pre>
+<p>We should also note that providing a newly created entity identifier by the requesting side isn't exactly the best pattern. However, since we decided from the very beginning to keep recipe identifiers semantically meaningful, we have to live with this convention. Obviously, we're risking getting lots of collisions on recipe names used by different partners, so we actually need to modify this operation: either the partner must always use a pair of identifiers (i.e. recipe's one plus partner's own id), or we need to introduce composite identifiers, as we recommended earlier in <a href="#chapter-11-paragraph-8">Chapter 11</a>.</p>
+<pre><code>POST /v1/recipes/custom
+{
+  // First part of the composite
+  // identifier, for example,
+  // the partner's own id
+  "namespace": "my-coffee-company",
+  // Second part of the identifier
+  "id_component": "lungo-customato"
+}
+→
+{
+  "id": "my-coffee-company:lungo-customato"
+}
+</code></pre>
+<p>Also note that this format allows us to maintain an important extensibility point: different partners might have totally isolated namespaces, or conversely share them. Furthermore, we might introduce special namespaces (like ‘common’, for example) to allow for publishing new recipes for everyone (and that, by the way, would allow us to organize our own backoffice to edit recipes).</p><div class="page-break"></div><h3><a href="#chapter-17" class="anchor" id="chapter-17">Chapter 17. Weak coupling</a></h3>
+<p>In the previous chapter we've demonstrated how breaking strong coupling of components leads to decomposing entities and collapsing their public interfaces down to a reasonable minimum. A mindful reader might have noted that this technique was already used in our API study much earlier in <a href="#chapter-9">Chapter 9</a> with regards to ‘program’ and ‘program run’ entities. Indeed, we might do it without <code>program-matcher</code> endpoint and make it this way:</p>
+<pre><code>GET /v1/recipes/{id}/run-data/{api_type}
+→
+{ /* A description, how to
+     execute a specific recipe
+     using a specified API type */ }
+</code></pre>
+<p>Then developers would have to make this trick to get coffee prepared:</p>
+<ul>
+<li>learn the API type of the specific coffee machine;</li>
+<li>get the execution description, as stated above;</li>
+<li>depending on the API type, run some specific commands.</li>
+</ul>
+<p>Obviously, such an interface is absolutely unacceptable, simply because in the majority of use cases developers don't care at all, which API type the specific coffee machine runs. To avoid the necessity of introducing such bad interfaces we created a new ‘program’ entity, which constitutes merely a context identifier, just like a ‘recipe’ entity does. A <code>program_run_id</code> entity is also organized in this manner, it also possesses no specific properties, being <em>just</em> a program run identifier.</p>
+<p>But let us return to the question we have previously mentioned in <a href="#chapter-15">Chapter 15</a>: how should we parametrize the order preparation process implemented via third-party API. In other words, what's this <code>program_execution_endpoint</code> that we ask upon the API type registration?</p>
+<pre><code>PUT /v1/api-types/{api_type}
+{
+    "order_execution_endpoint": {
+        // ???
+    }
+}
+</code></pre>
+<p>Out of general considerations, we may assume that every such API would be capable of executing three functions: run a program with specified parameters, return current execution status, and finish (cancel) the order. An obvious way to provide the common interface is to require these three functions being executed via a remote call, for example, like this:</p>
+<pre><code>// This is an endpoint for partners
+// to register their coffee machines
+// in the system
+PUT /partners/{id}/coffee-machines
+{
+  "coffee-machines": [{
+    "id",
+    …
+    "order_execution_endpoint": {
+      "program_run_endpoint": {
+        /* Some description of
+            the remote function call */
+        "type": "rpc",
+        "endpoint": &#x3C;URL>,
+        "format"
+      },
+      "program_state_endpoint",
+      "program_stop_endpoint"
+    }
+  }, …]
+}
+</code></pre>
+<p><strong>NB</strong>: doing so we're transferring the complexity of developing the API onto a plane of developing appropriate data formats, e.g. how exactly would we send order parameters to the <code>program_run_endpoint</code>, and what format the <code>program_state_endpoint</code> shall return, etc., but in this chapter, we're focusing on different questions.</p>
+<p>Though this API looks absolutely universal, it's quite easy to demonstrate how once simple and clear API ends up being confusing and convoluted. This design presents two main problems.</p>
+<ol>
+<li>It describes nicely the integrations we've already implemented (it costs almost nothing to support the API types we already know), but brings no flexibility in the approach. In fact, we simply described what we'd already learned, not even trying to look at a larger picture.</li>
+<li>This design is ultimately based on a single principle: every order preparation might be codified with these three imperative commands.</li>
+</ol>
+<p>We may easily disprove the #2 principle, and that will uncover the implications of the #1. For the beginning, let us imagine that on a course of further service growth we decided to allow end-users to change the order after the execution started. For example, ask for a cinnamon sprinkling or contactless takeout. That would lead us to creating a new endpoint, let's say, <code>program_modify_endpoint</code>, and new difficulties in data format development (we need to understand in the real-time, could we actually sprinkle cinnamon on this specific cup of coffee or not). What <em>is</em> important is that both endpoint and new data fields would be optional because of backwards compatibility requirement.</p>
+<p>Now let's try to imagine a real-world example that doesn't fit into our ‘three imperatives to rule them all’ picture. That's quite easy either: what if we're plugging via our API not a coffee house, but a vending machine? From one side, it means that <code>modify</code> endpoint and all related stuff are simply meaningless: vending machine couldn't sprinkle cinnamon over a coffee cup, and contactless takeout requirement means nothing to it. From the other side, the machine, unlike the people-operated café, requires <em>takeout approval</em>: the end-user places an order being somewhere in some other place then walks to the machine and pushes the ‘get the order’ button in the app. We might, of course, require the user to stand in front of the machine when placing an order, but that would contradict the entire product concept of users selecting and ordering beverages and then walking to the takeout point.</p>
+<p>Programmable takeout approval requires one more endpoint, let's say, <code>program_takeout_endpoint</code>. And so we've lost our way in a forest of three endpoints:</p>
+<ul>
+<li>to have vending machines integrated a partner must implement the <code>program_takeout_endpoint</code>, but doesn't actually need the <code>program_modify_endpoint</code>;</li>
+<li>to have regular coffee houses integrated a partner must implement the <code>program_modify_endpoint</code>, but doesn't actually need the <code>program_takeout_endpoint</code>.</li>
+</ul>
+<p>Furthermore, we have to describe both endpoints in the docs. It's quite natural that <code>takeout</code> endpoint is very specific; unlike cinnamon sprinkling, which we hid under the pretty general <code>modify</code> endpoint, operations like takeout approval will require introducing a new unique method every time. After several iterations, we would have a scrapyard, full of similarly looking methods, mostly optional — but developers would need to study the docs nonetheless to understand, which methods are needed in your specific situation, and which are not.</p>
+<p>We actually don't know, whether in the real world of coffee machine APIs this problem will really occur or not. But we can say with all confidence regarding ‘bare metal’ integrations that the processes we described <em>always</em> happen. The underlying technology shifts; an API that seemed clear and straightforward, becomes a trash bin full of legacy methods, half of which borrows no practical sense under any specific set of conditions. If we add technical progress to the situation, i.e. imagine that after a while all coffee houses become automated, we will finally end up with the situation when half of the methods <em>isn't actually needed at all</em>, like requesting contactless takeout method.</p>
+<p>It is also worth mentioning that we unwittingly violated the abstraction levels isolation principle. At the vending machine API level, there is no such thing as a ‘contactless takeout’, that's actually a product concept.</p>
+<p>So, how would we tackle this issue? Using one of two possible approaches: either thoroughly study the entire subject area and its upcoming improvements for at least several years ahead, or abandon strong coupling in favor of weak one. How would the <em>ideal</em> solution look from both sides? Something like this:</p>
+<ul>
+<li>the higher-level program API level doesn't actually know how the execution of its commands works; it formulates the tasks at its own level of understanding: brew this recipe, sprinkle with cinnamon, allow this user to take it;</li>
+<li>the underlying program execution API level doesn't care what other same-level implementations exist; it just interprets those parts of the task which make sense to it.</li>
+</ul>
+<p>If we take a look at the principles described in the previous chapter, we would find that this principle was already formulated: we need to describe <em>informational contexts</em> at every abstraction level and design a mechanism to translate them between levels. Furthermore, in a more general sense, we formulated it as early as in <a href="#chapter-9">‘The Data Flow’ paragraph of Chapter 9</a>.</p>
+<p>In our case we need to implement the following mechanisms:</p>
+<ul>
+<li>running a program creates a corresponding context comprising all the essential parameters;</li>
+<li>there is a method to stream the information regarding the state modifications: the execution level may read the context, learn about all the changes and report back the changes of its own.</li>
+</ul>
+<p>There are different techniques to organize this data flow, but basically we always have two context descriptions and a two-way event stream in-between. If we were developing an SDK we would express the idea like this:</p>
+<pre><code>/* Partner's implementation of the program
+   run procedure for a custom API type */
+registerProgramRunHandler(apiType, (program) => {
+  // Initiating an execution
+  // on partner's side
+  let execution = initExecution(…);
+  // Listen to parent context's changes
+  program.context.on('takeout_requested', () => {
+    // If takeout is requested, initiate
+    // corresponding procedures
+    execution.prepareTakeout(() => {
+      // When the cup is ready for takeout,
+      // emit corresponding event
+      // for higher-level entity to catch it
+      execution.context.emit('takeout_ready');
+    });
+  });
+
+  return execution.context;
+});
+</code></pre>
+<p><strong>NB</strong>: In the case of HTTP API corresponding example would look rather bulky as it involves implementing several additional endpoints for message queues like <code>GET /program-run/events</code> and <code>GET /partner/{id}/execution/events</code>. We would leave this exercise to the reader. Also worth mentioning that in real-world systems such event queues are usually organized using external event message systems like Apache Kafka or Amazon SNS/SQS.</p>
+<p>At this point, a mindful reader might begin protesting because if we take a look at the nomenclature of the new entities, we will find that nothing changed in the problem statement. It actually became even more complicated:</p>
+<ul>
+<li>instead of calling the <code>takeout</code> method we're now generating a pair of <code>takeout_requested</code>/<code>takeout_ready</code> events;</li>
+<li>instead of a long list of methods that shall be implemented to integrate partner's API, we now have a long list of <code>context</code> objects fields and events they generate;</li>
+<li>and with regards to technological progress we've changed nothing: now we have deprecated fields and events instead of deprecated methods.</li>
+</ul>
+<p>And this remark is totally correct. Changing API formats doesn't solve any problems related to the evolution of functionality and underlying technology. Changing API formats solves another problem: how to make the code written by developers stay clean and maintainable. Why would strong-coupled integration (i.e. coupling entities via methods) render the code unreadable? Because both sides <em>are obliged</em> to implement the functionality which is meaningless in their corresponding subject areas. And these implementations would actually comprise a handful of methods to say that this functionality is either not supported at all, or supported always and unconditionally.</p>
+<p>The difference between strong coupling and weak coupling is that field-event mechanism <em>isn't obligatory to both sides</em>. Let us remember what we sought to achieve:</p>
+<ul>
+<li>higher-level context doesn't actually know how low-level API works — and it really doesn't; it describes the changes which occurs within the context itself, and reacts only to those events which mean something to it;</li>
+<li>low-level context doesn't know anything about alternative implementations — and it really doesn't; it handles only those events which mean something at its level, and emits only those events which could actually happen under its specific conditions.</li>
+</ul>
+<p>It's ultimately possible that both sides would know nothing about each other and wouldn't interact at all. This might actually happen at some point in the future with the evolution of underlying technologies.</p>
+<p>Worth mentioning that the number of entities (fields, events), though effectively doubled compared to strong-coupled API design, raised qualitatively, not quantitatively. The <code>program</code> context describes fields and events in its own terms (type of beverage, volume, cinnamon sprinkling), while the <code>execution</code> context must reformulate those terms according to its own subject area (omitting redundant ones, by the way). It is also important that the <code>execution</code> context might concretize these properties for underlying objects according to its own specifics, while the <code>program</code> context must keep its properties general enough to be applicable to any possible underlying technology.</p>
+<p>One more important feature of weak coupling is that it allows an entity to have several higher-level contexts. In typical subject areas such a situation would look like an API design flaw, but in complex systems, with several system state-modifying agents present, such design patterns are not that rare. Specifically, you would likely face it while developing user-facing UI libraries. We will cover this issue in detail in the upcoming ‘SDK’ section of this book.</p>
+<h4>The Inversion of Responsibility</h4>
+<p>It becomes obvious from what was said above that two-way weak coupling means a significant increase of code complexity on both levels, which is often redundant. In many cases, two-way event linking might be replaced with one-way linking without significant loss of design quality. That means allowing a low-level entity to call higher-level methods directly instead of generating events. Let's alter our example:</p>
+<pre><code>/* Partner's implementation of program
+   run procedure for a custom API type */
+registerProgramRunHandler(apiType, (program) => {
+  // Initiating an execution
+  // on partner's side
+  let execution = initExecution(…);
+  // Listen to parent context's changes
+  program.context.on('takeout_requested', () => {
+    // If takeout is requested, initiate
+    // corresponding procedures
+    execution.prepareTakeout(() => {
+      /* When the order is ready for takeout,
+         signalize about that, but not
+         with event emitting */
+      // execution.context.emit('takeout_ready')
+      program.context.set('takeout_ready');
+      // Or even more rigidly
+      // program.setTakeoutReady();
+    });
+  });
+  /* Since we're modifying parent context
+     instead of emitting events, we don't 
+     actually need to return anything */
+  // return execution.context;
+});
+}
+</code></pre>
+<p>Again, this solution might look counter-intuitive, since we efficiently returned to strong coupling via strictly defined methods. But there is an important difference: we're making all this stuff up because we expect alternative implementations of the <em>lower</em> abstraction level. Situations with different realizations of <em>higher</em> abstraction levels emerging are, of course, possible, but quite rare. The tree of alternative implementations usually grows top to bottom.</p>
+<p>Another reason to justify this solution is that major changes occurring at different abstraction levels have different weights:</p>
+<ul>
+<li>if the technical level is under change, that must not affect product qualities and the code written by partners;</li>
+<li>if the product is changing, i.e. we start selling flight tickets instead of preparing coffee, there is literally no sense to preserve backwards compatibility at technical abstraction levels. Ironically, we may actually make our program run API sell tickets instead of brewing coffee without breaking backwards compatibility, but the partners' code will still become obsolete.</li>
+</ul>
+<p>In conclusion, because of the abovementioned reasons, higher-level APIs are evolving more slowly and much more consistently than low-level APIs, which means that reverse strong coupling might often be acceptable or even desirable, at least from the price-quality ratio point of view.</p>
+<p><strong>NB</strong>: many contemporary frameworks explore a shared state approach, Redux being probably the most notable example. In Redux paradigm the code above would look like this:</p>
+<pre><code>execution.prepareTakeout(() => {
+  // Instead of generating events
+  // or calling higher-level methods,
+  // an `execution` entity calls 
+  // a global or quasi-global
+  // callback to change a global state
+  dispatch(takeoutReady());
+});
+</code></pre>
+<p>Let us note that this approach <em>in general</em> doesn't contradict the weak coupling principle, but violates another one — of abstraction levels isolation, and therefore isn't suitable for writing branchy APIs with high hierarchy trees. In such systems, it's still possible to use global or quasi-global state manager, but you need to implement event or method call propagation through the hierarchy, i.e. ensure that a low-level entity always interacting with its closest higher-level neighbors only, delegating the responsibility of calling high-level or global methods to them.</p>
+<pre><code>execution.prepareTakeout(() => {
+  // Instead of initiating global actions
+  // an `execution` entity invokes
+  // its superior's dispatch functionality
+  program.context.dispatch(takeoutReady());
+});
+</code></pre>
+<pre><code>// program.context.dispatch implementation
+ProgramContext.dispatch = (action) => {
+  // program.context calls its own
+  // superior or global object
+  // if there are no superiors
+  globalContext.dispatch(
+    // The action itself may and
+    // must be reformulated
+    // in appropriate terms
+    this.generateAction(action)
+  );
+}
+</code></pre>
+<h4>Test Yourself</h4>
+<p>So, we have designed the interaction with third-party APIs as described in the previous paragraph. And now we should (actually, must) check whether these interfaces are compatible with our own abstraction we had developed in the <a href="#chapter-9">Chapter 9</a>. In other words, could we start an execution of an order if we operate the low-level API instead of the high-level one?</p>
+<p>Let us recall that we had proposed the following abstract interfaces to work with arbitrary coffee machine API types:</p>
+<ul>
+<li><code>POST /v1/program-matcher</code> returns the id of the program based on the coffee machine and recipe ids;</li>
+<li><code>POST /v1/programs/{id}/run</code> executes the program.</li>
+</ul>
+<p>As we can easily prove, it's quite simple to make these interfaces compatible: we only need to assign a <code>program_id</code> identifier to the (API type, recipe) pair, for example, through returning it in the <code>PUT /coffee-machines</code> method response:</p>
+<pre><code>PUT /v1/partners/{partnerId}/coffee-machines
+{
+  "coffee_machines": [{
+    "id",
+    "api_type",
+    "location",
+    "supported_recipes"
+  }, …]
+}
+→
+{
+  "coffee_machines": [{
+    "id",
+    "recipes_programs": [
+      {"recipe_id", "program_id"},
+      …
+    ]
+  }, …]
+}
+</code></pre>
+<p>So the method we'd developed:</p>
+<pre><code>POST /v1/programs/{id}/run
+</code></pre>
+<p>will work with the partner's coffee machines (like it's a third API type).</p>
+<h4>Delegate!</h4>
+<p>From what was said, one more important conclusion follows: doing a real job, e.g. implementing some concrete actions (making coffee, in our case) should be delegated to the lower levels of the abstraction hierarchy. If the upper levels try to prescribe some specific implementation algorithms, then (as we have demonstrated on the <code>order_execution_endpoint</code> example) we will soon face a situation of inconsistent methods and interaction protocols nomenclature, most of which has no specific meaning when we talk about some specific hardware context.</p>
+<p>Contrariwise, applying the paradigm of concretizing the contexts at each new abstraction level, we will eventually fall into the bunny hole deep enough to have nothing to concretize: the context itself unambiguously matches the functionality we can programmatically control. And at that level, we must stop detailing contexts further, and just realize the algorithms needed. Worth mentioning that the abstraction deepness for different underlying platforms might vary.</p>
+<p><strong>NB</strong>. In the <a href="#chapter-9">Chapter 9</a> we have illustrated exactly this: when we speak about the first coffee machine API type, there is no need to extend the tree of abstractions further than running programs, but with the second API type, we need one more intermediary abstraction level, namely the runtimes API.</p><div class="page-break"></div><h3><a href="#chapter-18" class="anchor" id="chapter-18">Chapter 18. Interfaces as a Universal Pattern</a></h3>
+<p>Let us summarize what we have written in the three previous chapters.</p>
+<ol>
+<li>Extending API functionality is realized through abstracting: the entity nomenclature is to be reinterpreted so that existing methods become partial (ideally — the most frequent) simplified cases to more general functionality.</li>
+<li>Higher-level entities are to be the informational contexts for low-level ones, e.g. don't prescribe any specific behavior but translate their state and expose functionality to modify it (directly through calling some methods or indirectly through firing events).</li>
+<li>Concrete functionality, e.g. working with ‘bare metal’ hardware, underlying platform APIs, should be delegated to low-level entities.</li>
+</ol>
+<p><strong>NB</strong>. There is nothing novel about these rules: one might easily recognize them being the <a href="https://en.wikipedia.org/wiki/SOLID">SOLID</a> architecture principles. There is no surprise in that either, because SOLID concentrates on contract-oriented development, and APIs are contracts by definition. We've just added ‘abstraction levels’ and ‘informational contexts’ concepts there.</p>
+<p>However, there is an unanswered question: how should we design the entity nomenclature from the beginning so that extending the API won't make it a mess of different inconsistent methods of different ages. The answer is pretty obvious: to avoid clumsy situations while abstracting (as with the coffee machine's supported options), all the entities must be originally considered being a specific implementation of a more general interface, even if there are no planned alternative implementations for them.</p>
+<p>For example, we should have asked ourselves a question while designing the <code>POST /search</code> API: what is a ‘search result’? What abstract interface does it implement? To answer this question we must neatly decompose this entity to find which facet of it is used for interacting with which objects.</p>
+<p>Then we would have come to the understanding that a ‘search result’ is actually a composition of two interfaces:</p>
+<ul>
+<li>
+<p>when we create an order, we need from the search result to provide those fields which describe the order itself; it might be a structure like:</p>
+<p><code>{coffee_machine_id, recipe_id, volume, currency_code, price}</code>,</p>
+<p>or we can encode this data in the single <code>offer_id</code>;</p>
+</li>
+<li>
+<p>to have this search result displayed in the app, we need a different data set: <code>name</code>, <code>description</code>, formatted and localized price.</p>
+</li>
+</ul>
+<p>So our interface (let us call it <code>ISearchResult</code>) is actually a composition of two other interfaces: <code>IOrderParameters</code> (an entity that allows for creating an order) and <code>ISearchItemViewParameters</code> (some abstract representation of the search result in the UI). This interface split should automatically lead us to additional questions.</p>
+<ol>
+<li>
+<p>How will we couple the former and the latter? Obviously, these two sub-interfaces are related: the machine-readable price must match the human-readable one, for example. This will naturally lead us to the ‘formatter’ concept described in the <a href="#chapter-16">Chapter 16</a>.</p>
+</li>
+<li>
+<p>And what is the ‘abstract representation of the search result in the UI’? Do we have other kinds of search, should the <code>ISearchItemViewParameters</code> interface be a subtype of some even more general interface, or maybe a composition of several such ones?</p>
+</li>
+</ol>
+<p>Replacing specific implementations with interfaces not only allows us to answer more clearly many questions which should have been appeared in the API design phase but also helps us to outline many possible API evolution vectors, which should help in avoiding API inconsistency problems in the future.</p><div class="page-break"></div><h3><a href="#chapter-19" class="anchor" id="chapter-19">Chapter 19. The Serenity Notepad</a></h3>
+<p>Apart from the abovementioned abstract principles, let us give a list of concrete recommendations: how to make changes in the existing API to maintain the backwards compatibility.</p>
+<h5><a href="#chapter-19-paragraph-1" id="chapter-19-paragraph-1" class="anchor">1. Remember the iceberg's waterline</a></h5>
+<p>If you haven't given any formal guarantee, it doesn't mean that you can violate informal once. Often, even just fixing bugs in APIs might make some developers' code inoperable. We might illustrate it with a real-life example which the author of this book has actually faced once:</p>
+<ul>
+<li>there was an API to place a button into a visual container; according to the docs, it was taking its position (offsets to the container's corner) as a mandatory argument;</li>
+<li>in reality, there was a bug: if the position was not supplied, no exception was thrown; buttons were simply stacked in the corner one after another;</li>
+<li>when the error was fixed, we've got a bunch of complaints: clients did really use this flaw to stack the buttons in the container's corner.</li>
+</ul>
+<p>If fixing the error might somehow affect real customers, you have no other choice but to emulate this erroneous behavior until the next major release. This situation is quite common if you develop a large API with a huge audience. For example, operating systems API developers literally have to transfer old bugs to new OS versions.</p>
+<h5><a href="#chapter-19-paragraph-2" id="chapter-19-paragraph-2" class="anchor">2. Test the formal interface</a></h5>
+<p>Any software must be tested, and APIs ain't an exclusion. However, there are some subtleties there: as APIs provide formal interfaces, it's the formal interfaces that are needed to be tested. That leads to several kinds of mistakes:</p>
+<ol>
+<li>Often the requirements like ‘the <code>getEntity</code> function returns the value previously being set by the <code>setEntity</code> function’ appear to be too trivial to both developers and QA engineers to have a proper test. But it's quite possible to make a mistake there, and we have actually encountered such bugs several times.</li>
+<li>The interface abstraction principle must be tested either. In theory, you might have considered each entity as an implementation of some interface; in practice, it might happen that you have forgotten something, and alternative implementations aren't actually possible. For testing purposes, it's highly desirable to have an alternative realization, even a provisional one.</li>
+</ol>
+<h5><a href="#chapter-19-paragraph-3" id="chapter-19-paragraph-3" class="anchor">3. Implement your API functionality atop of public interfaces</a></h5>
+<p>There is an antipattern that occurs frequently: API developers use some internal closed implementations of some methods which exist in the public API. It happens because of two reasons:</p>
+<ul>
+<li>often the public API is just an addition to the existing specialized software, and the functionality, exposed via the API, isn't being ported back to the closed part of the project, or the public API developers simply don't know the corresponding internal functionality exists;</li>
+<li>on a course of extending the API some interfaces become abstract, but the existing functionality isn't affected; imagine that while implementing the <code>PUT /formatters</code> interface described in the <a href="#chapter-16">Chapter 16</a> developers have created a new, more general version of the volume formatter, but hasn't changed the implementation of the existing one, so it continues working in case of pre-existing languages.</li>
+</ul>
+<p>There are obvious local problems with this approach (like the inconsistency in functions' behavior, or the bugs which were not found while testing the code), but also a bigger one: your API might be simply unusable if a developer tries any non-mainstream approach, because of performance issues, bugs, instability, etc.</p>
+<p><strong>NB</strong>. The perfect example of avoiding this anti-pattern is compiler development; usually, the next compiler's version is compiled with the previous compiler's version.</p>
+<h5><a href="#chapter-19-paragraph-4" id="chapter-19-paragraph-4" class="anchor">4. Keep a notepad</a></h5>
+<p>Whatever tips and tricks that were described in the previous chapters you use, it's often quite probable that you can't do <em>anything</em> to prevent the API inconsistencies start piling up. It's possible to reduce the speed of this stockpiling, foresee some problems, have some interface durability reserved for future use. But one can't foresee <em>everything</em>. At this stage, many developers tend to make some rash decisions, e.g. to release a backwards incompatible minor version to fix some design flaws.</p>
+<p>We highly recommend never doing that. Remember that the API is a multiplier of your mistakes either. What we recommend is to keep a serenity notepad — to fix the lessons learned, and not to forget to apply this knowledge when the major API version is released.</p><div class="page-break"></div>
             </div></article>
         </body></html>
