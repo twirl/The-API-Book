@@ -22,22 +22,15 @@ You might support this work [on Patreon](https://www.patreon.com/yatwirl).
 
 ## Current State and the Roadmap
 
-Right now Section I (‘API Design’) is finished. The Section is lacking readable schemes, I'll draw them later.
+Right now Section I (‘API Design’) and Section II (‘Backwards Compatibility’) are finished. The Sections are lacking readable schemes, I'll draw them later.
 
-The book will contain two more sections.
-  * Section II ‘Backwards Compatibility’ will cover growth issues. Major themes are:
-    * major sources of problems leading to backwards compatibility breach;
-    * interface decomposing allowing for third-party plugins and switching underlying technologies;
-    * structuring public and private parts of your API;
-    * versioning policies;
-    * common mistakes.
-  * Section III ‘API as a Product’ will be discussing non-technical issues:
-    * what for the APIs exist;
-    * monetizing APIs;
-    * making sure your understand users' needs and collect proper metrics;
-    * common practices, including AA issues and fraud problems;
-    * organizing docs portal;
-    * open source and community.
+Section III ‘API as a Product’ will be discussing non-technical issues
+  * what for the APIs exist;
+  * monetizing APIs;
+  * making sure you understand users' needs and collect proper metrics;
+  * common practices, including AA issues and fraud problems;
+  * organizing docs portal;
+  * open source and community.
 
 I also have more distant plans on adding two more subsections to Section I.
   * Section Ia ‘JSON HTTP APIs’:
@@ -57,3 +50,6 @@ I am accepting inquiries. Feel free to open issues.
 I am NOT accepting pull requests introducing any new content, since I'm willing to be the only author. I would gratefully accept typo fixes, though.
 
 Thanks @tholman for https://github.com/tholman/github-corners
+Thanks [Ira Gorelik](https://pixabay.com/users/igorelick-680927/) for the Aqueduct
+Thanks [ParaType](https://www.paratype.ru/) for PT Sans and PT Serif
+Thanks [Christian Robertson](https://twitter.com/cr64) for Roboto Mono 

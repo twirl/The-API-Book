@@ -1,3 +1,81 @@
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/PTSerif-Regular.ttf);
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/PTSerif-Italic.ttf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/PTSerif-Italic.ttf);
+    font-style: oblique;
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/PTSerif-Bold.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/PTSerif-BoldItalic.ttf);
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/PTSerif-BoldItalic.ttf);
+    font-weight: bold;
+    font-style: oblique;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Bold.ttf);
+    font-weight: bold;
+}
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Italic.ttf);
+    font-style: oblique;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Italic.ttf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-BoldItalic.ttf);
+    font-style: oblique;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-BoldItalic.ttf);
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: local-monospace;
+    src: url(/fonts/RobotoMono-Regular.ttf);
+}
+
 html {
     width: 100%;
     margin: 0;
@@ -6,7 +84,7 @@ html {
 
 body,
 h6 {
-    font-family: 'PT Serif';
+    font-family: local-serif, serif;
     font-size: 14pt;
     text-align: justify;
 }
@@ -27,7 +105,7 @@ h6 {
 
 code,
 pre {
-    font-family: Inconsolata, sans-serif;
+    font-family: local-monospace, sans-serif;
 }
 
 code {
@@ -77,7 +155,7 @@ h3,
 h4,
 h5 {
     text-align: left;
-    font-family: 'PT Sans';
+    font-family: local-sans, sans-serif;
     font-weight: bold;
     page-break-after: avoid;
 }
