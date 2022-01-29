@@ -105,7 +105,7 @@ h6 {
 
 code,
 pre {
-    font-family: local-monospace, sans-serif;
+    font-family: local-monospace, monospace;
 }
 
 code {

@@ -1,16 +1,16 @@
 body {
-    font-family: 'PT Serif';
+    font-family: serif;
     font-size: 14pt;
     text-align: justify;
 }
 
 .cc-by-nc {
-    background: transparent url(https://i.creativecommons.org/l/by-nc/4.0/88x31.png) 0 5px no-repeat;
-    padding-left: 92px;
+    background: transparent none;
 }
 
-code, pre {
-    font-family: Inconsolata, sans-serif;
+code,
+pre {
+    font-family: monospace;
 }
 
 code {
@@ -20,13 +20,16 @@ code {
 pre {
     margin: 1em 0;
     padding: 1em;
-    border-radius: .25em;
-    border-top: 1px solid rgba(0,0,0,.45);
-    border-left: 1px solid rgba(0,0,0,.45);
-    box-shadow: .1em .1em .1em rgba(0,0,0,.45);
+    border-radius: 0.25em;
+    border-top: 1px solid rgba(0, 0, 0, 0.45);
+    border-left: 1px solid rgba(0, 0, 0, 0.45);
+    box-shadow: 0.1em 0.1em 0.1em rgba(0, 0, 0, 0.45);
     page-break-inside: avoid;
     overflow-x: auto;
     font-size: 80%;
+    widows: 20;
+    orphans: 20;
+    display: inline-block;
 }
 
 pre code {
@@ -37,32 +40,43 @@ a {
     text-decoration: none;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
     text-align: left;
-    font-family: 'PT Sans';
+    font-family: sans-serif;
     font-weight: bold;
     page-break-after: avoid;
 }
 
 h1 {
-    font-size: 200%;
+    display: none;
 }
 
 h2 {
     font-size: 160%;
     text-transform: uppercase;
+    page-break-after: avoid;
 }
 
 h3 {
     font-size: 140%;
-    font-variant: small-caps;
 }
 
-h3 a, h5 a {
+h3 a,
+h5 a {
     color: inherit;
 }
 
-h4, h5 {
+h4,
+h5 {
     font-size: 120%;
 }
 
+p,
+div {
+    widows: 2;
+    orphans: 2;
+}
