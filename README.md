@@ -51,8 +51,12 @@ I am accepting inquiries. Feel free to open issues.
 
 I am NOT accepting pull requests introducing any new content, since I'm willing to be the only author. I would gratefully accept typo fixes, though.
 
-Thanks [art.mari.ka](https://www.instagram.com/art.mari.ka/) for the illustration & inspiration
-Thanks @tholman for https://github.com/tholman/github-corners
-Thanks [Ira Gorelik](https://pixabay.com/users/igorelick-680927/) for the Aqueduct
-Thanks [ParaType](https://www.paratype.ru/) for PT Sans and PT Serif
-Thanks [Christian Robertson](https://twitter.com/cr64) for Roboto Mono 
+Thanks [art.mari.ka](https://www.instagram.com/art.mari.ka/) for the illustration & inspiration.
+
+Thanks @tholman for https://github.com/tholman/github-corners.
+
+Thanks [Ira Gorelik](https://pixabay.com/users/igorelick-680927/) for the Aqueduct.
+
+Thanks [ParaType](https://www.paratype.ru/) for PT Sans and PT Serif.
+
+Thanks [Christian Robertson](https://twitter.com/cr64) for Roboto Mono.
