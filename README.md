@@ -53,6 +53,8 @@ I am NOT accepting pull requests introducing any new content, since I'm willing 
 
 Thanks [art.mari.ka](https://www.instagram.com/art.mari.ka/) for the illustration & inspiration.
 
+Thanks [Ilya Subbotin](https://ru.linkedin.com/in/isubbotin) for the valuable feedback.
+
 Thanks @tholman for https://github.com/tholman/github-corners.
 
 Thanks [Ira Gorelik](https://pixabay.com/users/igorelick-680927/) for the Aqueduct.
