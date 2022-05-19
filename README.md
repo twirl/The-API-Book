@@ -53,7 +53,7 @@ I am NOT accepting pull requests introducing any new content, since I'm willing 
 
 Thanks [art.mari.ka](https://www.instagram.com/art.mari.ka/) for the illustration & inspiration.
 
-Thanks [Ilya Subbotin](https://ru.linkedin.com/in/isubbotin) for the valuable feedback.
+Thanks [Ilya Subbotin](https://ru.linkedin.com/in/isubbotin) and [Fedor Golubev](https://www.linkedin.com/in/fedor-golubev-93910b5/) for the valuable feedback.
 
 Thanks @tholman for https://github.com/tholman/github-corners.
 
