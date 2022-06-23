@@ -1,26 +1,7 @@
-# The API Book
+# [Read ‘The API’ Book by Sergey Konstantinov](https://twirl.github.io/The-API-Book)
+# [Читать книгу ‘The API’ Сергея Константинова](https://twirl.github.io/The-API-Book/index.ru.html)
 
 This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:twirl-team@yandex.ru), [Linkedin profile](https://linkedin.com/in/twirl)).
-
-Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. In Section I, we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner.
-
-You may find `.html`, `.epub` or `.pdf` version of the book in the `docs` folder, or read it online.
-  * In English: [html](https://twirl.github.io/The-API-Book/docs/API.en.html), [epub](https://twirl.github.io/The-API-Book/docs/API.en.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.en.pdf)
-  * In Russian: [html](https://twirl.github.io/The-API-Book/docs/API.ru.html), [epub](https://twirl.github.io/The-API-Book/docs/API.ru.epub), [pdf](https://twirl.github.io/The-API-Book/docs/API.ru.pdf)
-
-You might support this work [on Patreon](https://www.patreon.com/yatwirl). Also, the [Kindle version](https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0) (priced at 6$) exists, though I have to warn you that its formatting suffers because of Amazon epub conversion oddities.
-
-Pre-compiled books above comprise clean-copy texts only. Drafts could be found in the `src` folder. Complete new chapter drafts will be published on:
-  * my [medium](https://twirl.medium.com/) blog in English;
-  * my [habr](https://habr.com/ru/users/forgotten/posts/) blog in Russian.
-
-I'd appreciate if you share them on reddit, for I personally can't do that: reddit bans me for ‘self-promotion’.
-
-The work is distributed under a Creative Commons Attribution-NonCommercial 4.0 license, meaning in general that you're totally free to use this book in any manner while complying with two rules:
-  * you're not getting commercial profit from the book;
-  * you're not forgetting to mention the author properly.
-
-See full license in LICENSE.md file or at [Creative Commons Website](http://creativecommons.org/licenses/by-nc/4.0/).
 
 ## Current State and the Roadmap
 
