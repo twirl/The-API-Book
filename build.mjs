@@ -1,7 +1,7 @@
 import { resolve as pathResolve } from 'path';
 import templates from './src/templates.js';
 import { init, plugins } from '@twirl/book-builder';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 
 const l10n = {
     en: JSON.parse(readFileSync('./src/en/l10n.json', 'utf-8')),
@@ -12,7 +12,12 @@ const langsToBuild = (process.argv[2] &&
     process.argv[2].split(',').map((s) => s.trim())) || ['ru', 'en'];
 
 const targets = (
-    (process.argv[3] && process.argv[3].split(',')) || ['html', 'pdf', 'epub']
+    (process.argv[3] && process.argv[3].split(',')) || [
+        'html',
+        'pdf',
+        'epub',
+        'landing'
+    ]
 ).reduce((targets, arg) => {
     targets[arg.trim()] = true;
     return targets;
@@ -52,10 +57,22 @@ langsToBuild.forEach((lang) => {
         }
     }).then((builder) => {
         Object.keys(targets).forEach((target) => {
-            builder.build(
-                target,
-                pathResolve(`docs/${l10n[lang].file}.${lang}.${target}`)
-            );
+            if (target !== 'landing') {
+                builder.build(
+                    target,
+                    pathResolve('docs', `${l10n[lang].file}.${lang}.${target}`)
+                );
+            } else {
+                const landingHtml = templates.landing(
+                    builder.structure,
+                    l10n[lang],
+                    lang
+                );
+                writeFileSync(
+                    pathResolve('docs', l10n[lang].landingFile),
+                    landingHtml
+                );
+            }
         });
     });
 });

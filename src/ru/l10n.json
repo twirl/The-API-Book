@@ -1,12 +1,80 @@
 {
-    "title": "API",
+    "title": "The API",
     "author": "Сергей Константинов",
     "chapter": "Глава",
     "toc": "Содержание",
-    "frontPage": "Титульный лист",
     "description": "Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики проектирования API. Книга состоит из двух больших разделов. В первом разделе мы поговорим о проектировании API на стадии разработки концепции — как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел посвящён развитию существующих API с сохранением обратной совместимости",
     "locale": "ru_RU",
     "file": "API",
-    "url": "https://twirl.github.io/The-API-Book/docs/API.ru.html",
-    "imageCredit": "Image Credit"
+    "landingFile": "index.ru.html",
+    "url": "https://twirl.github.io/The-API-Book/index.ru.html",
+    "favicon": "/img/favicon.png",
+    "imageCredit": "Image Credit",
+    "links": {
+        "email": "yatwirl@gmail.com",
+        "emailString": "yatwirl@gmail.com",
+        "linkedinHref": "https://www.linkedin.com/in/twirl/",
+        "linkedinString": "linkedin.com/in/twirl",
+        "patreonHref": "https://www.patreon.com/yatwirl",
+        "patreonString": "patreon.com/yatwirl",
+        "patreonTag": "Patreon",
+        "githubHref": "https://github.com/twirl/The-API-Book",
+        "githubString": "github.com/twirl/The-API-Book",
+        "habrHref": "https://habr.com/ru/users/forgotten/posts/",
+        "habrTag": "Хабре"
+    },
+    "sourceCodeAt": "Исходный код доступен на",
+    "frontPage": {
+        "title": "The API",
+        "pageTitle": "Титульный лист",
+        "contents": [
+            "<p>«API-first» подход — одна из самых горячих горячих тем в разработке программного обеспечения в наше время. Многие компании начали понимать, что API выступает мультипликатором их возможностей — но также умножает и допущенные ошибки.</p>",
+            "<p>Эта книга посвящена проектированию API: как правильно выстроить архитектуру, начиная с высокоуровневого планирования и заканчивая деталями реализации конкретных интерфейсов, и как развивать API, не нарушая обратную совместимость.</p>",
+            "<p>Иллюстрации и вдохновение: Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>",
+            "<img class=\"cc-by-nc-img\" alt=\"Creative Commons «Attribution-NonCommercial» Logo\" src=\"https://i.creativecommons.org/l/by-nc/4.0/88x31.png\"/>",
+            "<p class=\"cc-by-nc\">Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.</p>"
+        ]
+    },
+    "landing": {
+        "subTitle": "Бесплатная электронная книга",
+        "subscribeOn": "Подпишитесь на обновления на",
+        "updates": ["habr"],
+        "supportThisWork": "Поддержите эту работу на",
+        "support": ["patreon"],
+        "content": [
+            "<p>«API-first» подход — одна из самых горячих горячих тем в разработке программного обеспечения в наше время. Многие компании начали понимать, что API выступает мультипликатором их возможностей — но также умножает и допущенные ошибки.</p>",
+            "<p>Эта книга посвящена проектированию API: как правильно выстроить архитектуру, начиная с высокоуровневого планирования и заканчивая деталями реализации конкретных интерфейсов, и как развивать API, не нарушая обратную совместимость.</p>"
+        ],
+        "download": "Вы можете скачать книгу «API» в формате",
+        "or": "или",
+        "readOnline": "прочитать её онлайе",
+        "license": "Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.",
+        "footer": [
+            "<p>Иллюстрации и вдохновение: Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>",
+            "<p>You might also <a href=\"index.html\">read ‘The API’ in English</a>.</p>"
+        ]
+    },
+    "contents": [
+        { "chapters": ["", "", "", "", "", ""] },
+        { "chapters": ["", "", "", "", "", ""] },
+        { "chapters": ["", "", "", "", "", "", ""] },
+        {
+            "title": "Часть III. API как продукт",
+            "chapters": [
+                "Продукт API",
+                "Бизнес-модели API",
+                "Формирование продуктового видения",
+                "Взаимодействие с разработчиками",
+                "Взаимодействие с бизнес-аудиторией",
+                "Линейка сервисов API",
+                "Ключевые показатели эффективности API",
+                "Идентификация пользователей и борьба с фродом",
+                "Информационная безопасность",
+                "Поддержка пользователей",
+                "Документация",
+                "Тестовая среда",
+                "Управление ожиданиями"
+            ]
+        }
+    ]
 }

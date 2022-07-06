@@ -3,10 +3,83 @@
     "author": "Sergey Konstantinov",
     "chapter": "Chapter",
     "toc": "Table of Contents",
-    "frontPage": "Front Page",
     "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. In Section I, we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner.",
     "locale": "en_US",
     "file": "API",
-    "url": "https://twirl.github.io/The-API-Book/docs/API.en.html",
-    "imageCredit": "Image Credit"
+    "landingFile": "index.html",
+    "url": "https://twirl.github.io/The-API-Book/",
+    "favicon": "/img/favicon.png",
+    "imageCredit": "Image Credit",
+    "links": {
+        "email": "yatwirl@gmail.com",
+        "emailString": "yatwirl@gmail.com",
+        "linkedinHref": "https://www.linkedin.com/in/twirl/",
+        "linkedinString": "linkedin.com/in/twirl",
+        "patreonHref": "https://www.patreon.com/yatwirl",
+        "patreonString": "patreon.com/yatwirl",
+        "patreonTag": "Patreon",
+        "githubHref": "https://github.com/twirl/The-API-Book",
+        "githubString": "github.com/twirl/The-API-Book",
+        "twitterHref": "https://twitter.com/blogovodoved",
+        "kindleHref": "https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0",
+        "kindleTag": "buy Kindle version",
+        "mediumHref": "https://twirl.medium.com/",
+        "mediumTag": "Medium"
+    },
+    "sourceCodeAt": "Source code available at",
+    "frontPage": {
+        "title": "The API",
+        "pageTitle": "Front Page",
+        "contents": [
+            "<p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
+            "<p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>",
+            "<p>Illustrations &amp; inspiration by Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a></p>",
+            "<img class=\"cc-by-nc-img\" alt=\"Creative Commons «Attribution-NonCommercial» Logo\" src=\"https://i.creativecommons.org/l/by-nc/4.0/88x31.png\"/>",
+            "<p class=\"cc-by-nc\">This book is distributed under the <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>"
+        ]
+    },
+    "landing": {
+        "subTitle": "Free e-book",
+        "subscribeOn": "Subscribe for updates on",
+        "updates": ["github"],
+        "followOn": "Follow me on",
+        "follow": ["linkedin", "twitter", "medium"],
+        "supportThisWork": "Support this work on",
+        "support": ["patreon", "kindle"],
+        "content": [
+            "<p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
+            "<p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>"
+        ],
+        "download": "You might download ‘The API’ in",
+        "or": "or",
+        "readOnline": "read it online",
+        "license": "This book is distributed under the <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.",
+        "footer": [
+            "<p>Illustration &amp; inspiration: <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>",
+            "<p>Книгу «API» можно <a href=\"index.ru.html\">читать по-русски</a>.</p>"
+        ]
+    },
+    "contents": [
+        { "chapters": ["", "", "", "", "", ""] },
+        { "chapters": ["", "", "", "", "", ""] },
+        { "chapters": ["", "", "", "", "", "", ""] },
+        {
+            "title": "Section III. The API Product",
+            "chapters": [
+                "API as a Product",
+                "API Business Models",
+                "Developing a Product Vision",
+                "Communicating with Developers",
+                "Communicating with Business Owners",
+                "API Services Range",
+                "API Key Performance Indicators",
+                "Identifying Users and Preventing Fraud",
+                "IT-security",
+                "Supporting API users",
+                "Documentation",
+                "Testing Environment",
+                "Managing Expectations"
+            ]
+        }
+    ]
 }

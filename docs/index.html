@@ -1,328 +1,234 @@
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/jpg" href="assets/favicon.png" />
-        <title>‘The API’ — a free e-book by Sergey Konstantinov</title>
-        <meta
-            name="description"
-            content="Designing APIs is a very special skill: API is a multiplier to both
-            your opportunities and mistakes. This book is written to share the
-            expertise and describe the best practices in the API design and API
-            product management"
-        />
-        <meta property="og:type" content="article" />
-        <meta
-            property="og:title"
-            content="‘The API’ — a free e-book by Sergey Konstantinov"
-        />
-        <meta
-            property="og:description"
-            content="Designing APIs is a very special skill: API is a multiplier to both
-            your opportunities and mistakes. This book is written to share the
-            expertise and describe the best practices in the API design and API
-            product management"
-        />
-        <meta property="og:image" content="assets/header.png" />
-        <meta
-            property="og:url"
-            content="https://twirl.github.io/The-API-Book/"
-        />
-        <style>
-            @font-face {
-                font-family: local-serif;
-                src: url(assets/PTSerif-Regular.ttf);
-            }
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/jpg" href="assets/favicon.jpg" />
+    <title>
+        Sergey Konstantinov. The API
+    </title>
+    <meta
+        name="description"
+        content="Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. In Section I, we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+        property="og:title"
+        content="Sergey Konstantinov. The API"
+    />
+    <meta
+        property="og:description"
+        content="Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. In Section I, we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner."
+    />
+    <meta property="og:image" content="assets/header.png" />
+    <meta
+        property="og:url"
+        content="https://github.com/twirl/The-API-Book"
+    />
+    <style>
+    @font-face {
+        font-family: local-serif;
+        src: url(assets/PTSerif-Regular.ttf);
+    }
 
-            @font-face {
-                font-family: local-serif;
-                src: url(assets/PTSerif-Bold.ttf);
-                font-weight: bold;
-            }
+    @font-face {
+        font-family: local-serif;
+        src: url(assets/PTSerif-Bold.ttf);
+        font-weight: bold;
+    }
 
-            * {
-                margin: 0;
-                padding: 0;
-                border: none;
-                font-family: local-serif, Arial, Helvetica, sans-serif;
-                font-size: 24px;
-                list-style-type: none;
-            }
+    * {
+        margin: 0;
+        padding: 0;
+        border: none;
+        font-family: local-serif, Arial, Helvetica, sans-serif;
+        list-style-type: none;
+    }
 
-            ul > li {
-                padding-left: 1em;
-            }
+    h1 {
+        font-size: 1.5em;
+    }
+    h1.title {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.2em;
+    }
 
-            p {
-                margin: 1em 0;
-            }
+    ul > li {
+        padding-left: 1em;
+    }
 
-            body {
-                margin: 5px;
-            }
+    p {
+        margin: 1em 0;
+    }
 
-            nav {
-                text-align: center;
-            }
+    body {
+        font-size: 14pt;
+        margin: 5px;
+    }
 
-            nav a {
-                vertical-align: -12%;
-                content: ' ';
-                width: 1em;
-                height: 1em;
-                display: inline-block;
-                background-position: 0 0;
-                background-size: auto 100%;
-                background-repeat: no-repeat;
-                text-decoration: none;
-            }
+    nav {
+        text-align: center;
+    }
 
-            a.github {
-                background-image: url(assets/github.jpg);
-                width: 1.2em;
-            }
+    nav > img {
+        max-height: 300px;
+        object-fit: contain;
+    }
 
-            a.linkedin {
-                background-image: url(assets/linkedin.png);
-                width: 1.176em;
-            }
+    nav a {
+        vertical-align: -12%;
+        content: ' ';
+        width: 1em;
+        height: 1em;
+        display: inline-block;
+        background-position: 0 0;
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+        text-decoration: none;
+    }
 
-            a.twitter {
-                background-image: url(assets/twitter.svg);
-                width: 1.392em;
-            }
+    a.github {
+        background-image: url(assets/github.jpg);
+        width: 1.2em;
+    }
 
-            a.patreon,
-            a.medium {
-                width: auto;
-                padding-left: 1em;
-                vertical-align: baseline;
-                background-position: 0 0.2em;
-            }
+    a.linkedin {
+        background-image: url(assets/linkedin.png);
+        width: 1.176em;
+    }
 
-            a.patreon {
-                background-image: url(assets/patreon.png);
-            }
+    a.twitter {
+        background-image: url(assets/twitter.svg);
+        width: 1.392em;
+    }
 
-            a.medium {
-                background-image: url(assets/medium.png);
-                padding-left: 1.3em;
-                background-size: 1.42em 1em;
-            }
+    a.habr {
+        background-image: url(assets/habr.png);
+    }
 
-            a.kindle {
-                width: auto;
-                vertical-align: unset;
-            }
+    a.patreon,
+    a.medium,
+    a.habr {
+        width: auto;
+        padding-left: 1em;
+        vertical-align: baseline;
+        background-position: 0 0.2em;
+    }
 
-            body img {
-                width: 100%;
-                max-width: 1000px;
-            }
+    a.patreon {
+        background-image: url(assets/patreon.png);
+    }
 
-            @media (min-width: 1010px) {
-                body {
-                    width: 1000px;
-                    margin: 5px auto;
-                    text-align: justify;
-                }
-            }
+    a.medium {
+        background-image: url(assets/medium.png);
+        padding-left: 1.3em;
+        background-size: 1.42em 1em;
+    }
 
-            @media (min-width: 2000px) {
-                body {
-                    width: auto;
-                    margin: 5px 25%;
-                    text-align: justify;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <nav>
-            <img
-                src="assets/header.jpg"
-                alt="‘The API’ — a free e-book by Sergey Konstantinov"
-            /><br />
-            ‘The API’ — a free e-book by Sergey Konstantinov<br />Subscribe for
-            updates on
-            <a class="github" href="https://github.com/twirl/The-API-Book"></a
-            ><br />Follow me on
-            <a class="linkedin" href="https://www.linkedin.com/in/twirl/"></a
-            > &middot; <a
-                class="twitter"
-                href="https://twitter.com/blogovodoved"
-            ></a
-            > &middot; <a class="medium" href="https://twirl.medium.com/"
-                >Medium</a
-            ><br />You can support this work on
-            <a class="patreon" href="https://www.patreon.com/yatwirl">Patreon</a
-            > or <a
-                class="kindle"
-                href="https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0"
-                >buy Kindle version</a
-            >
-            <br />⚙️⚙️⚙️
-        </nav>
-        <p>
-            Designing APIs is a very special skill: API is a multiplier to both
-            your opportunities and mistakes. This book is written to share the
-            expertise and describe the best practices in the API design and API
-            product management.
-        </p>
-        <p>
-            You might download ‘The API’ in
-            <a href="API.en.pdf">PDF</a>
-            or
-            <a href="API.en.epub">EPUB</a>
-            format, or
-            <a href="API.en.html">read it online</a>.
-        </p>
-        <h2 class="toc">Table of Contents</h2>
-        <ul class="table-of-contents">
-            <li>
-                <a href="API.en.html#section-1">Introduction</a>
+    a.kindle {
+        width: auto;
+        vertical-align: unset;
+    }
+
+    body img {
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    @media (min-width: 1010px) {
+        body {
+            width: 1000px;
+            margin: 5px auto;
+            text-align: justify;
+        }
+    }
+
+    @media (min-width: 2000px) {
+        body {
+            width: auto;
+            margin: 5px 25%;
+            text-align: justify;
+        }
+    }
+</style>
+</head>
+<body>
+    <nav>
+        <img
+            src="assets/header.jpg"
+            alt="Sergey Konstantinov. The API"
+        /><br />
+        <h1>Sergey Konstantinov<br/><span class="title">The API</span></h1>
+        <h2>Free e-book</h2>
+        <br />Subscribe for updates on <a class="github" href="https://github.com/twirl/The-API-Book"></a>
+        <br/>Follow me on <a class="linkedin" href="https://www.linkedin.com/in/twirl/"></a> &middot; <a class="twitter" href="https://twitter.com/blogovodoved"></a> &middot; <a class="medium" href="https://twirl.medium.com/">Medium</a>
+        <br />Support this work on <a class="patreon" href="https://www.patreon.com/yatwirl">Patreon</a> &middot; <a class="kindle" href="https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0">buy Kindle version</a>
+        <br />⚙️⚙️⚙️
+    </nav>
+    <p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>
+<p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>
+    <p>You might download ‘The API’ in <a href="API.en.pdf">PDF</a>, <a href="API.en.epub">EPUB</a>, or <a href="API.en.html">read it online</a>.
+    </p>
+    <h3>Table of Contents</h3>
+    <ul><li>
+                <h4><a href="API.en.html#section-1">Introduction</a></h4>
                 <ul>
-                    <li>
-                        <a href="API.en.html#chapter-1"
-                            >Chapter 1. On the Structure of This Book</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-2"
-                            >Chapter 2. The API Definition</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-3"
-                            >Chapter 3. API Quality Criteria</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-4"
-                            >Chapter 4. Backwards Compatibility</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-5"
-                            >Chapter 5. On Versioning</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-6"
-                            >Chapter 6. Terms and Notation Keys</a
-                        >
-                    </li>
-                </ul>
+                    <li><a href="API.en.html#chapter-1">Chapter 1. On the Structure of This Book</a></li>
+<li><a href="API.en.html#chapter-2">Chapter 2. The API Definition</a></li>
+<li><a href="API.en.html#chapter-3">Chapter 3. API Quality Criteria</a></li>
+<li><a href="API.en.html#chapter-4">Chapter 4. Backwards Compatibility</a></li>
+<li><a href="API.en.html#chapter-5">Chapter 5. On Versioning</a></li>
+<li><a href="API.en.html#chapter-6">Chapter 6. Terms and Notation Keys</a></li>
+                            </ul>
             </li>
-            <li>
-                <a href="API.en.html#section-2">Section I. The API Design</a>
+<li>
+                <h4><a href="API.en.html#section-2">Section I. The API Design</a></h4>
                 <ul>
-                    <li>
-                        <a href="API.en.html#chapter-7"
-                            >Chapter 7. The API Contexts Pyramid</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-8"
-                            >Chapter 8. Defining an Application Field</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-9"
-                            >Chapter 9. Separating Abstraction Levels</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-10"
-                            >Chapter 10. Isolating Responsibility Areas</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-11"
-                            >Chapter 11. Describing Final Interfaces</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-12"
-                            >Chapter 12. Annex to Section I. Generic API
-                            Example</a
-                        >
-                    </li>
-                </ul>
+                    <li><a href="API.en.html#chapter-7">Chapter 7. The API Contexts Pyramid</a></li>
+<li><a href="API.en.html#chapter-8">Chapter 8. Defining an Application Field</a></li>
+<li><a href="API.en.html#chapter-9">Chapter 9. Separating Abstraction Levels</a></li>
+<li><a href="API.en.html#chapter-10">Chapter 10. Isolating Responsibility Areas</a></li>
+<li><a href="API.en.html#chapter-11">Chapter 11. Describing Final Interfaces</a></li>
+<li><a href="API.en.html#chapter-12">Chapter 12. Annex to Section I. Generic API Example</a></li>
+                            </ul>
             </li>
-            <li>
-                <a href="API.en.html#section-3"
-                    >Section II. The Backwards Compatibility</a
-                >
+<li>
+                <h4><a href="API.en.html#section-3">Section II. The Backwards Compatibility</a></h4>
                 <ul>
-                    <li>
-                        <a href="API.en.html#chapter-13"
-                            >Chapter 13. The Backwards Compatibility Problem
-                            Statement</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-14"
-                            >Chapter 14. On the Iceberg's Waterline</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-15"
-                            >Chapter 15. Extending through Abstracting</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-16"
-                            >Chapter 16. Strong Coupling and Related Problems</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-17"
-                            >Chapter 17. Weak Coupling</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-18"
-                            >Chapter 18. Interfaces as a Universal Pattern</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.en.html#chapter-19"
-                            >Chapter 19. The Serenity Notepad</a
-                        >
-                    </li>
-                </ul>
+                    <li><a href="API.en.html#chapter-13">Chapter 13. The Backwards Compatibility Problem Statement</a></li>
+<li><a href="API.en.html#chapter-14">Chapter 14. On the Iceberg's Waterline</a></li>
+<li><a href="API.en.html#chapter-15">Chapter 15. Extending through Abstracting</a></li>
+<li><a href="API.en.html#chapter-16">Chapter 16. Strong Coupling and Related Problems</a></li>
+<li><a href="API.en.html#chapter-17">Chapter 17. Weak Coupling</a></li>
+<li><a href="API.en.html#chapter-18">Chapter 18. Interfaces as a Universal Pattern</a></li>
+<li><a href="API.en.html#chapter-19">Chapter 19. The Serenity Notepad</a></li>
+                            </ul>
             </li>
-            <li>
-                Section III. The API Product
+<li>
+                <h4>Section III. The API Product</h4>
                 <ul>
                     <li>Chapter 20. API as a Product</li>
-                    <li>Chapter 21. API Business Models</li>
-                    <li>Chapter 22. Developing a Product Vision</li>
-                    <li>Chapter 23. Communicating with Developers</li>
-                    <li>Chapter 24. Communicating with Business Owners</li>
-                    <li>Chapter 25. API Services Range</li>
-                    <li>Chapter 26. API Key Performance Indicators</li>
-                    <li>Chapter 27. Identifying Users</li>
-                    <li>Chapter 28. Anti-fraud and IT-security</li>
-                    <li>Chapter 29. Supporting API users</li>
-                    <li>Chapter 30. Documentation</li>
-                    <li>Chapter 31. Testing Environment</li>
-                    <li>Chapter 32. Managing Expectations</li>
-                </ul>
+<li>Chapter 21. API Business Models</li>
+<li>Chapter 22. Developing a Product Vision</li>
+<li>Chapter 23. Communicating with Developers</li>
+<li>Chapter 24. Communicating with Business Owners</li>
+<li>Chapter 25. API Services Range</li>
+<li>Chapter 26. API Key Performance Indicators</li>
+<li>Chapter 27. Identifying Users and Preventing Fraud</li>
+<li>Chapter 28. IT-security</li>
+<li>Chapter 29. Supporting API users</li>
+<li>Chapter 30. Documentation</li>
+<li>Chapter 31. Testing Environment</li>
+<li>Chapter 32. Managing Expectations</li>
+                            </ul>
             </li>
-        </ul>
-        <p>
-            The book is distributed under the
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/"
-                >Creative Commons Attribution-NonCommercial 4.0 International
-                licence</a
-            >. The source code is available on
-            <a href="https://github.com/twirl/The-API-Book">Github</a>.
-            Illustration & inspiration by
-            <a href="https://www.instagram.com/art.mari.ka/">art.mari.ka</a>.
-        </p>
-        <p>Также доступна <a href="index.ru.html">русская версия</a>.</p>
-    </body>
+    </ul>
+    <p>This book is distributed under the <a href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>
+    <p>Source code available at <a href="https://github.com/twirl/The-API-Book">github.com/twirl/The-API-Book</a></p>
+    <p>Illustration &amp; inspiration: <a href="https://www.instagram.com/art.mari.ka/">art.mari.ka</a>.</p>
+<p>Книгу «API» можно <a href="index.ru.html">читать по-русски</a>.</p>
+</body>
 </html>

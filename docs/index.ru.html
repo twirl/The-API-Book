@@ -1,334 +1,234 @@
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/jpg" href="assets/favicon.png" />
-        <title>Сергей Константинов. «API». Бесплатная электронная книга</title>
-        <meta
-            name="description"
-            content="Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики проектирования и управления продуктом API"
-        />
-        <meta property="og:type" content="article" />
-        <meta
-            property="og:title"
-            content="Сергей Константинов. «API». Бесплатная электронная книга"
-        />
-        <meta
-            property="og:description"
-            content="Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики проектирования и управления продуктом API"
-        />
-        <meta property="og:image" content="assets/header.png" />
-        <meta
-            property="og:url"
-            content="https://twirl.github.io/The-API-Book/"
-        />
-        <style>
-            @font-face {
-                font-family: local-serif;
-                src: url(assets/PTSerif-Regular.ttf);
-            }
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/jpg" href="assets/favicon.jpg" />
+    <title>
+        Сергей Константинов. The API
+    </title>
+    <meta
+        name="description"
+        content="Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики проектирования API. Книга состоит из двух больших разделов. В первом разделе мы поговорим о проектировании API на стадии разработки концепции — как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел посвящён развитию существующих API с сохранением обратной совместимости"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+        property="og:title"
+        content="Сергей Константинов. The API"
+    />
+    <meta
+        property="og:description"
+        content="Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики проектирования API. Книга состоит из двух больших разделов. В первом разделе мы поговорим о проектировании API на стадии разработки концепции — как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел посвящён развитию существующих API с сохранением обратной совместимости"
+    />
+    <meta property="og:image" content="assets/header.png" />
+    <meta
+        property="og:url"
+        content="https://github.com/twirl/The-API-Book"
+    />
+    <style>
+    @font-face {
+        font-family: local-serif;
+        src: url(assets/PTSerif-Regular.ttf);
+    }
 
-            @font-face {
-                font-family: local-serif;
-                src: url(assets/PTSerif-Bold.ttf);
-                font-weight: bold;
-            }
+    @font-face {
+        font-family: local-serif;
+        src: url(assets/PTSerif-Bold.ttf);
+        font-weight: bold;
+    }
 
-            * {
-                margin: 0;
-                padding: 0;
-                border: none;
-                font-family: local-serif, Arial, Helvetica, sans-serif;
-                font-size: 24px;
-                list-style-type: none;
-            }
+    * {
+        margin: 0;
+        padding: 0;
+        border: none;
+        font-family: local-serif, Arial, Helvetica, sans-serif;
+        list-style-type: none;
+    }
 
-            ul > li {
-                padding-left: 1em;
-            }
+    h1 {
+        font-size: 1.5em;
+    }
+    h1.title {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.2em;
+    }
 
-            p {
-                margin: 1em 0;
-            }
+    ul > li {
+        padding-left: 1em;
+    }
 
-            body {
-                margin: 5px;
-            }
+    p {
+        margin: 1em 0;
+    }
 
-            nav {
-                text-align: center;
-            }
+    body {
+        font-size: 14pt;
+        margin: 5px;
+    }
 
-            nav a {
-                vertical-align: -12%;
-                content: ' ';
-                width: 1em;
-                height: 1em;
-                display: inline-block;
-                background-position: 0 0;
-                background-size: auto 100%;
-                background-repeat: no-repeat;
-                text-decoration: none;
-            }
+    nav {
+        text-align: center;
+    }
 
-            a.github {
-                background-image: url(assets/github.jpg);
-                width: 1.2em;
-            }
+    nav > img {
+        max-height: 300px;
+        object-fit: contain;
+    }
 
-            a.habr {
-                background-image: url(assets/habr.png);
-            }
+    nav a {
+        vertical-align: -12%;
+        content: ' ';
+        width: 1em;
+        height: 1em;
+        display: inline-block;
+        background-position: 0 0;
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+        text-decoration: none;
+    }
 
-            a.linkedin {
-                background-image: url(assets/linkedin.png);
-                width: 1.176em;
-            }
+    a.github {
+        background-image: url(assets/github.jpg);
+        width: 1.2em;
+    }
 
-            a.twitter {
-                background-image: url(assets/twitter.svg);
-                width: 1.392em;
-            }
+    a.linkedin {
+        background-image: url(assets/linkedin.png);
+        width: 1.176em;
+    }
 
-            a.patreon,
-            a.medium,
-            a.habr {
-                width: auto;
-                padding-left: 1em;
-                vertical-align: baseline;
-                background-position: 0 0.2em;
-            }
+    a.twitter {
+        background-image: url(assets/twitter.svg);
+        width: 1.392em;
+    }
 
-            a.patreon {
-                background-image: url(assets/patreon.png);
-            }
+    a.habr {
+        background-image: url(assets/habr.png);
+    }
 
-            a.medium {
-                background-image: url(assets/medium.png);
-                padding-left: 1.3em;
-                background-size: 1.42em 1em;
-            }
+    a.patreon,
+    a.medium,
+    a.habr {
+        width: auto;
+        padding-left: 1em;
+        vertical-align: baseline;
+        background-position: 0 0.2em;
+    }
 
-            a.kindle {
-                width: auto;
-                vertical-align: unset;
-            }
+    a.patreon {
+        background-image: url(assets/patreon.png);
+    }
 
-            body img {
-                width: 100%;
-                max-width: 1000px;
-            }
+    a.medium {
+        background-image: url(assets/medium.png);
+        padding-left: 1.3em;
+        background-size: 1.42em 1em;
+    }
 
-            @media (min-width: 1010px) {
-                body {
-                    width: 1000px;
-                    margin: 5px auto;
-                    text-align: justify;
-                }
-            }
+    a.kindle {
+        width: auto;
+        vertical-align: unset;
+    }
 
-            @media (min-width: 2000px) {
-                body {
-                    width: auto;
-                    margin: 5px 25%;
-                    text-align: justify;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <nav>
-            <img
-                src="assets/header.jpg"
-                alt="Сергей Константинов. «API». Бесплатная электронная книга"
-            /><br />
-            Сергей Константинов. «API». Бесплатная электронная книга<br />Подпишитесь
-            на обновления на
-            <a class="habr" href="https://habr.com/ru/users/forgotten/posts/"
-                >Хабре</a
-            > &middot; <a
-                class="github"
-                href="https://github.com/twirl/The-API-Book"
-            ></a
-            ><br />Follow me on
-            <a class="linkedin" href="https://www.linkedin.com/in/twirl/"></a
-            > &middot; <a
-                class="twitter"
-                href="https://twitter.com/blogovodoved"
-            ></a
-            > &middot; <a class="medium" href="https://twirl.medium.com/"
-                >Medium</a
-            ><br />Вы можете поддержать эту работу на
-            <a class="patreon" href="https://www.patreon.com/yatwirl">Patreon</a
-            > или <a
-                class="kindle"
-                href="https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0"
-                >купить Kindle-версию</a
-            >
-            <br />⚙️⚙️⚙️
-        </nav>
-        <p>
-            Разработка API — особый навык: API является как мультипликатором
-            ваших возможностей, так и мультипликатором ваших ошибок. Эта книга
-            написана для того, чтобы поделиться опытом и изложить лучшие
-            практики проектирования и управления продуктом API.
-        </p>
-        <p>
-            Вы можете скачать книгу «API» в формате
-            <a href="API.ru.pdf">PDF</a>
-            или
-            <a href="API.ru.epub">EPUB</a>, или
-            <a href="API.ru.html">читать её онлайн</a>.
-        </p>
-        <h2 class="toc">Содержание</h2>
-        <ul class="table-of-contents">
-            <li>
-                <a href="API.ru.html#section-1">Введение</a>
+    body img {
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    @media (min-width: 1010px) {
+        body {
+            width: 1000px;
+            margin: 5px auto;
+            text-align: justify;
+        }
+    }
+
+    @media (min-width: 2000px) {
+        body {
+            width: auto;
+            margin: 5px 25%;
+            text-align: justify;
+        }
+    }
+</style>
+</head>
+<body>
+    <nav>
+        <img
+            src="assets/header.jpg"
+            alt="Сергей Константинов. The API"
+        /><br />
+        <h1>Сергей Константинов<br/><span class="title">The API</span></h1>
+        <h2>Бесплатная электронная книга</h2>
+        <br />Подпишитесь на обновления на <a class="habr" href="https://habr.com/ru/users/forgotten/posts/">Хабре</a>
+        
+        <br />Поддержите эту работу на <a class="patreon" href="https://www.patreon.com/yatwirl">Patreon</a>
+        <br />⚙️⚙️⚙️
+    </nav>
+    <p>«API-first» подход — одна из самых горячих горячих тем в разработке программного обеспечения в наше время. Многие компании начали понимать, что API выступает мультипликатором их возможностей — но также умножает и допущенные ошибки.</p>
+<p>Эта книга посвящена проектированию API: как правильно выстроить архитектуру, начиная с высокоуровневого планирования и заканчивая деталями реализации конкретных интерфейсов, и как развивать API, не нарушая обратную совместимость.</p>
+    <p>Вы можете скачать книгу «API» в формате <a href="API.ru.pdf">PDF</a>, <a href="API.ru.epub">EPUB</a>, или <a href="API.ru.html">прочитать её онлайе</a>.
+    </p>
+    <h3>Содержание</h3>
+    <ul><li>
+                <h4><a href="API.ru.html#section-1">Введение</a></h4>
                 <ul>
-                    <li>
-                        <a href="API.ru.html#chapter-1"
-                            >Глава 1. О структуре этой книги</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-2"
-                            >Глава 2. Определение API</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-3"
-                            >Глава 3. Критерии качества API</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-4"
-                            >Глава 4. Обратная совместимость</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-5"
-                            >Глава 5. О версионировании</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-6"
-                            >Глава 6. Условные обозначения и терминология</a
-                        >
-                    </li>
-                </ul>
+                    <li><a href="API.ru.html#chapter-1">Глава 1. О структуре этой книги</a></li>
+<li><a href="API.ru.html#chapter-2">Глава 2. Определение API</a></li>
+<li><a href="API.ru.html#chapter-3">Глава 3. Критерии качества API</a></li>
+<li><a href="API.ru.html#chapter-4">Глава 4. Обратная совместимость</a></li>
+<li><a href="API.ru.html#chapter-5">Глава 5. О версионировании</a></li>
+<li><a href="API.ru.html#chapter-6">Глава 6. Условные обозначения и терминология</a></li>
+                            </ul>
             </li>
-            <li>
-                <a href="API.ru.html#section-2">Раздел I. Проектирование API</a>
+<li>
+                <h4><a href="API.ru.html#section-2">Раздел I. Проектирование API</a></h4>
                 <ul>
-                    <li>
-                        <a href="API.ru.html#chapter-7"
-                            >Глава 7. Пирамида контекстов API</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-8"
-                            >Глава 8. Определение области применения</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-9"
-                            >Глава 9. Разделение уровней абстракции</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-10"
-                            >Глава 10. Разграничение областей ответственности</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-11"
-                            >Глава 11. Описание конечных интерфейсов</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-12"
-                            >Глава 12. Приложение к разделу I. Модельный API</a
-                        >
-                    </li>
-                </ul>
+                    <li><a href="API.ru.html#chapter-7">Глава 7. Пирамида контекстов API</a></li>
+<li><a href="API.ru.html#chapter-8">Глава 8. Определение области применения</a></li>
+<li><a href="API.ru.html#chapter-9">Глава 9. Разделение уровней абстракции</a></li>
+<li><a href="API.ru.html#chapter-10">Глава 10. Разграничение областей ответственности</a></li>
+<li><a href="API.ru.html#chapter-11">Глава 11. Описание конечных интерфейсов</a></li>
+<li><a href="API.ru.html#chapter-12">Глава 12. Приложение к разделу I. Модельный API</a></li>
+                            </ul>
             </li>
-            <li>
-                <a href="API.ru.html#section-3"
-                    >Раздел II. Обратная совместимость</a
-                >
+<li>
+                <h4><a href="API.ru.html#section-3">Раздел II. Обратная совместимость</a></h4>
                 <ul>
-                    <li>
-                        <a href="API.ru.html#chapter-13"
-                            >Глава 13. Постановка проблемы обратной
-                            совместимости</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-14"
-                            >Глава 14. О ватерлинии айсберга</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-15"
-                            >Глава 15. Расширение через абстрагирование</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-16"
-                            >Глава 16. Сильная связность и сопутствующие
-                            проблемы</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-17"
-                            >Глава 17. Слабая связность</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-18"
-                            >Глава 18. Интерфейсы как универсальный паттерн</a
-                        >
-                    </li>
-                    <li>
-                        <a href="API.ru.html#chapter-19"
-                            >Глава 19. Блокнот душевного покоя</a
-                        >
-                    </li>
-                </ul>
+                    <li><a href="API.ru.html#chapter-13">Глава 13. Постановка проблемы обратной совместимости</a></li>
+<li><a href="API.ru.html#chapter-14">Глава 14. О ватерлинии айсберга</a></li>
+<li><a href="API.ru.html#chapter-15">Глава 15. Расширение через абстрагирование</a></li>
+<li><a href="API.ru.html#chapter-16">Глава 16. Сильная связность и сопутствующие проблемы</a></li>
+<li><a href="API.ru.html#chapter-17">Глава 17. Слабая связность</a></li>
+<li><a href="API.ru.html#chapter-18">Глава 18. Интерфейсы как универсальный паттерн</a></li>
+<li><a href="API.ru.html#chapter-19">Глава 19. Блокнот душевного покоя</a></li>
+                            </ul>
             </li>
-            <li>
-                Раздел III. API как продукт
+<li>
+                <h4>Часть III. API как продукт</h4>
                 <ul>
                     <li>Глава 20. Продукт API</li>
-                    <li>Глава 21. Бизнес-модели API</li>
-                    <li>Глава 22. Формирование продуктового видения</li>
-                    <li>Глава 23. Взаимодействие с разработчиками</li>
-                    <li>Глава 24. Взаимодействие с бизнес-аудиторией</li>
-                    <li>Глава 25. Линейка сервисов API</li>
-                    <li>Глава 26. Ключевые показатели эффективности API</li>
-                    <li>Глава 27. Идентификация пользователей</li>
-                    <li>Глава 28. Антифрод и информационная безопасность</li>
-                    <li>Глава 29. Поддержка пользователей API</li>
-                    <li>Глава 30. Документация</li>
-                    <li>Глава 31. Тестовая среда</li>
-                    <li>Глава 32. Управление ожиданиями</li>
-                </ul>
+<li>Глава 21. Бизнес-модели API</li>
+<li>Глава 22. Формирование продуктового видения</li>
+<li>Глава 23. Взаимодействие с разработчиками</li>
+<li>Глава 24. Взаимодействие с бизнес-аудиторией</li>
+<li>Глава 25. Линейка сервисов API</li>
+<li>Глава 26. Ключевые показатели эффективности API</li>
+<li>Глава 27. Идентификация пользователей и борьба с фродом</li>
+<li>Глава 28. Информационная безопасность</li>
+<li>Глава 29. Поддержка пользователей</li>
+<li>Глава 30. Документация</li>
+<li>Глава 31. Тестовая среда</li>
+<li>Глава 32. Управление ожиданиями</li>
+                            </ul>
             </li>
-        </ul>
-        <p>
-            Эта книга распространяется на условиях лицензии
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/"
-                >Creative Commons Attribution-NonCommercial 4.0 International
-                licence</a
-            >. Исходный код доступен на
-            <a href="https://github.com/twirl/The-API-Book">Github</a>.
-            Иллюстрации и вдохновение:
-            <a href="https://www.instagram.com/art.mari.ka/">art.mari.ka</a>.
-        </p>
-        <p>
-            You might read ‘The API’ <a href="index.html">in English</a> as
-            well.
-        </p>
-    </body>
+    </ul>
+    <p>Это произведение доступно по <a href="http://creativecommons.org/licenses/by-nc/4.0/">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.</p>
+    <p>Исходный код доступен на <a href="https://github.com/twirl/The-API-Book">github.com/twirl/The-API-Book</a></p>
+    <p>Иллюстрации и вдохновение: Maria Konstantinova &middot; <a href="https://www.instagram.com/art.mari.ka/">art.mari.ka</a>.</p>
+<p>You might also <a href="index.html">read ‘The API’ in English</a>.</p>
+</body>
 </html>
