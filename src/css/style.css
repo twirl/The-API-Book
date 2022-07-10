@@ -117,12 +117,14 @@ code {
 }
 
 pre {
-    margin: 1em 0;
+    margin: 1em auto;
     padding: 1em;
     border-radius: 0.25em;
     border-top: 1px solid rgba(0, 0, 0, 0.45);
     border-left: 1px solid rgba(0, 0, 0, 0.45);
     box-shadow: 0.1em 0.1em 0.1em rgba(0, 0, 0, 0.45);
+    width: 90%;
+    box-sizing: border-box;
     page-break-inside: avoid;
     overflow-x: auto;
     font-size: 90%;
