@@ -81,5 +81,8 @@
                 "Managing Expectations"
             ]
         }
-    ]
+    ],
+    "graphs": {
+        "topLevel": "Top-Level Objects"
+    }
 }

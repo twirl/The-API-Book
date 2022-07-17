@@ -1,0 +1,16 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+}
+
+@font-face {
+    font-family: local-monospace;
+    src: url(../fonts/RobotoMono-Regular.ttf);
+}
+
+* {
+    font-family: local-monospace, monospace !important;
+    white-space: nowrap !important;
+}
