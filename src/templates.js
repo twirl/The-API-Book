@@ -57,138 +57,12 @@ const templates = (module.exports = {
         property="og:url"
         content="${l10n.links.githubHref}"
     />
-    <style>
-    @font-face {
-        font-family: local-serif;
-        src: url(assets/PTSerif-Regular.ttf);
-    }
-
-    @font-face {
-        font-family: local-serif;
-        src: url(assets/PTSerif-Bold.ttf);
-        font-weight: bold;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        border: none;
-        font-family: local-serif, Arial, Helvetica, sans-serif;
-        list-style-type: none;
-    }
-
-    h1 {
-        font-size: 1.5em;
-    }
-    h1.title {
-        font-size: 2em;
-    }
-    h2 {
-        font-size: 1.2em;
-    }
-
-    ul > li {
-        padding-left: 1em;
-    }
-
-    p {
-        margin: 1em 0;
-    }
-
-    body {
-        font-size: 14pt;
-        margin: 5px;
-    }
-
-    nav {
-        text-align: center;
-    }
-
-    nav > img {
-        max-height: 300px;
-        object-fit: contain;
-    }
-
-    nav a {
-        vertical-align: -12%;
-        content: ' ';
-        width: 1em;
-        height: 1em;
-        display: inline-block;
-        background-position: 0 0;
-        background-size: auto 100%;
-        background-repeat: no-repeat;
-        text-decoration: none;
-    }
-
-    a.github {
-        background-image: url(assets/github.jpg);
-        width: 1.2em;
-    }
-
-    a.linkedin {
-        background-image: url(assets/linkedin.png);
-        width: 1.176em;
-    }
-
-    a.twitter {
-        background-image: url(assets/twitter.svg);
-        width: 1.392em;
-    }
-
-    a.habr {
-        background-image: url(assets/habr.png);
-    }
-
-    a.patreon,
-    a.medium,
-    a.habr {
-        width: auto;
-        padding-left: 1em;
-        vertical-align: baseline;
-        background-position: 0 0.2em;
-    }
-
-    a.patreon {
-        background-image: url(assets/patreon.png);
-    }
-
-    a.medium {
-        background-image: url(assets/medium.png);
-        padding-left: 1.3em;
-        background-size: 1.42em 1em;
-    }
-
-    a.kindle {
-        width: auto;
-        vertical-align: unset;
-    }
-
-    body img {
-        width: 100%;
-        max-width: 1000px;
-    }
-
-    @media (min-width: 1010px) {
-        body {
-            width: 1000px;
-            margin: 5px auto;
-            text-align: justify;
-        }
-    }
-
-    @media (min-width: 2000px) {
-        body {
-            width: auto;
-            margin: 5px 25%;
-            text-align: justify;
-        }
-    }
-</style>
+    <link rel="stylesheet" href="assets/landing.css"/>
 </head>
 <body>
     <nav>
         <img
+            class="header"
             src="assets/header.jpg"
             alt="${l10n.author}. ${l10n.title}"
         /><br />
@@ -270,6 +144,12 @@ const templates = (module.exports = {
     <p>${l10n.sourceCodeAt} <a href="${l10n.links.githubHref}">${
             l10n.links.githubString
         }</a></p>
+    <h3><a name="about-author">${l10n.aboutMe.title}</a></h3>
+    <section class="about-me">
+        <aside><img src="https://konstantinov.cc/static/me.png"/></aside>
+        <div class="content">
+        ${l10n.aboutMe.content.join('\n')}</div>
+    </section>
     ${l10n.landing.footer.join('\n')}
 </body>
 </html>`;

@@ -1,0 +1,147 @@
+@font-face {
+    font-family: local-serif;
+    src: url(PTSerif-Regular.ttf);
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(PTSerif-Bold.ttf);
+    font-weight: bold;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: local-serif, Arial, Helvetica, sans-serif;
+    list-style-type: none;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+h1.title {
+    font-size: 2em;
+}
+h2 {
+    font-size: 1.2em;
+}
+
+ul > li {
+    padding-left: 1em;
+}
+
+p, body > ul, h3 {
+    margin: 0 0 1em 0;
+}
+
+body {
+    font-size: 14pt;
+    margin: 5px;
+}
+
+nav {
+    text-align: center;
+}
+
+nav > img {
+    max-height: 300px;
+    object-fit: contain;
+}
+
+nav a {
+    vertical-align: -12%;
+    content: ' ';
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    background-position: 0 0;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    text-decoration: none;
+}
+
+a.github {
+    background-image: url(github.jpg);
+    width: 1.2em;
+}
+
+a.linkedin {
+    background-image: url(linkedin.png);
+    width: 1.176em;
+}
+
+a.twitter {
+    background-image: url(twitter.svg);
+    width: 1.392em;
+}
+
+a.habr {
+    background-image: url(habr.png);
+}
+
+a.patreon,
+a.medium,
+a.habr {
+    width: auto;
+    padding-left: 1em;
+    vertical-align: baseline;
+    background-position: 0 0.2em;
+}
+
+a.patreon {
+    background-image: url(patreon.png);
+}
+
+a.medium {
+    background-image: url(medium.png);
+    padding-left: 1.3em;
+    background-size: 1.42em 1em;
+}
+
+a.kindle {
+    width: auto;
+    vertical-align: unset;
+}
+
+img.header {
+    width: 80%;
+}
+
+.about-me {
+    display: flex;
+    flex-flow: row-reverse wrap;
+    gap: 0.5em;
+    justify-content: center;
+}
+
+.about-me aside {
+    min-width: 200px;
+    max-width: 400px;
+    padding-top: 0.4em;
+}
+
+.about-me aside img {
+    width: 100%;
+}
+
+.about-me .content {
+    flex-basis: 320px;
+    flex-grow: 2;
+}
+
+@media (min-width: 1010px) {
+    body {
+        width: 1000px;
+        margin: 5px auto;
+        text-align: justify;
+    }
+}
+
+@media (min-width: 2000px) {
+    body {
+        width: auto;
+        margin: 5px 25%;
+        text-align: justify;
+    }
+}

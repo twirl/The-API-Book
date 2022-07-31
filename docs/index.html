@@ -26,138 +26,12 @@
         property="og:url"
         content="https://github.com/twirl/The-API-Book"
     />
-    <style>
-    @font-face {
-        font-family: local-serif;
-        src: url(assets/PTSerif-Regular.ttf);
-    }
-
-    @font-face {
-        font-family: local-serif;
-        src: url(assets/PTSerif-Bold.ttf);
-        font-weight: bold;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        border: none;
-        font-family: local-serif, Arial, Helvetica, sans-serif;
-        list-style-type: none;
-    }
-
-    h1 {
-        font-size: 1.5em;
-    }
-    h1.title {
-        font-size: 2em;
-    }
-    h2 {
-        font-size: 1.2em;
-    }
-
-    ul > li {
-        padding-left: 1em;
-    }
-
-    p {
-        margin: 1em 0;
-    }
-
-    body {
-        font-size: 14pt;
-        margin: 5px;
-    }
-
-    nav {
-        text-align: center;
-    }
-
-    nav > img {
-        max-height: 300px;
-        object-fit: contain;
-    }
-
-    nav a {
-        vertical-align: -12%;
-        content: ' ';
-        width: 1em;
-        height: 1em;
-        display: inline-block;
-        background-position: 0 0;
-        background-size: auto 100%;
-        background-repeat: no-repeat;
-        text-decoration: none;
-    }
-
-    a.github {
-        background-image: url(assets/github.jpg);
-        width: 1.2em;
-    }
-
-    a.linkedin {
-        background-image: url(assets/linkedin.png);
-        width: 1.176em;
-    }
-
-    a.twitter {
-        background-image: url(assets/twitter.svg);
-        width: 1.392em;
-    }
-
-    a.habr {
-        background-image: url(assets/habr.png);
-    }
-
-    a.patreon,
-    a.medium,
-    a.habr {
-        width: auto;
-        padding-left: 1em;
-        vertical-align: baseline;
-        background-position: 0 0.2em;
-    }
-
-    a.patreon {
-        background-image: url(assets/patreon.png);
-    }
-
-    a.medium {
-        background-image: url(assets/medium.png);
-        padding-left: 1.3em;
-        background-size: 1.42em 1em;
-    }
-
-    a.kindle {
-        width: auto;
-        vertical-align: unset;
-    }
-
-    body img {
-        width: 100%;
-        max-width: 1000px;
-    }
-
-    @media (min-width: 1010px) {
-        body {
-            width: 1000px;
-            margin: 5px auto;
-            text-align: justify;
-        }
-    }
-
-    @media (min-width: 2000px) {
-        body {
-            width: auto;
-            margin: 5px 25%;
-            text-align: justify;
-        }
-    }
-</style>
+    <link rel="stylesheet" href="assets/landing.css"/>
 </head>
 <body>
     <nav>
         <img
+            class="header"
             src="assets/header.jpg"
             alt="Sergey Konstantinov. The API"
         /><br />
@@ -170,6 +44,7 @@
     </nav>
     <p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>
 <p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>
+<p>Illustration &amp; inspiration: <a href="https://www.instagram.com/art.mari.ka/">art.mari.ka</a>.</p>
     <p>You might download ‘The API’ in <a href="API.en.pdf">PDF</a>, <a href="API.en.epub">EPUB</a>, or <a href="API.en.html">read it online</a>.
     </p>
     <h3>Table of Contents</h3>
@@ -228,7 +103,14 @@
     </ul>
     <p>This book is distributed under the <a href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>
     <p>Source code available at <a href="https://github.com/twirl/The-API-Book">github.com/twirl/The-API-Book</a></p>
-    <p>Illustration &amp; inspiration: <a href="https://www.instagram.com/art.mari.ka/">art.mari.ka</a>.</p>
-<p>Книгу «API» можно <a href="index.ru.html">читать по-русски</a>.</p>
+    <h3><a name="about-author">About the Author</a></h3>
+    <section class="about-me">
+        <aside><img src="https://konstantinov.cc/static/me.png"/></aside>
+        <div class="content">
+        <p>Sergey Konstantinov has been working with APIs for more than a decade. He started his career as a software engineer in the Maps API division at Yandex and eventually became the head of the service, being responsible for both technical architecture and product management.</p>
+<p>During this tenure, Sergey got a unique experience in building world-class APIs with a daily audience of tens of millions, planning roadmaps for such a service, and giving numerous public speeches. He also worked for a year and a half as a member of the W3C Technical Architecture Group.</p>
+<p>After nine years in Maps, Sergey switched to technical-lead roles in other departments and companies, leading integration efforts and being responsible for the technical architecture of entire business units. Today, Sergey lives in Tallinn, Estonia, and works as a staff software engineer at Bolt.</p></div>
+    </section>
+    <p>Книгу «API» можно <a href="index.ru.html">читать по-русски</a>.</p>
 </body>
 </html>

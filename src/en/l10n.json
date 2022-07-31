@@ -6,6 +6,14 @@
     "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. In Section I, we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner.",
     "locale": "en_US",
     "file": "API",
+    "aboutMe": {
+        "title": "About the Author",
+        "content": [
+            "<p>Sergey Konstantinov has been working with APIs for more than a decade. He started his career as a software engineer in the Maps API division at Yandex and eventually became the head of the service, being responsible for both technical architecture and product management.</p>",
+            "<p>During this tenure, Sergey got a unique experience in building world-class APIs with a daily audience of tens of millions, planning roadmaps for such a service, and giving numerous public speeches. He also worked for a year and a half as a member of the W3C Technical Architecture Group.</p>",
+            "<p>After nine years in Maps, Sergey switched to technical-lead roles in other departments and companies, leading integration efforts and being responsible for the technical architecture of entire business units. Today, Sergey lives in Tallinn, Estonia, and works as a staff software engineer at Bolt.</p>"
+        ]
+    },
     "landingFile": "index.html",
     "url": "https://twirl.github.io/The-API-Book/",
     "favicon": "/img/favicon.png",
@@ -48,14 +56,14 @@
         "support": ["patreon", "kindle"],
         "content": [
             "<p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
-            "<p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>"
+            "<p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>",
+            "<p>Illustration &amp; inspiration: <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>"
         ],
         "download": "You might download ‘The API’ in",
         "or": "or",
         "readOnline": "read it online",
         "license": "This book is distributed under the <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.",
         "footer": [
-            "<p>Illustration &amp; inspiration: <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>",
             "<p>Книгу «API» можно <a href=\"index.ru.html\">читать по-русски</a>.</p>"
         ]
     },

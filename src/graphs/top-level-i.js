@@ -5,13 +5,23 @@
             height: 320
         });
 
-        lib.group({
+        // lib.group({
+        //     graph,
+        //     left: 10,
+        //     top: 10,
+        //     width: 980,
+        //     height: 300,
+        //     title: l10n.graphs.topLevel
+        // });
+
+        lib.entity({
             graph,
-            left: 10,
+            left: 50,
             top: 10,
-            width: 980,
-            height: 300,
-            title: l10n.graphs.topLevel
+            width: 300,
+            height: 280,
+            title: 'Recipes Domain',
+            items: ['GET /recipe/{alias}']
         });
     };
 })(this);

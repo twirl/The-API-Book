@@ -14,3 +14,11 @@ html, body {
     font-family: local-monospace, monospace !important;
     white-space: nowrap !important;
 }
+
+.position-absolute {
+    position: absolute;
+}
+
+.table {
+    display: table;
+}
