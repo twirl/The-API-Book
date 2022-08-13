@@ -1,27 +1,50 @@
-import { readFileSync, writeFileSync, readdirSync } from 'fs';
+import {
+    readFileSync,
+    writeFileSync,
+    readdirSync,
+    existsSync,
+    mkdirSync
+} from 'fs';
 import { resolve } from 'path';
 import { pathToFileURL } from 'url';
 import puppeteer from 'puppeteer';
 
 const args = process.argv.slice(2);
 const dir = process.cwd();
+const langs = (args[1] || 'en,ru').split(',');
+const graphDir = resolve(dir, 'src', 'graphs');
+const tmpDir = resolve(graphDir, 'tmp');
+const srcDir = resolve(dir, 'src');
 
-if (args[0] == 'l10n') {
-    buildL10N(dir, (args[1] || 'en,ru').split(','));
-} else {
-    buildGraphs(dir, (args[0] || 'en,ru').split(','), args[1]);
+if (!existsSync(tmpDir)) {
+    mkdirSync(tmpDir);
+}
+const targets = args[2]
+    ? [args[2] + '.yaml']
+    : readdirSync(graphDir).filter((i) => i.endsWith('.yaml'));
+
+build(langs, targets, srcDir, graphDir, tmpDir).then(
+    () => process.exit(0),
+    (e) => {
+        throw e;
+    }
+);
+
+async function build(langs, targets, srcDir, graphDir, tmpDir) {
+    await buildL10n(langs, srcDir, tmpDir);
+    await buildGraphs(langs, targets, graphDir, tmpDir);
 }
 
-async function buildL10N(dir, langs) {
+async function buildL10n(langs, srcDir, tmpDir) {
     const l10n = langs.reduce((l10n, lang) => {
-        const l10nFile = resolve(dir, 'src', lang, 'l10n.json');
+        const l10nFile = resolve(srcDir, lang, 'l10n.json');
         const contents = JSON.parse(readFileSync(l10nFile).toString('utf-8'));
         l10n[lang] = JSON.stringify(contents);
         return l10n;
     }, {});
 
     writeFileSync(
-        resolve(dir, 'src', 'graphs', 'l10n.js'),
+        resolve(tmpDir, 'l10n.js'),
         `(function(global){global.l10n={${Object.entries(l10n)
             .map(
                 ([lang, content]) =>
@@ -31,17 +54,19 @@ async function buildL10N(dir, langs) {
     );
 }
 
-async function buildGraphs(dir, langs, source) {
-    const srcDir = resolve(dir, 'src', 'graphs');
-    const sources = source
-        ? [source]
-        : readdirSync(srcDir)
-              .filter((file) => file.slice(-3) == '.js' && file != 'l10n.js')
-              .map((file) => file.slice(0, file.length - 3))
-              .sort();
-    const indexFileUrl = pathToFileURL(
-        resolve(dir, 'src', 'graphs', 'index.html')
+async function buildGraphs(langs, targets, graphDir, tmpDir) {
+    const tasks = langs.reduce(
+        (tasks, lang) =>
+            tasks.concat(
+                targets.map((target) => {
+                    lang, target;
+                })
+            ),
+        []
     );
+    return Promise.all(tasks.map(({lang, target}) => {
+        const yaml = readFileSync(resolve(graphDir, target))
+    });
 
     for (const source of sources) {
         console.log(`Building ${source}…`);

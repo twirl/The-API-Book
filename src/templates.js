@@ -146,7 +146,9 @@ const templates = (module.exports = {
         }</a></p>
     <h3><a name="about-author">${l10n.aboutMe.title}</a></h3>
     <section class="about-me">
-        <aside><img src="https://konstantinov.cc/static/me.png"/></aside>
+        <aside><img src="https://konstantinov.cc/static/me.png"/><br/>${
+            l10n.aboutMe.imageCredit
+        }</aside>
         <div class="content">
         ${l10n.aboutMe.content.join('\n')}</div>
     </section>

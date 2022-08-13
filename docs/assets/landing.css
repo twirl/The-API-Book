@@ -119,7 +119,15 @@ img.header {
     min-width: 200px;
     max-width: 400px;
     padding-top: 0.4em;
+    color: gray;
+    text-align: center;
 }
+
+.about-me aside a, .about-me aside a:visited {
+    color: inherit;
+    font-weight: bold;
+}
+
 
 .about-me aside img {
     width: 100%;
