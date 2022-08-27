@@ -1,0 +1,4 @@
+flowchart TB
+    subgraph API рецептов
+    a1[[GET /v1/recipes]]
+    end

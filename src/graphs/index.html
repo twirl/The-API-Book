@@ -1,20 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.4.4/joint.css"
-        />
         <link rel="stylesheet" type="text/css" href="../css/graph.css" />
     </head>
     <body>
-        <!-- content -->
-        <div id="content"></div>
-
-        <!-- code -->
-        <script type="text/javascript" src="l10n.js"></script>
-        <script type="text/javascript" src="lib/lib.js"></script>
+        <div class="mermaid"></div>
+        <script type="text/javascript" src="tmp/l10n.js"></script>
         <script type="text/javascript">
             const params = document.location.href
                 .split('?', 2)[1]
@@ -26,9 +17,9 @@
                 }, {});
 
             document.write(
-                `<script type="text/javascript" src="${params.graph}.js">\<\/script>`
+                `<script type="text/javascript" src="tmp/wrapped-${params.lang}-${params.graph}.js">\<\/script>`
             );
-            window.onload = () => render(lib, l10n[params.lang]);
         </script>
+        <script src="lib/mermaid.min.js"></script>
     </body>
 </html>

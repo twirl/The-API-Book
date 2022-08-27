@@ -5,13 +5,14 @@
     "author": "Sergey Konstantinov <twirl-team@yandex.ru>",
     "repository": "github.com:twirl/The-API-Book",
     "devDependencies": {
-        "@twirl/book-builder": "0.0.12",
+        "@twirl/book-builder": "0.0.17",
         "html-docx-js": "^0.3.1",
+        "nodemon": "^2.0.19",
         "puppeteer": "^13.1.2"
     },
     "scripts": {
         "build": "node build.mjs",
         "build-docx": "node build-docx.mjs",
-        "build-graphs": "node build-graphs.mjs"
+        "build:watch": "nodemon -e md,js,mjs,css,json --exec npm run build ru html"
     }
 }

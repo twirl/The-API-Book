@@ -1,0 +1,1 @@
+document.querySelector('.mermaid').innerHTML = "flowchart TB\n    subgraph API рецептов\n    a1[[GET /v1/recipes]]\n    end\n";

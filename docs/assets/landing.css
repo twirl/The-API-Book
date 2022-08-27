@@ -31,7 +31,9 @@ ul > li {
     padding-left: 1em;
 }
 
-p, body > ul, h3 {
+p,
+body > ul,
+h3 {
     margin: 0 0 1em 0;
 }
 
@@ -66,12 +68,14 @@ a.github {
     width: 1.2em;
 }
 
-a.linkedin {
+a.linkedin,
+a.share-linkedin {
     background-image: url(linkedin.png);
     width: 1.176em;
 }
 
-a.twitter {
+a.twitter,
+a.share-twitter {
     background-image: url(twitter.svg);
     width: 1.392em;
 }
@@ -104,6 +108,18 @@ a.kindle {
     vertical-align: unset;
 }
 
+a.share-reddit {
+    background-image: url(reddit.png);
+}
+
+a.share-vk {
+    background-image: url(vk.svg);
+}
+
+a.share-facebook {
+    background-image: url(facebook.png);
+}
+
 img.header {
     width: 80%;
 }
@@ -123,11 +139,11 @@ img.header {
     text-align: center;
 }
 
-.about-me aside a, .about-me aside a:visited {
+.about-me aside a,
+.about-me aside a:visited {
     color: inherit;
     font-weight: bold;
 }
-
 
 .about-me aside img {
     width: 100%;

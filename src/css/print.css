@@ -1,17 +1,28 @@
+@page {
+    margin: 20mm 18mm 27mm 25mm;
+    size: 145mm 204mm;
+}
+
+@page:first {
+    margin: 0;
+    size: 102mm 157mm;
+};
+
 html,
 body {
     margin: 0;
     padding: 0;
-    font-size: 14pt;
+    font-size: 12pt;
+    text-size-adjust: none;
 }
 
-.github-corner {
-    display: none;
+pre {
+    margin: 0 0 1em 0;
+    width: calc(100% - 2px);
 }
 
-pre,
 img {
-    margin-right: 0.1em;
+    margin: 1px;
 }
 
 h1,
@@ -20,39 +31,40 @@ h3,
 h4,
 h5,
 h6 {
-    page-break-after: never;
+    page-break-before: auto;
+    page-break-after: avoid;
+}
+
+p {
+    orphans: 5;
 }
 
 img {
     margin-top: 1em;
-    page-break-after: never;
-}
-
-:root {
-    --main-font: 'PT Serif';
-    --alt-font: 'PT Serif';
-    --code-font: Inconsolata;
+    page-break-before: auto;
+    page-break-after: avoid;
 }
 
 .cover {
     background-image: url(/cover_300dpi.png);
-    background-size: 100% auto;
+    background-position: 50% 50%;
     background-repeat: no-repeat;
-    background-position: 50% 100%;
-    width: 100%;
-    height: 10.05in;
+    background-size: cover;
+    position: relative;
     margin: 0;
-    padding: 0;
+    font-size: 4mm;
+    aspect-ratio: 102/150;
 }
 
-.annotation {
-    padding-top: 5in;
+.cover h1 {
+    font-size: 12mm;
+    text-align: left;
+    padding: 10mm 20mm 10mm 20mm;
+    line-height: 15mm;
 }
 
-h1 {
-    padding: 1in 0.5in;
-    font-size: 40pt;
-    margin: 0;
+.cover h1 .title {
+    font-size: 20mm;
 }
 
 p,
@@ -61,12 +73,15 @@ ol {
     orphans: 4;
 }
 
-@page {
-    margin: 0.5in;
-    size: 8.5in 11in;
+.page-break,
+.cover {
+    page-break-after: always;
 }
 
-@page:first {
-    margin: 0;
-    size: 7.5in 10in;
+.no-page-break {
+    page-break-inside: avoid;
+}
+
+nav.page-main {
+    display: none;
 }

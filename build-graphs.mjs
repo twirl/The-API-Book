@@ -11,28 +11,26 @@ import puppeteer from 'puppeteer';
 
 const args = process.argv.slice(2);
 const dir = process.cwd();
-const langs = (args[1] || 'en,ru').split(',');
-const graphDir = resolve(dir, 'src', 'graphs');
-const tmpDir = resolve(graphDir, 'tmp');
+const langs = (args[0] || 'en,ru').split(',');
+const target = args[1];
 const srcDir = resolve(dir, 'src');
+const graphDir = resolve(srcDir, 'graphs');
+const tmpDir = resolve(graphDir, 'tmp');
 
 if (!existsSync(tmpDir)) {
     mkdirSync(tmpDir);
 }
-const targets = args[2]
-    ? [args[2] + '.yaml']
-    : readdirSync(graphDir).filter((i) => i.endsWith('.yaml'));
 
-build(langs, targets, srcDir, graphDir, tmpDir).then(
+build(langs, srcDir, graphDir, tmpDir, target).then(
     () => process.exit(0),
     (e) => {
         throw e;
     }
 );
 
-async function build(langs, targets, srcDir, graphDir, tmpDir) {
+async function build(langs, srcDir, graphDir, tmpDir, target) {
     await buildL10n(langs, srcDir, tmpDir);
-    await buildGraphs(langs, targets, graphDir, tmpDir);
+    await buildGraphs(langs, srcDir, graphDir, tmpDir, target);
 }
 
 async function buildL10n(langs, srcDir, tmpDir) {
@@ -54,49 +52,72 @@ async function buildL10n(langs, srcDir, tmpDir) {
     );
 }
 
-async function buildGraphs(langs, targets, graphDir, tmpDir) {
-    const tasks = langs.reduce(
-        (tasks, lang) =>
-            tasks.concat(
-                targets.map((target) => {
-                    lang, target;
-                })
-            ),
-        []
+async function buildGraphs(langs, srcDir, graphDir, tmpDir, target) {
+    const tasks = target
+        ? langs.map((lang) => ({
+              lang,
+              target
+          }))
+        : langs.reduce(
+              (tasks, lang) =>
+                  tasks.concat(
+                      readdirSync(resolve(srcDir, lang, 'graphs')).map(
+                          (file) => ({
+                              lang,
+                              target: file.replace('.yaml', '')
+                          })
+                      )
+                  ),
+              []
+          );
+
+    return Promise.all(
+        tasks.map(({ lang, target }) =>
+            buildGraph({
+                lang,
+                target,
+                yaml: readFileSync(
+                    resolve(srcDir, lang, 'graphs', target + '.yaml'),
+                    'utf-8'
+                ),
+                graphDir,
+                tmpDir
+            })
+        )
     );
-    return Promise.all(tasks.map(({lang, target}) => {
-        const yaml = readFileSync(resolve(graphDir, target))
-    });
+}
 
-    for (const source of sources) {
-        console.log(`Building ${source}…`);
-        for (const lang of langs) {
-            const inFile = `${indexFileUrl}?graph=${source}&lang=${lang}`;
-            console.log(`  Open ${inFile}`);
-            const browser = await puppeteer.launch({
-                headless: true,
-                product: 'chrome',
-                defaultViewport: {
-                    deviceScaleFactor: 2,
-                    width: 1000,
-                    height: 1000
-                }
-            });
-            const outFile = resolve(dir, 'src', 'img', `graph-${source}.png`);
-            const page = await browser.newPage();
+async function buildGraph({ lang, target, yaml, graphDir, tmpDir }) {
+    const jsTmpFileName = `wrapped-${lang}-${target}.js`;
+    writeFileSync(
+        resolve(tmpDir, jsTmpFileName),
+        `document.querySelector('.mermaid').innerHTML = ${JSON.stringify(
+            yaml.replace(/\\n/g, '\\n')
+        )};`
+    );
+    // console.log(`  Open ${inFile}`);
+    // const browser = await puppeteer.launch({
+    //     headless: true,
+    //     product: 'chrome',
+    //     defaultViewport: {
+    //         deviceScaleFactor: 2,
+    //         width: 1000,
+    //         height: 1000
+    //     }
+    // });
+    // const outFile = resolve(dir, 'src', 'img', `graph-${source}.png`);
+    // const page = await browser.newPage();
 
-            await page.goto(inFile, {
-                waitUntil: 'networkidle0'
-            });
-            const body = await page.$('body');
-            await body.screenshot({
-                path: outFile,
-                type: 'png',
-                captureBeyondViewport: true
-            });
-            console.log(`  ${outFile} saved`);
+    // await page.goto(inFile, {
+    //     waitUntil: 'networkidle0'
+    // });
+    // const body = await page.$('body');
+    // await body.screenshot({
+    //     path: outFile,
+    //     type: 'png',
+    //     captureBeyondViewport: true
+    // });
+    // console.log(`  ${outFile} saved`);
 
-            await browser.close();
-        }
-    }
+    // await browser.close();
 }

@@ -1,5 +1,6 @@
 import { resolve as pathResolve } from 'path';
 import templates from './src/templates.js';
+//import { init, plugins } from '../The-Book-Builder/index.js';
 import { init, plugins } from '@twirl/book-builder';
 import { readFileSync, writeFileSync } from 'fs';
 
@@ -23,6 +24,8 @@ const targets = (
     return targets;
 }, {});
 
+const chapters = process.argv[4];
+
 console.log(`Building langs: ${langsToBuild.join(', ')}…`);
 langsToBuild.forEach((lang) => {
     init({
@@ -43,18 +46,25 @@ langsToBuild.forEach((lang) => {
                     plugins.ast.h5Counter,
                     plugins.ast.aImg,
                     plugins.ast.imgSrcResolve,
+                    plugins.ast.mermaid,
                     plugins.ast.ref,
                     plugins.ast.ghTableFix
                 ]
             },
             htmlSourceValidator: {
                 validator: 'WHATWG',
-                ignore: ['heading-level', 'no-raw-characters', 'wcag/h37']
+                ignore: [
+                    'heading-level',
+                    'no-raw-characters',
+                    'wcag/h37',
+                    'no-missing-references'
+                ]
             },
             html: {
                 postProcess: [plugins.html.imgDataUri]
             }
-        }
+        },
+        chapters
     }).then((builder) => {
         Object.keys(targets).forEach((target) => {
             if (target !== 'landing') {
@@ -63,11 +73,12 @@ langsToBuild.forEach((lang) => {
                     pathResolve('docs', `${l10n[lang].file}.${lang}.${target}`)
                 );
             } else {
-                const landingHtml = templates.landing(
-                    builder.structure,
-                    l10n[lang],
-                    lang
-                );
+                const landingHtml = templates.landing({
+                    structure: builder.structure,
+                    l10n: l10n[lang],
+                    lang,
+                    templates
+                });
                 writeFileSync(
                     pathResolve('docs', l10n[lang].landingFile),
                     landingHtml

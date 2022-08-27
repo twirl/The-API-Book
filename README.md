@@ -5,15 +5,11 @@ This is the working repository for ‘The API’ book written by Sergey Konstant
 
 ## Current State and the Roadmap
 
-Right now Section I (‘API Design’) and Section II (‘Backwards Compatibility’) are finished. The Sections are lacking readable schemes, I'll draw them later.
+Right now all three section (‘The API Design’, ‘The Backwards Compatibility’, and ‘The API Product’) are finished. So the book is basically ready, I'm working on some cosmetics:
 
-Section III ‘API as a Product’ will be discussing non-technical issues
-  * what for the APIs exist;
-  * monetizing APIs;
-  * making sure you understand users' needs and collect proper metrics;
-  * common practices, including AA issues and fraud problems;
-  * organizing docs portal;
-  * open source and community.
+  * adding readable schemes where it's appropriate;
+  * refactoring the ‘Describing Final Interfaces’ chapters;
+  * rephrasing and expanding the chapters on versioning and identifying users.
 
 I also have more distant plans on adding two more subsections to Section I.
   * Section Ia ‘JSON HTTP APIs’:

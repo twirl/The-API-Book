@@ -3,7 +3,7 @@
     "author": "Sergey Konstantinov",
     "chapter": "Chapter",
     "toc": "Table of Contents",
-    "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in the API design. In Section I, we'll discuss designing APIs as a concept: how to build the architecture properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner.",
+    "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner. Finally, in Section III we will talk about the API as a product.",
     "locale": "en_US",
     "file": "API",
     "aboutMe": {
@@ -18,6 +18,34 @@
     "landingFile": "index.html",
     "url": "https://twirl.github.io/The-API-Book/",
     "favicon": "/img/favicon.png",
+    "sidePanel": {
+        "shareTo": "Share",
+        "copyLink": "Link",
+        "shareParameters": {
+            "url": "https://twirl.github.io/The-API-Book/",
+            "text": "The API by Sergey Konstantinov — a book about designing APIs, extending them and finding a proper place in the market",
+            "tags": "API,TheAPIBook",
+            "viaTwitter": "blogovodoved"
+        },
+        "services": [
+            {
+                "key": "facebook",
+                "link": "https://www.facebook.com/sharer.php?u=${url}"
+            },
+            {
+                "key": "twitter",
+                "link": "https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${tags}&via=${viaTwitter}"
+            },
+            {
+                "key": "linkedin",
+                "link": "https://www.linkedin.com/sharing/share-offsite/?url=${url}"
+            },
+            {
+                "key": "reddit",
+                "link": "http://www.reddit.com/submit?url=${url}&title=${text}"
+            }
+        ]
+    },
     "imageCredit": "Image Credit",
     "links": {
         "email": "yatwirl@gmail.com",
@@ -41,8 +69,8 @@
         "pageTitle": "Front Page",
         "contents": [
             "<p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
-            "<p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>",
-            "<p>Illustrations &amp; inspiration by Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a></p>",
+            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner. Finally, in Section III we will talk about the API as a product.</p>",
+            "<p class=\"text-align-left\">Illustrations &amp; inspiration by Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a></p>",
             "<img class=\"cc-by-nc-img\" alt=\"Creative Commons «Attribution-NonCommercial» Logo\" src=\"https://i.creativecommons.org/l/by-nc/4.0/88x31.png\"/>",
             "<p class=\"cc-by-nc\">This book is distributed under the <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>"
         ]
@@ -57,7 +85,7 @@
         "support": ["patreon", "kindle"],
         "content": [
             "<p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
-            "<p>This book is dedicated to designing APIs: how to build the architecture properly, from a high-level planning down to final interfaces, and to extend API in a backwards-compatible manner.</p>",
+            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner. Finally, in Section III we will talk about the API as a product.</p>",
             "<p>Illustration &amp; inspiration: <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>"
         ],
         "download": "You might download ‘The API’ in",
@@ -67,31 +95,5 @@
         "footer": [
             "<p>Книгу «API» можно <a href=\"index.ru.html\">читать по-русски</a>.</p>"
         ]
-    },
-    "contents": [
-        { "chapters": ["", "", "", "", "", ""] },
-        { "chapters": ["", "", "", "", "", ""] },
-        { "chapters": ["", "", "", "", "", "", ""] },
-        {
-            "title": "Section III. The API Product",
-            "chapters": [
-                "API as a Product",
-                "API Business Models",
-                "Developing a Product Vision",
-                "Communicating with Developers",
-                "Communicating with Business Owners",
-                "API Services Range",
-                "API Key Performance Indicators",
-                "Identifying Users and Preventing Fraud",
-                "IT-security",
-                "Supporting API users",
-                "Documentation",
-                "Testing Environment",
-                "Managing Expectations"
-            ]
-        }
-    ],
-    "graphs": {
-        "topLevel": "Top-Level Objects"
     }
 }

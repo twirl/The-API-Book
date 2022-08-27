@@ -76,10 +76,23 @@
     src: url(/fonts/RobotoMono-Regular.ttf);
 }
 
-html {
+html,
+body {
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+.display-none {
+    display: none;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.text-align-left {
+    text-align: left;
 }
 
 body,
@@ -127,7 +140,7 @@ pre {
     box-sizing: border-box;
     page-break-inside: avoid;
     overflow-x: auto;
-    font-size: 90%;
+    font-size: 80%;
 }
 
 img:not(.cc-by-nc-img) {
@@ -195,12 +208,13 @@ h5 {
 }
 
 .annotation {
-    text-align: left;
+    text-align: justify;
 }
 
 ul.table-of-contents {
     list-style-type: none;
     padding-left: 0;
+    text-align: left;
 }
 
 ul.table-of-contents li {
@@ -218,77 +232,4 @@ ul.table-of-contents ul li {
 a.anchor {
     color: inherit;
     text-decoration: none;
-}
-
-@media screen {
-    body {
-        margin: 2em auto;
-        max-width: 60%;
-    }
-    .github-corner:hover .octo-arm {
-        animation: octocat-wave 560ms ease-in-out;
-    }
-
-    a.anchor:before {
-        display: inline-block;
-        content: '¶';
-        width: 0.8em;
-        color: lightgray;
-        text-indent: 0;
-    }
-
-    h5 a.anchor:before {
-        color: transparent;
-    }
-
-    a.anchor:hover:before {
-        color: black;
-    }
-
-    h2:not(.toc),
-    h3,
-    h5 {
-        text-indent: -0.8em;
-    }
-
-    @keyframes octocat-wave {
-        0%,
-        100% {
-            transform: rotate(0);
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-            transform: rotate(10deg);
-        }
-    }
-}
-
-@media screen and (max-width: 1000px) {
-    body {
-        padding: 2em;
-        margin: 0;
-        max-width: none;
-        text-align: left;
-    }
-
-    pre {
-        margin: 0;
-        padding: 0.2em;
-    }
-
-    ul,
-    ol {
-        padding-left: 1em;
-    }
-
-    .github-corner:hover .octo-arm {
-        animation: none;
-    }
-    .github-corner .octo-arm {
-        animation: octocat-wave 560ms ease-in-out;
-    }
 }
