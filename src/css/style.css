@@ -123,6 +123,7 @@ pre {
 
 code {
     white-space: nowrap;
+    font-size: 80%;
 }
 
 .img-wrapper img {
@@ -140,7 +141,6 @@ pre {
     box-sizing: border-box;
     page-break-inside: avoid;
     overflow-x: auto;
-    font-size: 80%;
 }
 
 img:not(.cc-by-nc-img) {
