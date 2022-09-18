@@ -95,13 +95,6 @@ body {
     text-align: left;
 }
 
-body,
-h6 {
-    font-family: local-serif, serif;
-    font-size: 14pt;
-    text-align: justify;
-}
-
 .cc-by-nc-img {
     display: block;
     float: left;
@@ -122,7 +115,7 @@ pre {
 }
 
 code {
-    white-space: nowrap;
+    hyphens: manual;
     font-size: 80%;
 }
 
@@ -175,6 +168,14 @@ h5 {
     page-break-after: avoid;
 }
 
+body,
+h5,
+h6 {
+    font-family: local-serif, serif;
+    font-size: 14pt;
+    text-align: justify;
+}
+
 h6 {
     font-size: 80%;
     color: darkgray;
@@ -202,9 +203,12 @@ h3 {
     font-size: 140%;
 }
 
-h4,
-h5 {
+h4 {
     font-size: 120%;
+}
+
+h5 {
+    font-size: 110%;
 }
 
 .annotation {
