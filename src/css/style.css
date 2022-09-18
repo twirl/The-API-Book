@@ -81,6 +81,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
+    text-align: justify;
 }
 
 .display-none {
@@ -173,7 +174,6 @@ h5,
 h6 {
     font-family: local-serif, serif;
     font-size: 14pt;
-    text-align: justify;
 }
 
 h6 {
