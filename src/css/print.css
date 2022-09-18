@@ -12,17 +12,29 @@ html,
 body {
     margin: 0;
     padding: 0;
-    font-size: 12pt;
+}
+
+.toc a, ul li, ol li {
     text-size-adjust: none;
+    font-size: 11pt !important;
 }
 
 pre {
     margin: 0 0 1em 0;
     width: calc(100% - 2px);
+    line-height: 0.8em !important;
+}
+
+p code, pre code {
+    font-size: 9pt !important;
 }
 
 img {
     margin: 1px;
+}
+
+img.cc-by-nc-img {
+    width: 90px;
 }
 
 h1,
@@ -33,10 +45,13 @@ h5,
 h6 {
     page-break-before: auto;
     page-break-after: avoid;
+    line-height: 1.2em;
+    font-size: 80%;
 }
 
 p {
     orphans: 5;
+    font-size: 11pt;
 }
 
 img {
@@ -52,19 +67,18 @@ img {
     background-size: cover;
     position: relative;
     margin: 0;
-    font-size: 4mm;
     aspect-ratio: 102/150;
 }
 
 .cover h1 {
-    font-size: 12mm;
+    font-size: 7mm;
     text-align: left;
-    padding: 10mm 20mm 10mm 20mm;
-    line-height: 15mm;
+    padding: 8mm 18mm 10mm 18mm;
+    line-height: 12mm;
 }
 
 .cover h1 .title {
-    font-size: 20mm;
+    font-size: 10mm;
 }
 
 p,
