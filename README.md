@@ -1,22 +1,30 @@
-# [Read ‘The API’ Book by Sergey Konstantinov](https://twirl.github.io/The-API-Book)
-# [Читать книгу ‘The API’ Сергея Константинова](https://twirl.github.io/The-API-Book/index.ru.html)
+# Read [‘The API’ Book by Sergey Konstantinov](https://twirl.github.io/The-API-Book) in English
+# Читать [книгу ‘The API’ Сергея Константинова](https://twirl.github.io/The-API-Book/index.ru.html) по-русски
 
 This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:twirl-team@yandex.ru), [Linkedin profile](https://linkedin.com/in/twirl)).
 
 ## Current State and the Roadmap
 
-Right now all three section (‘The API Design’, ‘The Backwards Compatibility’, and ‘The API Product’) are finished. So the book is basically ready, I'm working on some cosmetics:
+Right now all three section (‘The API Design’, ‘The Backwards Compatibility’, and ‘The API Product’) are finished. So the book is basically ready. However, after some beta-testing I understood there were several important problems.
+  1. 'Describing final interfaces' chapter is way too overloaded; many concepts explained there deserve a separate chapter, and being minimized to fit the format, they arise a lot of controversy.
+  2. Though I've tried to avoid talking about any specific paradigm (REST in particular), it's often being read as such, thus igniting discussions on whether the samples are proper REST.
 
-  * adding readable schemes where it's appropriate;
-  * refactoring the ‘Describing Final Interfaces’ chapters;
-  * rephrasing and expanding the chapters on versioning and identifying users.
+So the current plan is:
+  1. To split Chapter 11 into a full Section III (work title: 'API Patterns') comprising:
+      * defining API-first approach in a technical sense;
+      * the review of API-describing paradigms (OpenAPI/REST, GraphQL, GRPC, JSON-RPC, SOAP);
+      * working with default values, backwards compatibility-wise;
+      * (a)synchronous interaction;
+      * strong and weak consistency;
+      * push and poll models;
+      * machine-readable APIs: iterable lists, cursors, observability;
+      * an amount of traffic and data compression;
+      * API errors: resolvability, reduction to defaults;
+      * degrading properly.
+  2. To compile Section IV ‘HTTP API & JSON’ from current drafts + HTTP general knowledge + codestyle.
+  3. Maybe, try to compile Section V ‘SDK’ (much harder as there are very few drafts).
 
-I also have more distant plans on adding two more subsections to Section I.
-  * Section Ia ‘JSON HTTP APIs’:
-    * the REST myth;
-    * following HTTP spec, including those parts where you should not follow the spec;
-    * best practices;
-  * Section Ib ‘SDK Design’ covering more tricky issues of having proving UI alongside the API (no specific plan right now)
+Also, the book still lacks the readable schemes which I'm still planning to plot with mermaid.
 
 ## Translation
 
