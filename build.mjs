@@ -1,6 +1,5 @@
 import { resolve as pathResolve } from 'path';
 import templates from './src/templates.js';
-//import { init, plugins } from '../The-Book-Builder/index.js';
 import { init, plugins } from '@twirl/book-builder';
 import { readFileSync, writeFileSync } from 'fs';
 
@@ -48,7 +47,8 @@ langsToBuild.forEach((lang) => {
                     plugins.ast.imgSrcResolve,
                     plugins.ast.mermaid,
                     plugins.ast.ref,
-                    plugins.ast.ghTableFix
+                    plugins.ast.ghTableFix,
+                    plugins.ast.stat
                 ]
             },
             htmlSourceValidator: {
@@ -71,6 +71,16 @@ langsToBuild.forEach((lang) => {
                 builder.build(
                     target,
                     pathResolve('docs', `${l10n[lang].file}.${lang}.${target}`)
+                );
+                console.log(
+                    `Finished lang=${lang} target=${target}\n${Object.entries({
+                        sources: 'Sources',
+                        references: 'references',
+                        words: 'words',
+                        characters: 'characters'
+                    })
+                        .map(([k, v]) => `${v}: ${builder.structure[k]}`)
+                        .join(', ')}`
                 );
             } else {
                 const landingHtml = templates.landing({
