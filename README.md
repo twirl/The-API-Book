@@ -3,6 +3,10 @@
 
 This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:twirl-team@yandex.ru), [Linkedin profile](https://linkedin.com/in/twirl)).
 
+The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.
+
+This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner. Finally, in Section III we will talk about the API as a product.
+
 ## Current State and the Roadmap
 
 Right now all three section (‘The API Design’, ‘The Backwards Compatibility’, and ‘The API Product’) are finished. So the book is basically ready. However, after some beta-testing I understood there were several important problems.
