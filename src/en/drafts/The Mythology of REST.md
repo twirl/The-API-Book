@@ -4,7 +4,7 @@
 
 No other technology in the IT history generated as many fierce debates as REST did. The most remarkable thing is that disputants usually demonstrate totally no understanding of the subject under discussion.
 
-Let's start with the very beginning. In 2000 Roy Fielding, one of the HTTP and URI specs authors, defended his doctoral dissertation on ‘Architectural Styles and the Design of Network-based Software Architectures’. Fifth chapter of this dissertation is ‘Representational State Transfer (REST)’. It might be found [there](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm).
+Let's start with the very beginning. In 2000 Roy Fielding, one of the HTTP and URI specs authors, defended his doctoral dissertation on ‘Architectural Styles and the Design of Network-based Software Architectures.’ Fifth chapter of this dissertation is ‘Representational State Transfer (REST).’ It might be found [there](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm).
 
 As anyone may ascertain upon reading this chapter, it holds quite an abstract overview of distributed network architecture, which is bound to neither HTTP nor URI. Furthermore, it is not at all about designing APIs. In this chapter Fielding methodically enumerates the restrictions which distributed systems software engineer has to deal with. Here they are:
 
@@ -15,7 +15,7 @@ As anyone may ascertain upon reading this chapter, it holds quite an abstract ov
   * systems are layered, e.g. server might be but a proxy to other servers;
   * client's functionality might be extended by server providing code on demand.
 
-That's all. Essentially REST is defined like this. In the rest of the chapter Fielding elaborates over different system implementation aspects, but all of them are just as well abstract. Literally: ‘the key abstraction of information in REST is a resource; any information that can be named can be a resource’.
+That's all. Essentially REST is defined like this. In the rest of the chapter Fielding elaborates over different system implementation aspects, but all of them are just as well abstract. Literally: ‘the key abstraction of information in REST is a resource; any information that can be named can be a resource.’
 
 The key conclusion from the Fielding's REST definition is actually this: *any network-based software in the world complies to REST principles*, except on very rare occasions.
 
@@ -141,7 +141,7 @@ Let us also note that numerous ‘REST API how-to’-s which could be found on t
   
   4. ‘Don't nest the resources’ — this rule just reflects the fact that entities' relations tend to evolve over time, and strict hierarchies eventually become not-so-strict.
 
-  5. ‘Use plural form for resources’, ‘enforce trailing slash’ and related pieces of advice, which are just about the code style, not REST.
+  5. ‘Use plural form for resources,’ ‘enforce trailing slash’ and related pieces of advice, which are just about the code style, not REST.
 
 In the end, let us dare to state four rules that would *actually* help in designing a REST API:
 
