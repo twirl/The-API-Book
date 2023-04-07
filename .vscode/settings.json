@@ -3,6 +3,10 @@
         {
             "language": "markdown",
             "scheme": "vscode-vfs"
+        },
+        {
+            "language": "markdown",
+            "scheme": "file"
         }
     ]
 }
