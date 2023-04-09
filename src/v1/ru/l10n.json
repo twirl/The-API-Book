@@ -1,0 +1,105 @@
+{
+    "title": "API",
+    "author": "Сергей Константинов",
+    "chapter": "Глава",
+    "toc": "Содержание",
+    "description": "Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики разработки API. В первом разделе мы поговорим о проектировании API: как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел посвящён развитию существующих API с сохранением обратной совместимости. Наконец, в третьем разделе мы поговорим об API как о продукте.",
+    "locale": "ru_RU",
+    "file": "API",
+    "landingFile": "index.ru.html",
+    "aboutMe": {
+        "title": "Об авторе",
+        "content": [
+            "<p>Сергей Константинов работает с API уже больше десятилетия. Он начинал свою карьеру разработчиком в подразделении API Яндекс.Карт, и со временем стал руководителем всего сервиса, отвечая и за техническую, и за продуктовую составляющую.</p>",
+            "<p>За это время Сергей получил уникальный опыт построения API мирового уровня с дневной аудторией в десятки миллионов человек, планирования роадмапов для такого продукта и многочисленных публичных выступлений. Он также проработал полтора года в составе Технической архитектурной группы W3C.</p>",
+            "<p>После девяти лет в Картах Сергей переключился на технические роли в других департаментах и компаниях, занимаясь интеграционными проектами и будучи ответственным за техническую архитектуру целых продуктов компании. Сегодня Сергей живёт в Таллинне, Эстония, и работает ведущим инженером в компании Bolt.</p>"
+        ],
+        "imageCredit": "Фото: <a href=\"http://linkedin.com/in/zloylos/\">Denis Hananein</a>"
+    },
+    "url": "https://twirl.github.io/The-API-Book/index.ru.html",
+    "favicon": "/img/favicon.png",
+    "sidePanel": {
+        "shareTo": "Поделиться",
+        "copyLink": "Ссылка",
+        "shareParameters": {
+            "url": "https://twirl.github.io/The-API-Book/index.ru.html",
+            "text": "«API» Сергея Константинова — книга о дизайне API и его продуктовом и техническом развитии",
+            "tags": "API,TheAPIBook",
+            "viaTwitter": "blogovodoved"
+        },
+        "services": [
+            {
+                "key": "vk",
+                "link": "https://vk.com/share.php?url=${url}"
+            },
+            {
+                "key": "facebook",
+                "link": "https://www.facebook.com/sharer.php?u=${url}"
+            },
+            {
+                "key": "twitter",
+                "link": "https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${tags}&via=${viaTwitter}"
+            },
+            {
+                "key": "linkedin",
+                "link": "https://www.linkedin.com/sharing/share-offsite/?url=${url}"
+            },
+            {
+                "key": "reddit",
+                "link": "http://www.reddit.com/submit?url=${url}&title=${text}"
+            }
+        ]
+    },
+    "imageCredit": "Image Credit",
+    "links": {
+        "email": "yatwirl@gmail.com",
+        "emailString": "yatwirl@gmail.com",
+        "linkedinHref": "https://www.linkedin.com/in/twirl/",
+        "linkedinString": "linkedin.com/in/twirl",
+        "patreonHref": "https://www.patreon.com/yatwirl",
+        "patreonString": "patreon.com/yatwirl",
+        "patreonTag": "Patreon",
+        "githubHref": "https://github.com/twirl/The-API-Book",
+        "githubString": "github.com/twirl/The-API-Book",
+        "twitterHref": "https://twitter.com/blogovodoved",
+        "kindleHref": "https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0",
+        "kindleTag": "buy Kindle version",
+        "mediumHref": "https://twirl.medium.com/",
+        "mediumTag": "Medium",
+        "habrHref": "https://habr.com/ru/users/forgotten/",
+        "habrTag": "Хабре"
+    },
+    "sourceCodeAt": "Исходный код доступен на",
+    "frontPage": {
+        "title": "API",
+        "pageTitle": "Титульный лист",
+        "contents": [
+            "<p>«API-first» подход — одна из самых горячих горячих тем в разработке программного обеспечения в наше время. Многие компании начали понимать, что API выступает мультипликатором их возможностей — но также умножает и допущенные ошибки.</p>",
+            "<p>Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики разработки API. В первом разделе мы поговорим о проектировании API: как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел посвящён развитию существующих API с сохранением обратной совместимости. Наконец, в третьем разделе мы поговорим об API как о продукте.</p>",
+            "<p class=\"text-align-left\">Иллюстрации и вдохновение: Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>",
+            "<img class=\"cc-by-nc-img\" alt=\"Creative Commons «Attribution-NonCommercial» Logo\" src=\"https://i.creativecommons.org/l/by-nc/4.0/88x31.png\"/>",
+            "<p class=\"cc-by-nc\">Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.</p>"
+        ]
+    },
+    "landing": {
+        "subTitle": "Бесплатная электронная книга",
+        "subscribeOn": "Подпишитесь на обновления на",
+        "followOn": "Follow me on",
+        "follow": ["linkedin", "twitter", "medium"],
+        "updates": ["habr"],
+        "supportThisWork": "Поддержите эту работу на",
+        "support": ["patreon"],
+        "content": [
+            "<p>«API-first» подход — одна из самых горячих горячих тем в разработке программного обеспечения в наше время. Многие компании начали понимать, что API выступает мультипликатором их возможностей — но также умножает и допущенные ошибки.</p>",
+            "<p>Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики разработки API. В первом разделе мы поговорим о проектировании API: как грамотно выстроить архитектуру, от крупноблочного планирования до конечных интерфейсов. Второй раздел посвящён развитию существующих API с сохранением обратной совместимости. Наконец, в третьем разделе мы поговорим об API как о продукте.</p>",
+            "<p>Иллюстрации и вдохновение: Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>"
+        ],
+        "download": "Вы можете скачать книгу «API» в формате",
+        "or": "или",
+        "readOnline": "прочитать её онлайе",
+        "license": "Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.",
+        "footer": [
+            "<p>You might also <a href=\"index.html\">read ‘The API’ in English</a>.</p>"
+        ]
+    }
+}

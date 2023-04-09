@@ -12,7 +12,7 @@
     },
     "scripts": {
         "build": "node build.mjs",
-        "build-docx": "node build-docx.mjs",
+        "build-v1": "node build-v1.mjs",
         "build:watch": "nodemon -e md,js,mjs,css,json --exec npm run build ru html"
     }
 }
