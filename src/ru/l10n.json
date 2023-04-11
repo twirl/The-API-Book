@@ -29,10 +29,6 @@
         },
         "services": [
             {
-                "key": "vk",
-                "link": "https://vk.com/share.php?url=${url}"
-            },
-            {
                 "key": "facebook",
                 "link": "https://www.facebook.com/sharer.php?u=${url}"
             },

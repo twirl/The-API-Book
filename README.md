@@ -1,7 +1,7 @@
 # Read [‘The API’ Book by Sergey Konstantinov](https://twirl.github.io/The-API-Book) in English
 # Читать [книгу ‘The API’ Сергея Константинова](https://twirl.github.io/The-API-Book/index.ru.html) по-русски
 
-This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:twirl-team@yandex.ru), [Linkedin profile](https://linkedin.com/in/twirl), [Medium blog](https://twirl.medium.com)).
+This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:yatwirl@gmail.com), [Linkedin profile](https://linkedin.com/in/twirl), [Medium blog](https://twirl.medium.com)).
 
 API-first development is one of the hottest technical topics nowadays since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.
 
