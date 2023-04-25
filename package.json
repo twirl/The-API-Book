@@ -4,6 +4,7 @@
     "license": "CC-BY-NC-4.0",
     "author": "Sergey Konstantinov <twirl-team@yandex.ru>",
     "repository": "github.com:twirl/The-API-Book",
+    "version": "2.0.0",
     "devDependencies": {
         "@twirl/book-builder": "0.0.22",
         "html-docx-js": "^0.3.1",

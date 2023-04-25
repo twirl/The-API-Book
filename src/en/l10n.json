@@ -70,9 +70,9 @@
         "contents": [
             "<p>API-first development is one of the hottest technical topics nowadays since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
             "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. It comprises six sections dedicated to:</p>",
-            "<ul><li>the API design</li>",
+            "<ul><li>The API design</li>",
             "<li>API patterns</li>",
-            "<li>backwards compatibility</li>",
+            "<li>Backwards compatibility</li>",
             "<li>HTTP API & REST</li>",
             "<li>SDK and UI libraries</li>",
             "<li>API product management.</ul>",
@@ -92,9 +92,9 @@
         "content": [
             "<p>API-first development is one of the hottest technical topics nowadays since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
             "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. It comprises six sections dedicated to:</p>",
-            "<ul><li>— the API design</li>",
+            "<ul><li>— The API design</li>",
             "<li>— API patterns</li>",
-            "<li>— backwards compatibility</li>",
+            "<li>— Backwards compatibility</li>",
             "<li>— HTTP API & REST</li>",
             "<li>— SDK and UI libraries</li>",
             "<li>— API product management.</ul>",
