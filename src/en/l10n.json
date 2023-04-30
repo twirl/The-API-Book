@@ -61,7 +61,9 @@
         "kindleHref": "https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0",
         "kindleTag": "buy Kindle version [1st edition]",
         "mediumHref": "https://twirl.medium.com/",
-        "mediumTag": "Medium"
+        "mediumTag": "Medium",
+        "substackHref": "https://twirl.substack.com/",
+        "substackTag": "Substack"
     },
     "sourceCodeAt": "Source code available at",
     "frontPage": {
@@ -86,7 +88,7 @@
         "subscribeOn": "Subscribe for updates on",
         "updates": ["github"],
         "followOn": "Follow me on",
-        "follow": ["linkedin", "twitter", "medium"],
+        "follow": ["linkedin", "twitter", "substack"],
         "supportThisWork": "Support this work on",
         "support": ["patreon", "kindle"],
         "content": [

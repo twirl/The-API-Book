@@ -63,7 +63,9 @@
         "mediumHref": "https://twirl.medium.com/",
         "mediumTag": "Medium",
         "habrHref": "https://habr.com/ru/users/forgotten/",
-        "habrTag": "Хабре"
+        "habrTag": "Хабре",
+        "substackHref": "https://twirl.substack.com/",
+        "substackTag": "Substack"
     },
     "sourceCodeAt": "Исходный код доступен на",
     "frontPage": {
@@ -87,7 +89,7 @@
         "subTitle": "Бесплатная электронная книга",
         "subscribeOn": "Подпишитесь на обновления на",
         "followOn": "Follow me on",
-        "follow": ["linkedin", "twitter", "medium"],
+        "follow": ["linkedin", "twitter", "substack"],
         "updates": ["habr"],
         "supportThisWork": "Поддержите эту работу на",
         "support": ["patreon"],
@@ -104,7 +106,7 @@
         ],
         "download": "Вы можете скачать книгу «API» в формате",
         "or": "или",
-        "readOnline": "прочитать её онлайе",
+        "readOnline": "прочитать её онлайн",
         "license": "Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.",
         "footer": [
             "<p>You might also <a href=\"index.html\">read ‘The API’ in English</a>.</p>"

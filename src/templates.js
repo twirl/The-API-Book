@@ -186,7 +186,7 @@ module.exports = {
     <p>${l10n.landing.download} <a href="${link(
             null,
             'pdf'
-        )}">PDF</a>, <a href="${link(null, 'epub')}">EPUB</a>, ${
+        )}">PDF</a> / <a href="${link(null, 'epub')}">EPUB</a> ${
             l10n.landing.or
         } <a href="${link()}">${l10n.landing.readOnline}</a>.
     </p>

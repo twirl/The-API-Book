@@ -84,9 +84,14 @@ a.habr {
     background-image: url(habr.png);
 }
 
+a.substack {
+    background-image: url(substack.png);
+}
+
 a.patreon,
 a.medium,
-a.habr {
+a.habr,
+a.substack {
     width: auto;
     padding-left: 1em;
     vertical-align: baseline;
