@@ -6,7 +6,7 @@
     "repository": "github.com:twirl/The-API-Book",
     "version": "2.0.0",
     "devDependencies": {
-        "@twirl/book-builder": "0.0.22",
+        "@twirl/book-builder": "0.0.23",
         "html-docx-js": "^0.3.1",
         "nodemon": "^2.0.19",
         "puppeteer": "^13.1.2"
