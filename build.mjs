@@ -1,7 +1,12 @@
 import { resolve as pathResolve } from 'path';
 import templates from './src/templates.js';
 import { init, plugins } from '@twirl/book-builder';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
+
+if (process.argv[2] == '--clean') {
+    clean();
+    process.exit(0);
+}
 
 const l10n = {
     en: JSON.parse(readFileSync('./src/en/l10n.json', 'utf-8')),
@@ -97,3 +102,12 @@ langsToBuild.forEach((lang) => {
         });
     });
 });
+
+function clean() {
+    const tmpDir = pathResolve('.', '.tmp');
+    const files = readdirSync(tmpDir);
+    for (const fileName of files) {
+        const file = pathResolve(tmpDir, fileName);
+        unlinkSync(file);
+    }
+}

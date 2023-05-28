@@ -3,7 +3,7 @@
     "author": "Sergey Konstantinov",
     "chapter": "Chapter",
     "toc": "Table of Contents",
-    "description": "API-first development is one of the hottest technical topics nowadays since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well. This book is written to share the expertise and describe the best practices in designing and developing APIs. It comprises six sections dedicated to: the API design, API patterns, maintaining backward compatibility, HTTP API & REST, SDK and UI libraries, API product management.",
+    "description": "API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well. This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics: the API design, API patterns, maintaining backward compatibility, HTTP API & REST, SDK and UI libraries, API product management.",
     "publisher": "Sergey Konstantinov",
     "copyright": "© Sergey Konstantinov, 2023",
     "locale": "en_US",
@@ -11,9 +11,9 @@
     "aboutMe": {
         "title": "About the Author",
         "content": [
-            "<p>Sergey Konstantinov has been working with APIs for more than a decade. He started his career as a software engineer in the Maps API division at Yandex and eventually became the head of the service, being responsible for both technical architecture and product management.</p>",
-            "<p>During this tenure, Sergey got a unique experience in building world-class APIs with a daily audience of tens of millions, planning roadmaps for such a service, and giving numerous public speeches. He also worked for a year and a half as a member of the W3C Technical Architecture Group.</p>",
-            "<p>After nine years in Maps, Sergey switched to technical-lead roles in other departments and companies, leading integration efforts and being responsible for the technical architecture of entire business units. Today, Sergey lives in Tallinn, Estonia, and works as a staff software engineer at Bolt.</p>"
+            "<p>Sergey Konstantinov has been working with APIs for over a decade. He began his career as a software engineer in the Maps API division at Yandex and eventually became the head of the service. In this role, he was responsible for both technical architecture and product management.</p>",
+            "<p>During this tenure, Sergey gained unique experience in building world-class APIs with a daily audience of tens of millions, planning roadmaps for such a service, and delivering numerous public speeches. Additionaly, he served as a member of the W3C Technical Architecture Group for a year and a half.</p>",
+            "<p>After being nine years in Maps, Sergey transitioned to technical lead roles in other departments and companies. In these positions, he led integration efforts and was responsible for the technical architecture of entire business units. Currently, Sergey resides in Tallinn, Estonia, and works as a staff software engineer at Bolt.</p>"
         ],
         "imageCredit": "Photo by <a href=\"http://linkedin.com/in/zloylos/\">Denis Hananein</a>"
     },
@@ -72,8 +72,8 @@
         "title": "The API",
         "pageTitle": "Front Page",
         "contents": [
-            "<p>API-first development is one of the hottest technical topics nowadays since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
-            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. It comprises six sections dedicated to:</p>",
+            "<p>API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well.</p>",
+            "<p>This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics:</p>",
             "<ul><li>The API design</li>",
             "<li>API patterns</li>",
             "<li>Backward compatibility</li>",
@@ -94,8 +94,8 @@
         "supportThisWork": "Support this work on",
         "support": ["patreon", "kindle"],
         "content": [
-            "<p>API-first development is one of the hottest technical topics nowadays since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
-            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. It comprises six sections dedicated to:</p>",
+            "<p>API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well.</p>",
+            "<p>This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics:</p>",
             "<ul><li>— The API design</li>",
             "<li>— API patterns</li>",
             "<li>— Backward compatibility</li>",
