@@ -3,7 +3,7 @@
     "author": "Sergey Konstantinov",
     "chapter": "Chapter",
     "toc": "Table of Contents",
-    "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner. Finally, in Section III we will talk about the API as a product.",
+    "description": "Designing APIs is a very special skill: API is a multiplier to both your opportunities and mistakes. This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backward-compatible manner. Finally, in Section III we will talk about the API as a product.",
     "locale": "en_US",
     "file": "API",
     "aboutMe": {
@@ -69,7 +69,7 @@
         "pageTitle": "Front Page",
         "contents": [
             "<p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
-            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner. Finally, in Section III we will talk about the API as a product.</p>",
+            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backward-compatible manner. Finally, in Section III we will talk about the API as a product.</p>",
             "<p class=\"text-align-left\">Illustrations &amp; inspiration by Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a></p>",
             "<img class=\"cc-by-nc-img\" alt=\"Creative Commons «Attribution-NonCommercial» Logo\" src=\"https://i.creativecommons.org/l/by-nc/4.0/88x31.png\"/>",
             "<p class=\"cc-by-nc\">This book is distributed under the <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>"
@@ -85,7 +85,7 @@
         "support": ["patreon", "kindle"],
         "content": [
             "<p>The API-first development is one of the hottest technical topics nowadays, since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.</p>",
-            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backwards-compatible manner. Finally, in Section III we will talk about the API as a product.</p>",
+            "<p>This book is written to share the expertise and describe the best practices in designing and developing APIs. In Section I, we'll discuss the API architecture as a concept: how to build the hierarchy properly, from high-level planning down to final interfaces. Section II is dedicated to expanding existing APIs in a backward-compatible manner. Finally, in Section III we will talk about the API as a product.</p>",
             "<p>Illustration &amp; inspiration: <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>"
         ],
         "download": "You might download ‘The API’ in",
