@@ -1,123 +1,92 @@
-import {
-    readFileSync,
-    writeFileSync,
-    readdirSync,
-    existsSync,
-    mkdirSync
-} from 'fs';
-import { resolve } from 'path';
-import { pathToFileURL } from 'url';
+import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { resolve, basename } from 'path';
 import puppeteer from 'puppeteer';
+import templates from './src/templates.js';
 
 const args = process.argv.slice(2);
 const dir = process.cwd();
 const langs = (args[0] || 'en,ru').split(',');
 const target = args[1];
-const srcDir = resolve(dir, 'src');
-const graphDir = resolve(srcDir, 'graphs');
-const tmpDir = resolve(graphDir, 'tmp');
 
-if (!existsSync(tmpDir)) {
-    mkdirSync(tmpDir);
-}
-
-build(langs, srcDir, graphDir, tmpDir, target).then(
-    () => process.exit(0),
-    (e) => {
-        throw e;
+async function buildGraphs(langs, target, srcDir, dstDir, tmpDir) {
+    if (!existsSync(tmpDir)) {
+        await mkdir(tmpDir);
     }
-);
 
-async function build(langs, srcDir, graphDir, tmpDir, target) {
-    await buildL10n(langs, srcDir, tmpDir);
-    await buildGraphs(langs, srcDir, graphDir, tmpDir, target);
+    for (const lang of langs) {
+        const graphDir = resolve(srcDir, lang, 'graphs');
+        const targets = target
+            ? [resolve(graphDir, target)]
+            : await getGraphList(graphDir);
+
+        console.log(
+            `Lang=${lang}, ${targets.length} .mermaid files to process`
+        );
+
+        for (const t of targets) {
+            await buildGraph(lang, t, dstDir, tmpDir);
+        }
+    }
 }
 
-async function buildL10n(langs, srcDir, tmpDir) {
-    const l10n = langs.reduce((l10n, lang) => {
-        const l10nFile = resolve(srcDir, lang, 'l10n.json');
-        const contents = JSON.parse(readFileSync(l10nFile).toString('utf-8'));
-        l10n[lang] = JSON.stringify(contents);
-        return l10n;
-    }, {});
+async function getGraphList(srcDir) {
+    const files = await readdir(srcDir);
+    const result = [];
+    for (const file of files) {
+        if (file.endsWith('.mermaid')) {
+            result.push(resolve(srcDir, file));
+        }
+    }
+    return result;
+}
 
-    writeFileSync(
-        resolve(tmpDir, 'l10n.js'),
-        `(function(global){global.l10n={${Object.entries(l10n)
-            .map(
-                ([lang, content]) =>
-                    `${lang}:JSON.parse(${JSON.stringify(content)})`
-            )
-            .join(',\n')}}})(this)`
+async function buildGraph(lang, target, dstDir, tmpDir) {
+    const targetName = basename(target);
+    console.log(
+        `Processing ${target}, basename: ${targetName} dst: ${dstDir}, tmp: ${tmpDir}`
     );
-}
-
-async function buildGraphs(langs, srcDir, graphDir, tmpDir, target) {
-    const tasks = target
-        ? langs.map((lang) => ({
-              lang,
-              target
-          }))
-        : langs.reduce(
-              (tasks, lang) =>
-                  tasks.concat(
-                      readdirSync(resolve(srcDir, lang, 'graphs')).map(
-                          (file) => ({
-                              lang,
-                              target: file.replace('.yaml', '')
-                          })
-                      )
-                  ),
-              []
-          );
-
-    return Promise.all(
-        tasks.map(({ lang, target }) =>
-            buildGraph({
-                lang,
-                target,
-                yaml: readFileSync(
-                    resolve(srcDir, lang, 'graphs', target + '.yaml'),
-                    'utf-8'
-                ),
-                graphDir,
-                tmpDir
-            })
-        )
+    const tmpFileName = resolve(tmpDir, `${targetName}.${lang}.html`);
+    const graph = await readFile(target, 'utf-8');
+    await writeFile(tmpFileName, templates.graphHtmlTemplate(graph));
+    console.log(`Tmp file ${tmpFileName} written`);
+    const browser = await puppeteer.launch({
+        headless: true,
+        product: 'chrome',
+        defaultViewport: {
+            deviceScaleFactor: 2,
+            width: 1000,
+            height: 1000
+        }
+    });
+    const outFile = resolve(
+        dstDir,
+        `${targetName.replace('.mermaid', '')}.${lang}.png`
     );
+    const page = await browser.newPage();
+    await page.goto(tmpFileName, {
+        waitUntil: 'networkidle0'
+    });
+    const body = await page.$('body');
+    await body.screenshot({
+        path: outFile,
+        type: 'png',
+        captureBeyondViewport: true
+    });
+    await browser.close();
 }
 
-async function buildGraph({ lang, target, yaml, graphDir, tmpDir }) {
-    const jsTmpFileName = `wrapped-${lang}-${target}.js`;
-    writeFileSync(
-        resolve(tmpDir, jsTmpFileName),
-        `document.querySelector('.mermaid').innerHTML = ${JSON.stringify(
-            yaml.replace(/\\n/g, '\\n')
-        )};`
-    );
-    // console.log(`  Open ${inFile}`);
-    // const browser = await puppeteer.launch({
-    //     headless: true,
-    //     product: 'chrome',
-    //     defaultViewport: {
-    //         deviceScaleFactor: 2,
-    //         width: 1000,
-    //         height: 1000
-    //     }
-    // });
-    // const outFile = resolve(dir, 'src', 'img', `graph-${source}.png`);
-    // const page = await browser.newPage();
-
-    // await page.goto(inFile, {
-    //     waitUntil: 'networkidle0'
-    // });
-    // const body = await page.$('body');
-    // await body.screenshot({
-    //     path: outFile,
-    //     type: 'png',
-    //     captureBeyondViewport: true
-    // });
-    // console.log(`  ${outFile} saved`);
-
-    // await browser.close();
-}
+buildGraphs(
+    langs,
+    target,
+    resolve(dir, 'src'),
+    resolve(dir, 'src', 'img', 'graphs'),
+    resolve(dir, '.tmp')
+)
+    .catch((e) => {
+        console.error(e);
+    })
+    .finally(() => {
+        console.log('Graph build done');
+        process.exit(0);
+    });

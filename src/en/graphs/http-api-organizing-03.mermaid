@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant U as Client
+    participant D as Gateway D
+    participant A as Authorization<br/>Service A
+    participant B as User Profiles<br/>Service B
+    participant C as Order<br/>Service C
+    U->>+D: GET /v1/state<br/>Authorization: Bearer #60;token#62;
+    D->>+A: GET /v1/auth<br/><token>
+    A-->>-D: { status, user_id }
+    par
+        alt Cached profile found
+            D->>+B: GET /v1/profiles/{user_id}
+            B-->>-D: 200 OK<br/>Cache-Control: #60;parameters#62;<br/>{ profile }
+        end
+    and 
+        D->>+C: GET /v1/orders?user_id=#60;user_id#62;<br/>If-None-Match: #60;revision#62;
+        alt Wrong revision
+            C-->>D: 200 OK<br/>ETag: #60;revision#62;<br/>{ orders }
+        else Actual revision
+            C-->>D: 304 Not Modified
+        end
+        deactivate C
+    end
+    D-->>-U: { profile, orders }

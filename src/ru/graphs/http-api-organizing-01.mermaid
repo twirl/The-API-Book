@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant U as Клиент
+    participant D as Гейтвей D
+    participant A as Сервис A<br/>(авторизации)
+    participant B as Сервис B<br/>(профилей)
+    participant C as Сервис C<br/>(заказов)
+    U->>+D: GET /v1/state<br/>Authorization: Bearer #60;token#62;
+    par
+        D->>+B: GET /v1/profile<br/><token>
+        B->>+A: GET /v1/auth<br/><token>
+        A-->>-B: { status, user_id }
+        B-->>-D: { status, profile }
+    and 
+        D->>+C: GET /v1/orders<br/><token>
+        C->>+A: GET /v1/auth<br/><token>
+        A-->>-C: { status, user_id }
+        C-->>-D: { status, orders }
+    end
+    D-->>-U: { profile, orders }

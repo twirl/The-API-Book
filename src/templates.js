@@ -1,6 +1,9 @@
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 
+const escapeHtml = (str) =>
+    str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;');
+
 module.exports = {
     pageBreak: '<div class="page-break"></div>',
 
@@ -228,5 +231,70 @@ module.exports = {
     ${l10n.landing.footer.join('\n')}
 </body>
 </html>`;
-    }
+    },
+    aImg: ({ src, href, title, alt, l10n, className = 'img-wrapper' }) => {
+        const fullTitle = escapeHtml(
+            `${title}${title.at(-1).match(/[\.\?\!\)]/) ? ' ' : '. '} ${
+                alt == 'PD' ? l10n.publicDomain : `${l10n.imageCredit}: ${alt}`
+            }`
+        );
+        return `<div class="${escapeHtml(
+            className
+        )}"><a href="${src}" target="_blank"><img src="${escapeHtml(
+            src
+        )}" alt="${fullTitle}" title="${fullTitle}"/></a><h6>${escapeHtml(
+            title
+        )}. ${
+            alt == 'CTL'
+                ? l10n.ctl
+                : `${escapeHtml(l10n.imageCredit)}: ${
+                      href
+                          ? `<a href="${escapeHtml(href)}">${escapeHtml(
+                                alt
+                            )}</a>`
+                          : escapeHtml(alt)
+                  }`
+        }</h6></div>`;
+    },
+    graphHtmlTemplate: (graph) => `<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: auto;
+            }
+            
+            @font-face {
+                font-family: local-monospace;
+                src: url(../src/fonts/RobotoMono-Regular.ttf);
+            }
+            
+            .actor-line {
+                stroke: lightgray;
+                opacity: 0.2;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="mermaid">${graph
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')}</div>
+        <script src="../src/scripts/mermaid.min.js"></script>
+        <script>mermaid.initialize({
+            theme: 'neutral',
+            fontFamily: 'local-monospace, monospace',
+            fontSize: 14,
+            sequence: {
+                diagramMarginX: 20,
+                diagramMarginY: 10,
+                actorMargin: 5,
+                mirrorActors: false,
+                showSequenceNumbers: true
+            }
+          });</script>
+    </body>
+</html>`
 };

@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant U as Клиент
+    participant D as Гейтвей D
+    participant A as Сервис A<br/>(авторизации)
+    participant B as Сервис B<br/>(профилей)
+    participant C as Сервис C<br/>(заказов)
+    U->>+D: POST /v1/orders HTTP/1.1<br/>If-Match: #60;ревизия#62;<br/>Authorization: Bearer #60;token#62;
+    D->>+A: GET /v1/auth<br/><token>
+    A-->>-D: { status, user_id }
+    D->>+C: POST /v1/orders?user_id=#60;user_id#62;<br/>If-Match: #60;ревизия#62;
+    alt Ревизия актуальна
+        C-->>D: 201 Created<br/>Content-Location: /v1/orders?user_id=<user_id><br/>ETag: #60;новая ревизия#62;<br/>{ orders }
+    else Неверная ревизия
+        C-->>D: 409 Conflict
+    end
+    deactivate C
+    D-->>-U: 201 Created<br/>ETag: #60;новая ревизия#62;<br/>{ orders }
