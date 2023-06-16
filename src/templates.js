@@ -235,7 +235,7 @@ module.exports = {
     aImg: ({ src, href, title, alt, l10n, className = 'img-wrapper' }) => {
         const fullTitle = escapeHtml(
             `${title}${title.at(-1).match(/[\.\?\!\)]/) ? ' ' : '. '} ${
-                alt == 'PD' ? l10n.publicDomain : `${l10n.imageCredit}: ${alt}`
+                alt == 'CTL' ? l10n.ctl : `${l10n.imageCredit}: ${alt}`
             }`
         );
         return `<div class="${escapeHtml(

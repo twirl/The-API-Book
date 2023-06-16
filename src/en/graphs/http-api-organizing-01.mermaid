@@ -3,7 +3,7 @@ sequenceDiagram
     participant D as Gateway D
     participant A as Authorization<br/>Service A
     participant B as User Profiles<br/>Service B
-    participant C as Order<br/>Service C
+    participant C as Orders<br/>Service C
     U->>+D: GET /v1/state<br/>Authorization: Bearer #60;token#62;
     par
         D->>+B: GET /v1/profile<br/><token>
