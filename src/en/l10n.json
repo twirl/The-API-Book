@@ -3,7 +3,7 @@
     "author": "Sergey Konstantinov",
     "chapter": "Chapter",
     "toc": "Table of Contents",
-    "description": "API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well. This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics: the API design, API patterns, maintaining backward compatibility, HTTP APIs & REST, SDKs and UI libraries, API product management.",
+    "description": "API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well. This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics: the API design, API patterns, maintaining backward compatibility, HTTP APIs & REST architectural principles, SDKs and UI libraries, API product management.",
     "publisher": "Sergey Konstantinov",
     "copyright": "© Sergey Konstantinov, 2023",
     "locale": "en_US",
@@ -66,7 +66,8 @@
         "mediumHref": "https://twirl.medium.com/",
         "mediumTag": "Medium",
         "substackHref": "https://twirl.substack.com/",
-        "substackTag": "Substack"
+        "substackTag": "Substack",
+        "substackString": "twirl.substack.com"
     },
     "sourceCodeAt": "Source code available at",
     "frontPage": {

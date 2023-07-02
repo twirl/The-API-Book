@@ -76,8 +76,8 @@ module.exports = {
         l10n.links.emailString
     }</a> &middot; <a target="_blank" href="${l10n.links.linkedinHref}">${
         l10n.links.linkedinString
-    }</a> &middot; <a target="_blank" href="${l10n.links.patreonHref}">${
-        l10n.links.patreonString
+    }</a> &middot; <a target="_blank" href="${l10n.links.substackHref}">${
+        l10n.links.substackString
     }</a></p>
     ${l10n.frontPage.contents.join('\n')}
     <p class=\"text-align-left\">${
