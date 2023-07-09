@@ -35,10 +35,14 @@ Thanks [art.mari.ka](https://www.instagram.com/art.mari.ka/) for the illustratio
 
 Thanks [Ilya Subbotin](https://ru.linkedin.com/in/isubbotin) and [Fedor Golubev](https://www.linkedin.com/in/fedor-golubev-93910b5/) for the valuable feedback.
 
-Thanks @tholman for https://github.com/tholman/github-corners.
-
 Thanks [Ira Gorelik](https://pixabay.com/users/igorelick-680927/) for the Aqueduct.
 
 Thanks [ParaType](https://www.paratype.ru/) for PT Sans and PT Serif.
 
 Thanks [Christian Robertson](https://twitter.com/cr64) for Roboto Mono.
+
+Thanks [Knut Sveidqvist and Mermaid Comminuty](https://mermaid.js.org/) for Mermaid.
+
+Thanks [Figma, Inc.](https://www.figma.com/) for Figma.
+
+Thanks [@lual](https://openclipart.org/artist/lual) for the coffee icon.
