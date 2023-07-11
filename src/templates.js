@@ -234,18 +234,26 @@ module.exports = {
     },
     aImg: ({ src, href, title, alt, l10n, className = 'img-wrapper' }) => {
         const fullTitle = escapeHtml(
-            `${title}${title.at(-1).match(/[\.\?\!\)]/) ? ' ' : '. '} ${
-                alt == 'CTL' ? l10n.ctl : `${l10n.imageCredit}: ${alt}`
+            `${title}${title.at(-1).match(/[\.\?\!\)]/) ? ' ' : '. '}${
+                alt != 'APP'
+                    ? ` ${
+                          alt == 'CTL'
+                              ? l10n.ctl
+                              : `${l10n.imageCredit}: ${alt}`
+                      }`
+                    : ''
             }`
         );
+        const fullClass =
+            alt == 'APP' ? `${className} app-img-wrapper` : className;
         return `<div class="${escapeHtml(
-            className
+            fullClass
         )}"><a href="${src}" target="_blank"><img src="${escapeHtml(
             src
         )}" alt="${fullTitle}" title="${fullTitle}"/></a><h6>${escapeHtml(
             title
         )}. ${
-            alt == 'CTL'
+            alt == 'CTL' || alt == 'APP'
                 ? l10n.ctl
                 : `${escapeHtml(l10n.imageCredit)}: ${
                       href
@@ -254,7 +262,8 @@ module.exports = {
                             )}</a>`
                           : escapeHtml(alt)
                   }`
-        }</h6></div>`;
+        }
+        </h6></div>`;
     },
     graphHtmlTemplate: (graph) => `<!DOCTYPE html>
 <html>

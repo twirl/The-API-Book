@@ -120,8 +120,16 @@ code {
     font-size: 80%;
 }
 
+.img-wrapper {
+    text-align: center;
+}
+
 .img-wrapper img {
     max-width: 100%;
+}
+
+.app-img-wrapper img {
+    max-width: 390px;
 }
 
 pre {

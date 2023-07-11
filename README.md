@@ -45,4 +45,6 @@ Thanks [Knut Sveidqvist and Mermaid Comminuty](https://mermaid.js.org/) for Merm
 
 Thanks [Figma, Inc.](https://www.figma.com/) for Figma.
 
+Thanks [Joey Banks](https://www.figma.com/@joey) for UI Kit.
+
 Thanks [@lual](https://openclipart.org/artist/lual) for the coffee icon.
