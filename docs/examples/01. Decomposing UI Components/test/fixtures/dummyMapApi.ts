@@ -8,7 +8,7 @@ export class DummyMapApi {
         protected bounds: [[number, number], [number, number]]
     ) {
         this.container.style.cssText = [
-            'background-image: url(/assets/map.jpg)',
+            'background-image: url(../../assets/map.jpg)',
             'background-position: center',
             'background-repeat: no-repeat',
             'background-size: cover',

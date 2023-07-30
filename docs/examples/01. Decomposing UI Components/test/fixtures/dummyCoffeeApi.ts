@@ -25,7 +25,7 @@ export const CAFEE_CHAMOMILE_LUNGO_OFFER = {
             intervalValueSeconds: 120,
             formattedValue: '2 min'
         },
-        icon: '/assets/coffee.png'
+        icon: '../../assets/coffee.png'
     },
     price: {
         decimalValue: '37.00',

@@ -18,7 +18,7 @@ class CustomOfferList extends ourCoffeeSdk.OfferListComponent {
           this.context.events.emit(
             "createOrder",
             {
-              offer,
+              offer
             }
           );
         }

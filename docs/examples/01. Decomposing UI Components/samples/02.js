@@ -11,7 +11,7 @@ const buildCustomOrderButton = function (
       createOrderButtonText:
         (offer &&
           `Buy now for just ${offer.price.formattedValue}`) ||
-        "Place an Order",
+        "Place an Order"
     }
   );
 };
@@ -25,7 +25,7 @@ class CustomComposer extends ourCoffeeSdk.SearchBoxComposer {
       ? result
       : result.map((preview, index) => ({
           ...preview,
-          imageUrl: offerList[index].place.icon,
+          imageUrl: offerList[index].place.icon
         }));
   }
 
@@ -37,7 +37,7 @@ class CustomComposer extends ourCoffeeSdk.SearchBoxComposer {
             offer,
             options
           ),
-          createOrderButtonIcon: offer.place.icon,
+          createOrderButtonIcon: offer.place.icon
         };
   }
 }
@@ -65,9 +65,10 @@ const searchBox = new CustomSearchBox(
       buttonBuilders: [
         buildCustomOrderButton,
         ourCoffeeSdk.OfferPanelComponent
-          .buildCloseButton,
+          .buildCloseButton
       ],
-    },
+      closeButtonText: "❌Not Now"
+    }
   }
 );
 searchBox.search("Lungo");

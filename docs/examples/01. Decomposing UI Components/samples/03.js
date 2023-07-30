@@ -9,11 +9,11 @@ class CustomOfferList {
 
     this.onMarkerSelect = (markerId) => {
       this.events.emit("offerSelect", {
-        offerId: markerId,
+        offerId: markerId
       });
     };
     this.setOfferList = ({
-      offerList: newOfferList,
+      offerList: newOfferList
     }) => {
       if (this.map) {
         this.map.destroy();
@@ -25,7 +25,7 @@ class CustomOfferList {
           this.container,
           [
             [16.355, 48.206],
-            [16.375, 48.214],
+            [16.375, 48.214]
           ]
         );
         for (const offer of newOfferList) {
@@ -82,7 +82,7 @@ class CustomComposer extends ourCoffeeSdk.SearchBoxComposer {
       : result.map((preview, index) => ({
           ...preview,
           location:
-            offerList[index].place.location,
+            offerList[index].place.location
         }));
   }
 }

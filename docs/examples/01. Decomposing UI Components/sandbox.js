@@ -44,7 +44,7 @@ window.onload = function () {
                     ${code}
                 }
             </script></head><body>
-                <img src="/assets/app-header.png"/>
+                <img src="../../assets/app-header.png"/>
                 <h1>Our Coffee SDK Example Application</h1>
                 <div id="search-box"/>
             </body></html>`;

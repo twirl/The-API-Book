@@ -164,6 +164,7 @@
     border: transparent;
     cursor: pointer;
     margin-bottom: 5px;
+    mix-blend-mode: luminosity;
 }
 
 .our-coffee-sdk-offer-panel-buttons button img {
