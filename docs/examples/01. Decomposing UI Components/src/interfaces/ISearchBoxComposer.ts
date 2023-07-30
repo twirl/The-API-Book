@@ -3,6 +3,7 @@ import { IEventEmitter, IFormattedPrice } from './common';
 
 export interface ISearchBoxComposer {
     events: IEventEmitter<ISearchBoxComposerEvents>;
+    findOfferById: (offerId: string) => ISearchResult | null;
     destroy: () => void;
 }
 

@@ -111,6 +111,7 @@
         "download": "Вы можете скачать книгу «API» в формате",
         "or": "или",
         "readOnline": "прочитать её онлайн",
+        "liveExamples": "Интерактивные примеры",
         "license": "Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.",
         "footer": [
             "<p>You might also <a href=\"index.html\">read ‘The API’ in English</a>.</p>"

@@ -1,7 +1,8 @@
 import {
     IFormattedDistance,
     IFormattedDuration,
-    IFormattedPrice
+    IFormattedPrice,
+    ILocation
 } from './common';
 
 export interface ICoffeeApi {
@@ -20,6 +21,8 @@ export interface ISearchResult {
         title: string;
         walkingDistance: IFormattedDistance;
         walkTime: IFormattedDuration;
+        location: ILocation;
+        icon?: string;
     };
     price: IFormattedPrice;
 }

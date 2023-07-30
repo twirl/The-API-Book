@@ -6,16 +6,27 @@
     "repository": "github.com:twirl/The-API-Book",
     "version": "2.0.0",
     "devDependencies": {
+        "@jest/globals": "^29.6.1",
         "@twirl/book-builder": "0.0.23",
-        "html-docx-js": "^0.3.1",
-        "nodemon": "^2.0.19",
-        "puppeteer": "^13.1.2",
-        "typescript": "^5.1.6"
+        "@types/jest": "^29.5.3",
+        "express": "^4.18.2",
+        "jest": "^29.6.1",
+        "jest-environment-jsdom": "^29.6.1",
+        "jest-mock-extended": "^3.0.4",
+        "monaco-editor": "^0.40.0",
+        "puppeteer": "^20.9.0",
+        "ts-jest": "^29.1.1",
+        "ts-loader": "^9.4.4",
+        "typescript": "^5.1.6",
+        "webpack": "^5.88.2"
     },
     "scripts": {
-        "build": "node build.mjs",
-        "build-v1": "node build-v1.mjs",
-        "build-graphs": "node build-graphs.mjs",
-        "build-clean": "node build.mjs --clean"
+        "build": "node scripts/build.mjs",
+        "build-v1": "node scripts/build-v1.mjs",
+        "build-graphs": "node scripts/build-graphs.mjs",
+        "build-clean": "node scripts/build.mjs --clean",
+        "build-examples": "node scripts/build-examples.js \"docs/examples/01. Decomposing UI Components\"",
+        "docs-server": "node scripts/docs-server 3000",
+        "test": "jest"
     }
 }

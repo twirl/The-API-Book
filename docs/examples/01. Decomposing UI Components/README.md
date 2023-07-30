@@ -10,6 +10,8 @@ The `src` folder contains a TypeScript code for the component and corresponding 
 The `index.html` page includes a living example for each of the discussed scenarios, with links pointing to external playgrounds to work through the code if needed. [View it in your browser](https://twirl.github.io/examples/01.%20Decomposing%20UI%20Components/index.html).
 
 The following improvements to the code are left as an exercise for the reader:
+  * Make all builder functions options
+
   * Returning operation status from the `SearchBox.search` method:
       ```
       public search(query: string): Promise<OperationResult>
@@ -36,15 +38,17 @@ The following improvements to the code are left as an exercise for the reader:
       }
       ```
 
-  * Make offer list paginated (implying adding pagination parameters to `ICoffeeApi.search` request and response, and dynamically loading new items while scrolling the offer list)
+  * Make an offer list paginated (implying adding pagination parameters to `ICoffeeApi.search` request and response, and dynamically loading new items while scrolling the offer list)
 
-  * Make the input string and the search button a separate `ISeachBoxInput` component. Add an ability to cancel the ongoing request. Add a “skeleton” animation to indicate search results are being loading.
+  * Make the input string and the search button a separate `ISeachBoxInput` component. Add an ability to cancel the ongoing request. Add a “skeleton” animation to indicate that search results are being loading.
 
   * Localize the component, making a locale and a dictionary a part of the `ISearchBox` options.
 
   * Parametrize `context` parameter for `OfferListComponent` and `OfferPanelComponent`. Make it comprise only events needed by the component, so that `ISearchBoxComposer` would be implementing `IOfferListComponentContext` and `IOfferPanelComponentContext` interfaces.
 
-  * Make `options` mutable (expose an `optionChange` event and implement `Composers`'s reaction to relevant option changes)
+  * Make `options` mutable (expose an `optionChange` event and implement `Composers`'s reaction to relevant option changes).
+
+  * Parametrize all extra options, content fields, actions and events.
 
   * Parametrize markups of components, either by:
       * Incapsulating them in some `Layout` entities controlled through options. Create interfaces for each of the layouts. Create a `VisualComponent` base class for entities that have a layout and inherit `SearchBox`, `OfferListComponent` and `OfferPanelComponent` from it, or

@@ -2,19 +2,23 @@ import { attrValue, html, raw } from './util/html';
 import {
     IOfferListComponent,
     IOfferListComponentOptions,
-    IOfferListEvents
+    IOfferListComponentEvents
 } from './interfaces/IOfferListComponent';
 import { IDisposer, IEventEmitter } from './interfaces/common';
 import {
     IOfferPreview,
+    IOfferPreviewListChangeEvent,
     ISearchBoxComposer
 } from './interfaces/ISearchBoxComposer';
 import { EventEmitter } from './util/EventEmitter';
 
 export class OfferListComponent implements IOfferListComponent {
-    public events: IEventEmitter<IOfferListEvents> = new EventEmitter();
+    public events: IEventEmitter<IOfferListComponentEvents> =
+        new EventEmitter();
 
     protected listenerDisposers: IDisposer[] = [];
+
+    protected shown: boolean = false;
 
     constructor(
         protected readonly context: ISearchBoxComposer,
@@ -22,13 +26,15 @@ export class OfferListComponent implements IOfferListComponent {
         protected offerList: IOfferPreview[] | null,
         protected readonly options: IOfferListComponentOptions
     ) {
-        this.render();
-        this.setupListeners();
-    }
-
-    protected onOfferListChange({ offerList }) {
-        this.offerList = offerList;
-        this.render();
+        this.listenerDisposers.push(
+            this.context.events.on(
+                'offerPreviewListChange',
+                this.onOfferListChange
+            )
+        );
+        if (offerList !== null) {
+            this.show();
+        }
     }
 
     public getOfferList() {
@@ -37,9 +43,8 @@ export class OfferListComponent implements IOfferListComponent {
 
     public destroy() {
         this.teardownListeners();
-        this.teardownDomListeners();
+        this.hide();
         this.offerList = null;
-        this.container.innerHTML = '';
     }
 
     public selectOffer(offerId: string) {
@@ -48,9 +53,20 @@ export class OfferListComponent implements IOfferListComponent {
         });
     }
 
-    protected render() {
-        this.teardownDomListeners();
-        this.container.innerHTML = html`<ul class="our-coffee-api-offer-list">
+    protected onOfferListChange = ({
+        offerList
+    }: IOfferPreviewListChangeEvent) => {
+        if (this.shown) {
+            this.hide();
+        }
+        this.offerList = offerList;
+        if (offerList !== null) {
+            this.show();
+        }
+    };
+
+    protected show() {
+        this.container.innerHTML = html`<ul class="our-coffee-sdk-offer-list">
             ${this.offerList === null
                 ? ''
                 : this.offerList.map((offer) =>
@@ -58,20 +74,27 @@ export class OfferListComponent implements IOfferListComponent {
                   )}
         </ul>`.toString();
         this.setupDomListeners();
+        this.shown = true;
+    }
+
+    protected hide() {
+        this.teardownDomListeners();
+        this.container.innerHTML = '';
+        this.shown = false;
     }
 
     protected generateOfferHtml(offer: IOfferPreview): string {
         return html`<li
-            class="our-coffee-api-offer-list-offer"
+            class="our-coffee-sdk-offer-list-offer"
             data-offer-id="${attrValue(offer.offerId)}"
         >
+            <aside>${offer.price.formattedValue} &gt;</aside>
             ${offer.imageUrl !== undefined
-                ? `<img src="${attrValue(offer.imageUrl)}">`
+                ? html`<img src="${attrValue(offer.imageUrl)}" />`
                 : ''}
             <h3>${offer.title}</h3>
             <p>${offer.subtitle}</p>
             <p>${offer.bottomLine}</p>
-            <aside>${offer.price.formattedValue}</aside>
         </li>`.toString();
     }
 
@@ -89,15 +112,6 @@ export class OfferListComponent implements IOfferListComponent {
 
     protected onOfferClick(offerId: string) {
         this.selectOffer(offerId);
-    }
-
-    protected setupListeners() {
-        this.listenerDisposers.push(
-            this.context.events.on(
-                'offerPreviewListChange',
-                this.onOfferListChange
-            )
-        );
     }
 
     protected setupDomListeners() {

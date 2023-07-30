@@ -1,3 +1,3 @@
 {
-    "compilerOptions": {"target": "ES2015"}
+    "compilerOptions": {"target": "ES2015", "outDir": "../../.tmp", "lib": ["ES2015", "DOM"]}
 }

@@ -103,7 +103,7 @@ module.exports = {
         return result;
     },
 
-    landing: ({ structure, l10n, lang, templates }) => {
+    landing: ({ structure, l10n, lang, templates, examples }) => {
         const link = (anchor, type = 'html') =>
             `${encodeURIComponent(l10n.file)}.${lang}.${type}${
                 anchor ? '#' + anchor : ''
@@ -215,6 +215,15 @@ module.exports = {
             </li>`
         )
         .join('\n')}
+        <li>
+            <h4>${l10n.landing.liveExamples}</h3>
+            <ul>${examples
+                .map(
+                    ({ name, path }) => `<li><a href="${path}">${name}</a></li>`
+                )
+                .join('')}
+            </ul>
+        </li>
     </ul>
     <p>${l10n.landing.license}</p>
     <p>${l10n.sourceCodeAt} <a href="${l10n.links.githubHref}">${

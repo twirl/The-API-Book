@@ -5,7 +5,7 @@ export interface IFormattedPrice {
 }
 
 export interface IFormattedDistance {
-    numericValue: number;
+    numericValueMeters: number;
     formattedValue: string;
 }
 
@@ -28,4 +28,11 @@ export interface IEventEmitter<EventList extends Record<string, any>> {
 
 export interface IDisposer {
     off: () => void;
+}
+
+export type IExtraFields = Record<string, any>;
+
+export class ILocation {
+    longitude: number;
+    latitude: number;
 }

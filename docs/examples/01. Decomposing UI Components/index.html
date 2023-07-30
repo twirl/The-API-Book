@@ -7,78 +7,101 @@
             UI Components” chapter.
         </title>
         <link rel="stylesheet" type="text/css" href="../fonts.css" />
+        <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+        <script
+            type="text/javascript"
+            src="../../assets/monaco-editor/dev/vs/loader.js"
+        ></script>
+        <script type="text/javascript" src="./index.js"></script>
         <style>
-            body > ul {
-                display: flex;
-            }
-            body > ul > li {
-                list-style-type: node;
-                margin: 0;
+            body {
                 padding: 5px;
-                width: 100%;
-                max-width: 320px;
-                border: 1px solid gray;
-                border-collapse: collapse;
+            }
+
+            ul#example-list {
+                list-style-type: none;
+                margin: 0;
+                padding: 0 0 5px 0;
+            }
+            ul#example-list > li {
+                margin: 2px 5px;
+                padding: 3px;
+                border: 2px solid rgba(128, 128, 128, 0.3);
+                display: inline-block;
+            }
+
+            ul#example-list > li > a {
+                color: inherit;
+            }
+
+            ul#example-list > li.selected {
+                border: 2px solid black;
+            }
+
+            #examples {
+                min-width: 400px;
+            }
+
+            #examples #editor {
+                min-height: 500px;
+                min-width: 400px;
+                width: calc(100% - 400px);
+                float: left;
+            }
+
+            #live-example {
+                min-width: 390px;
+                float: left;
+            }
+
+            #live-example iframe {
+                border: none;
+                margin: 0;
+                padding: 0;
+                width: 390px;
+                height: 500px;
+                overflow: hidden;
             }
         </style>
-        <script>
-            window.onload = () => {
-                const dummySearchApi = {
-                    search: () => ({
-                        results: [
-                            {
-                                offer_id: '1',
-                                title: 'Cafe “Chamomile”',
-                                subtitle: '200m · 2 min',
-                                coffee_chain: {
-                                    id: 'chamomile_chain',
-                                    logo: './logo.png'
-                                },
-                                recipe: {
-                                    id: 'lungo'
-                                },
-                                place: {
-                                    location: [0, 0]
-                                },
-                                offer_details: {
-                                    description: `It's our best Lungo.
-                                    Smart SDK developers always choose Cafe “Chamomile” lungo!`
-                                },
-                                pricing: {
-                                    price: '37',
-                                    currency: 'USD',
-                                    formatted_price: '$37'
-                                }
-                            }
-                        ]
-                    })
-                };
-
-                const examples = document.querySelectorAll('.example');
-                for (const example of examples) {
-                    const preview = example.querySelector('.example-preview');
-                    const code = example.querySelector('.code').innerHTML;
-                    let Class;
-                    eval(`Class = ${code}`);
-                    const instance = Class.build(preview, dummySearchApi);
-                    instance.setSearchPhrase('lungo');
-                }
-            };
-        </script>
+        <script src="sandbox.js"></script>
     </head>
     <body>
         <h1>
             Examples of Overriding Different Aspects of a Decomposed UI
             Component
         </h1>
-        <ul>
-            <li class="example">
-                <h2>Example #1: A regular <code>SearchBox</code></h2>
-                <h3>Preview:</h3>
-                <div class="example-preview"></div>
-                <h3>Source code:</h3>
-                <pre class="code"></pre>
-            </li>
-        </ul>
+        <div id="playground">
+            <div id="live-example">
+                <div>Live example <button id="refresh">Refresh</button></div>
+                <hr />
+            </div>
+            <div id="examples">
+                <ul id="example-list">
+                    <li id="example-01">
+                        <a href="javascript:showExample('01')"
+                            >Example #1: A regular <code>SearchBox</code></a
+                        >
+                    </li>
+                    <li id="example-02">
+                        <a href="javascript:showExample('02')"
+                            >Example #2: A <code>SearchBox</code> with a custom
+                            icon</a
+                        >
+                    </li>
+                    <li id="example-03">
+                        <a href="javascript:showExample('03')"
+                            >Example #3: A <code>SearchBox</code> with a map</a
+                        >
+                    </li>
+                    <li id="example-04">
+                        <a href="javascript:showExample('04')"
+                            >Example #4: A <code>SearchBox</code> with in-place
+                            actions</a
+                        >
+                    </li>
+                </ul>
+                <div id="editor"></div>
+            </div>
+        </div>
     </body>
 </html>

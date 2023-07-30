@@ -1,26 +1,35 @@
 @font-face {
     font-family: local-serif;
-    src: url(../docs/assets/PTSerif-Regular.ttf);
+    src: url(../assets/PTSerif-Regular.ttf);
 }
 
 @font-face {
     font-family: local-serif;
-    src: url(../docs/assets/PTSerif-Bold.ttf);
+    src: url(../assets/PTSerif-Bold.ttf);
     font-weight: bold;
 }
 
 @font-face {
     font-family: local-sans;
-    src: url(../docs/assets/PTSans-Regular.ttf);
+    src: url(../assets/PTSans-Regular.ttf);
 }
 
 @font-face {
     font-family: local-sans;
-    src: url(../docs/assets/PTSans-Bold.ttf);
+    src: url(../assets/PTSans-Bold.ttf);
     font-weight: bold;
 }
 
 @font-face {
     font-family: local-monospace;
-    src: url(../docs/assets/RobotoMono-Regular.ttf);
+    src: url(../assets/RobotoMono-Regular.ttf);
+}
+
+body {
+    font-family: local-serif;
+}
+
+pre,
+code {
+    font-family: local-sans;
 }

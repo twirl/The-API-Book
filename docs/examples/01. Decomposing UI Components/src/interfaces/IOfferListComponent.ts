@@ -1,13 +1,13 @@
 import { IEventEmitter } from './common';
 
 export interface IOfferListComponent {
-    events: IEventEmitter<IOfferListEvents>;
+    events: IEventEmitter<IOfferListComponentEvents>;
     destroy: () => void;
 }
 
 export interface IOfferListComponentOptions {}
 
-export interface IOfferListEvents {
+export interface IOfferListComponentEvents {
     offerSelect: IOfferSelectedEvent;
 }
 

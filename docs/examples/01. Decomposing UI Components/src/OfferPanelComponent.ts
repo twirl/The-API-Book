@@ -1,9 +1,6 @@
-import {
-    IButton,
-    IButtonEvents,
-    IButtonOptions,
-    IButtonPressEvent
-} from './interfaces/IButton';
+import { omitUndefined } from '../test/util';
+import { CloseButton, CreateOrderButton } from './OfferPanelButton';
+import { IButton, IButtonPressEvent } from './interfaces/IButton';
 import {
     IOfferPanelComponent,
     IOfferPanelComponentEvents,
@@ -13,104 +10,146 @@ import {
     IOfferFullView,
     ISearchBoxComposer
 } from './interfaces/ISearchBoxComposer';
-import { IDisposer, IEventEmitter } from './interfaces/common';
+import { IDisposer, IEventEmitter, IExtraFields } from './interfaces/common';
 import { EventEmitter } from './util/EventEmitter';
-import { $, attrValue, html } from './util/html';
+import { $, html } from './util/html';
 
 export class OfferPanelComponent implements IOfferPanelComponent {
     public events: IEventEmitter<IOfferPanelComponentEvents> =
         new EventEmitter();
 
+    protected buttonsContainer: HTMLElement | null = null;
     protected buttons: Array<{
         button: IButton;
         listenerDisposer: IDisposer;
-    }>;
+        container: HTMLElement;
+    }> = [];
     protected listenerDisposers: IDisposer[] = [];
+    protected buttonBuilders: ButtonBuilder[];
+
+    protected shown: boolean = false;
 
     constructor(
         protected readonly context: ISearchBoxComposer,
         protected readonly container: HTMLElement,
-        protected currentOffer: IOfferFullView | null = null,
-        protected readonly options: IOfferPanelComponentOptions,
-        protected readonly buttonBuilders: ButtonBuilder[] = [
+        protected currentOffer: IOfferFullView | null,
+        protected readonly options: OfferPanelComponentOptions
+    ) {
+        this.buttonBuilders = options.buttonBuilders ?? [
             OfferPanelComponent.buildCreateOrderButton,
             OfferPanelComponent.buildCloseButton
-        ]
-    ) {
-        this.render();
-        this.setupButtons();
+        ];
         this.listenerDisposers.push(
-            this.context.events.on('offerFullViewToggle', ({ offer }) => {
-                this.currentOffer = offer;
-                this.render();
-            })
+            this.context.events.on(
+                'offerFullViewToggle',
+                this.onOfferFullViewToggle
+            )
         );
+        if (currentOffer !== null) {
+            this.show();
+        }
     }
 
     public static buildCreateOrderButton: ButtonBuilder = (
+        offer,
         container,
         options
     ) =>
-        new CreateOrderButton(container, {
-            iconUrl: options.createOrderButtonUrl,
-            text: options.createOrderButtonText
-        });
+        new CreateOrderButton(
+            container,
+            omitUndefined({
+                iconUrl: options.createOrderButtonUrl,
+                text: options.createOrderButtonText
+            })
+        );
 
-    public static buildCloseButton: ButtonBuilder = (container, options) =>
-        new CloseButton(container, {
-            iconUrl: options.closeButtonUrl,
-            text: options.closeButtonText
-        });
+    public static buildCloseButton: ButtonBuilder = (
+        offer,
+        container,
+        options
+    ) =>
+        new CloseButton(
+            container,
+            omitUndefined({
+                iconUrl: options.closeButtonUrl,
+                text: options.closeButtonText
+            })
+        );
+
+    public getOffer(): IOfferFullView | null {
+        return this.currentOffer;
+    }
 
     public destroy() {
         this.currentOffer = null;
         for (const disposer of this.listenerDisposers) {
             disposer.off();
         }
-        this.destroyButtons();
-        this.container.innerHTML = '';
+        if (this.shown) {
+            this.hide();
+        }
     }
 
-    protected render() {
-        this.destroyButtons();
-        this.container.innerHTML =
-            this.currentOffer === null
-                ? ''
-                : html`<h1>${this.currentOffer.title}</h1>
-                      ${this.currentOffer.description.map(
-                          (description) => html`<p>${description}</p>`
-                      )}
-                      <ul
-                          class="out-coffee-sdk-offer-panel-buttons"
-                      ></ul>`.toString();
+    protected show() {
+        this.container.innerHTML = html`<div class="our-coffee-sdk-offer-panel">
+            <h1>${this.currentOffer.title}</h1>
+            ${this.currentOffer.description.map(
+                (description) => html`<p>${description}</p>`
+            )}
+            <ul class="our-coffee-sdk-offer-panel-buttons"></ul>
+        </div>`.toString();
+        this.buttonsContainer = $(
+            this.container,
+            '.our-coffee-sdk-offer-panel-buttons'
+        );
+        this.container.classList.add('our-coffee-sdk-cover-blur');
         this.setupButtons();
+        this.shown = true;
+    }
+
+    protected hide() {
+        this.destroyButtons();
+        this.buttonsContainer = null;
+        this.container.innerHTML = '';
+        this.container.classList.remove('our-coffee-sdk-cover-blur');
+        this.shown = false;
     }
 
     protected setupButtons() {
-        const buttonsContainer = $(
-            this.container,
-            '.out-coffee-sdk-offer-panel-buttons'
-        );
         for (const buttonBuilder of this.buttonBuilders) {
-            const buttonContainer = document.createElement('li');
-            buttonsContainer.appendChild(buttonContainer);
-            const button = buttonBuilder(buttonContainer, this.options);
+            const container = document.createElement('li');
+            this.buttonsContainer.appendChild(container);
+            const button = buttonBuilder(
+                this.currentOffer,
+                container,
+                this.options
+            );
             const listenerDisposer = button.events.on(
                 'press',
                 this.onButtonPress
             );
-            this.buttons.push({ button, listenerDisposer });
+            this.buttons.push({ button, listenerDisposer, container });
         }
     }
 
     protected destroyButtons() {
-        for (const { button, listenerDisposer } of this.buttons) {
+        for (const { button, listenerDisposer, container } of this.buttons) {
             listenerDisposer.off();
             button.destroy();
+            container.parentNode.removeChild(container);
         }
         this.buttons = [];
-        $(this.container, '.out-coffee-sdk-offer-panel-buttons').innerHTML = '';
     }
+
+    protected onOfferFullViewToggle = ({ offer }) => {
+        if (this.shown) {
+            this.hide();
+        }
+        this.currentOffer = offer;
+        if (offer) {
+            this.show();
+        }
+    };
 
     protected onButtonPress = ({ target: { action } }: IButtonPressEvent) => {
         if (this.currentOffer !== null) {
@@ -124,65 +163,13 @@ export class OfferPanelComponent implements IOfferPanelComponent {
     };
 }
 
+export interface OfferPanelComponentOptions
+    extends IOfferPanelComponentOptions {
+    buttonBuilders?: ButtonBuilder[];
+}
+
 export type ButtonBuilder = (
+    context: IOfferFullView,
     container: HTMLElement,
     options: IOfferPanelComponentOptions
 ) => IButton;
-
-export class OfferPanelButton implements IButton {
-    public events: IEventEmitter<IButtonEvents> = new EventEmitter();
-
-    protected onClickListener = () => {
-        this.events.emit('press', { target: this });
-    };
-
-    protected button: HTMLButtonElement;
-
-    constructor(
-        public readonly action: string,
-        protected readonly container: HTMLElement,
-        protected readonly options: IButtonOptions
-    ) {
-        this.container.innerHTML = html`<button
-            class="our-coffee-api-sdk-offer-panel-button"
-        >
-            ${this.options.iconUrl
-                ? html`<img src="${attrValue(this.options.iconUrl)}" />`
-                : ''}
-            <span>${this.options.text}</span>
-        </button>`.toString();
-        this.button = $<HTMLButtonElement>(
-            this.container,
-            '.our-coffee-api-sdk-offer-panel-button'
-        );
-
-        this.button.addEventListener('click', this.onClickListener, false);
-    }
-
-    destroy() {
-        this.button.removeEventListener('click', this.onClickListener, false);
-        this.container.innerHTML = '';
-    }
-}
-
-export class CreateOrderButton extends OfferPanelButton {
-    constructor(container: HTMLElement, options: Partial<IButtonOptions>) {
-        super('createOrder', container, {
-            text: 'Place an Order',
-            ...options
-        });
-        this.button.classList.add(
-            'our-coffee-sdk-offer-panel-create-order-button'
-        );
-    }
-}
-
-export class CloseButton extends OfferPanelButton {
-    constructor(container: HTMLElement, options: Partial<IButtonOptions>) {
-        super('close', container, {
-            text: 'Not Now',
-            ...options
-        });
-        this.button.classList.add('our-coffee-sdk-offer-panel-close-button');
-    }
-}

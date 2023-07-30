@@ -43,8 +43,8 @@ Thanks [Christian Robertson](https://twitter.com/cr64) for Roboto Mono.
 
 Thanks [Knut Sveidqvist and Mermaid Comminuty](https://mermaid.js.org/) for Mermaid.
 
-Thanks [Figma, Inc.](https://www.figma.com/) for Figma.
-
-Thanks [Joey Banks](https://www.figma.com/@joey) for UI Kit.
+Thanks [Figma, Inc.](https://www.figma.com/) for Figma and [Joey Banks](https://www.figma.com/@joey) for UI Kit.
 
 Thanks [@lual](https://openclipart.org/artist/lual) for the coffee icon.
+
+Thanks [Oscar Hinrichs](https://www.loc.gov/item/2006636649/) for the map.
