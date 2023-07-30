@@ -62,6 +62,6 @@ window.onload = function () {
             codeLens: false,
             fontFamily: 'local-monospace'
         });
-        showExample('01');
+        showExample('00');
     });
 };

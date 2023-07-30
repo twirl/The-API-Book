@@ -182,3 +182,34 @@
     color: #3a3a3c;
     background: transparent;
 }
+
+.custom-offer {
+    clear: right;
+    border-bottom: 0.5px solid rgba(60, 60, 67, 0.36);
+    font-size: 15px;
+    line-height: 34px;
+    letter-spacing: -0.24px;
+    margin: 5px 0;
+}
+
+.custom-offer > aside {
+    float: right;
+    width: 120px;
+    text-align: right;
+}
+
+.custom-offer > aside > button {
+    height: 30px;
+    width: 120px;
+    background: #3a3a3c;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 22px;
+    text-align: center;
+    letter-spacing: -0.408px;
+    color: #ffffff;
+    border: transparent;
+    cursor: pointer;
+    margin: 1px 0;
+    mix-blend-mode: luminosity;
+}

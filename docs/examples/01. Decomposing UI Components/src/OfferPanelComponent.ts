@@ -25,7 +25,6 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         container: HTMLElement;
     }> = [];
     protected listenerDisposers: IDisposer[] = [];
-    protected buttonBuilders: ButtonBuilder[];
 
     protected shown: boolean = false;
 
@@ -35,10 +34,6 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         protected currentOffer: IOfferFullView | null,
         protected readonly options: OfferPanelComponentOptions
     ) {
-        this.buttonBuilders = options.buttonBuilders ?? [
-            OfferPanelComponent.buildCreateOrderButton,
-            OfferPanelComponent.buildCloseButton
-        ];
         this.listenerDisposers.push(
             this.context.events.on(
                 'offerFullViewToggle',
@@ -116,7 +111,11 @@ export class OfferPanelComponent implements IOfferPanelComponent {
     }
 
     protected setupButtons() {
-        for (const buttonBuilder of this.buttonBuilders) {
+        const buttonBuilders = this.options.buttonBuilders ?? [
+            OfferPanelComponent.buildCreateOrderButton,
+            OfferPanelComponent.buildCloseButton
+        ];
+        for (const buttonBuilder of buttonBuilders) {
             const container = document.createElement('li');
             this.buttonsContainer.appendChild(container);
             const button = buttonBuilder(

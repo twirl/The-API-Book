@@ -18,6 +18,16 @@
                 padding: 5px;
             }
 
+            header * {
+                font-size: 16px;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                padding-bottom: 10px;
+            }
+
             ul#example-list {
                 list-style-type: none;
                 margin: 0;
@@ -51,6 +61,7 @@
 
             #live-example {
                 min-width: 390px;
+                min-height: 500px;
                 float: left;
             }
 
@@ -66,10 +77,27 @@
         <script src="sandbox.js"></script>
     </head>
     <body>
-        <h1>
-            Examples of Overriding Different Aspects of a Decomposed UI
-            Component
-        </h1>
+        <header>
+            <p>
+                Studying materials for
+                <strong
+                    ><a href="https://twirl.github.io/The-API-Book/"
+                        >“The API” book</a
+                    >
+                    by Sergey Konstantinov.</strong
+                >
+            </p>
+            <p>
+                <a href="https://twirl.github.io/The-API-Book/#sdk-decomposing"
+                    >Chapter 43: Problems of Introducing UI Components</a
+                >. Find the source code of the components and additional tasks
+                for self-study at the
+                <a
+                    href="https://github.com/twirl/The-API-Book/tree/gh-pages/docs/examples/01.%20Decomposing%20UI%20Components"
+                    >Github repository.</a
+                >
+            </p>
+        </header>
         <div id="playground">
             <div id="live-example">
                 <div>Live example <button id="refresh">Refresh</button></div>
@@ -77,26 +105,32 @@
             </div>
             <div id="examples">
                 <ul id="example-list">
+                    <li id="example-00">
+                        <a href="javascript:showExample('00')"
+                            >The reference: A regular <code>SearchBox</code></a
+                        >
+                    </li>
                     <li id="example-01">
                         <a href="javascript:showExample('01')"
-                            >Example #1: A regular <code>SearchBox</code></a
+                            >Example #1: A <code>SearchBox</code> with a custom
+                            icon</a
                         >
                     </li>
                     <li id="example-02">
                         <a href="javascript:showExample('02')"
-                            >Example #2: A <code>SearchBox</code> with a custom
-                            icon</a
+                            >Example #2: A <code>SearchBox</code> with a map</a
                         >
                     </li>
                     <li id="example-03">
                         <a href="javascript:showExample('03')"
-                            >Example #3: A <code>SearchBox</code> with a map</a
+                            >Example #3: A <code>SearchBox</code> with in-place
+                            actions</a
                         >
                     </li>
                     <li id="example-04">
                         <a href="javascript:showExample('04')"
-                            >Example #4: A <code>SearchBox</code> with in-place
-                            actions</a
+                            >Example #4: A <code>SearchBox</code> with a dynamic
+                            set of buttons</a
                         >
                     </li>
                 </ul>

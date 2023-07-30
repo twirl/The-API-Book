@@ -1,102 +1,82 @@
-class CustomOfferList extends ourCoffeeSdk.OfferListComponent {
-  constructor(
-    context,
-    container,
-    offerList,
-    options
-  ) {
-    super(context, container, offerList, options);
-    this.onOfferButtonClickListener = (e) => {
-      const action = e.target.dataset.action;
-      const offerId = e.target.dataset.offerId;
-      if (action === "offerSelect") {
-        this.events.emit(action, { offerId });
-      } else if (action === "createOffer") {
-        const offer =
-          this.context.findOfferById(offerId);
-        if (offer) {
-          this.context.events.emit(
-            "createOrder",
-            {
-              offer
-            }
-          );
-        }
-      }
-    };
-  }
+const {
+  SearchBox,
+  SearchBoxComposer,
+  OfferPanelComponent,
+  OfferPanelButton,
+  util,
+  dummyCoffeeApi
+} = ourCoffeeSdk;
 
-  generateOfferHtml(offer) {
-    return ourCoffeeSdk.util.html`<li
-      class="custom-offer"
-    >
-      <div><strong>${offer.title}</strong></div>
-      <div>${offer.subtitle}</div>
-      <div>${offer.bottomLine} <button 
-        data-offer-id="${ourCoffeeSdk.util.attrValue(
-          offer.offerId
-        )}"
-        data-action="createOffer"
-      >Buy now for ${
-        offer.price.formattedValue
-      }</button><button 
-        data-offer-id="${ourCoffeeSdk.util.attrValue(
-          offer.offerId
-        )}"
-          data-action="offerSelect"
-      >View details</button>
-      </div>
-      <hr/>
-    </li>`.toString();
-  }
+const buildCallButton = function (
+  offer,
+  container,
+  options
+) {
+  return new OfferPanelButton("call", container, {
+    text: util.html`<a href="tel:${util.attrValue(
+      offer.phone
+    )}" style="color: inherit; text-decoration: none;">${
+      options.callButtonText
+    }</a>`
+  });
+};
 
-  setupDomListeners() {
-    const buttons =
-      this.container.querySelectorAll("button");
-    for (const button of buttons) {
-      button.addEventListener(
-        "click",
-        this.onOfferButtonClickListener
-      );
-    }
-  }
+const buildCreateOrderButton =
+  OfferPanelComponent.buildCreateOrderButton;
+const buildCloseButton =
+  OfferPanelComponent.buildCloseButton;
 
-  teardownDomListeners() {
-    const buttons = document.querySelectorAll(
-      this.container,
-      "button"
-    );
-    for (const button of buttons) {
-      button.removeEventListener(
-        "click",
-        this.onOfferButtonClickListener
-      );
-    }
+class CustomOfferPanel extends OfferPanelComponent {
+  show() {
+    this.options.buttonBuilders = this
+      .currentOffer.phone
+      ? [
+          buildCreateOrderButton,
+          buildCallButton,
+          buildCloseButton
+        ]
+      : [
+          buildCreateOrderButton,
+          buildCloseButton
+        ];
+    return super.show();
   }
 }
 
-class CustomComposer extends ourCoffeeSdk.SearchBoxComposer {
-  buildOfferListComponent(
+class CustomComposer extends SearchBoxComposer {
+  buildOfferPanelComponent(
     context,
     container,
-    offerList,
+    currentOffer,
     contextOptions
   ) {
-    return new CustomOfferList(
+    return new CustomOfferPanel(
       context,
       container,
-      this.generateOfferPreviews(
-        offerList,
+      this.generateCurrentOfferFullView(
+        currentOffer,
         contextOptions
       ),
-      this.generateOfferListComponentOptions(
+      this.generateOfferPanelComponentOptions(
         contextOptions
       )
     );
   }
+
+  generateCurrentOfferFullView(offer, options) {
+    const offerFullView =
+      super.generateCurrentOfferFullView(
+        offer,
+        options
+      );
+    if (offer && offer.place.phone) {
+      offerFullView.phone = offer.place.phone;
+    }
+    return offerFullView;
+  }
 }
 
-class CustomSearchBox extends ourCoffeeSdk.SearchBox {
+class CustomSearchBox extends SearchBox {
   buildComposer(context, container, options) {
     return new CustomComposer(
       context,
@@ -113,6 +93,13 @@ class CustomSearchBox extends ourCoffeeSdk.SearchBox {
 
 const searchBox = new CustomSearchBox(
   document.getElementById("search-box"),
-  ourCoffeeSdk.dummyCoffeeApi
+  dummyCoffeeApi,
+  {
+    offerPanel: {
+      createOrderButtonText: "🛒Place an Order",
+      callButtonText: "☎️ Make a Call",
+      closeButtonText: "❌Not Now"
+    }
+  }
 );
 searchBox.search("Lungo");

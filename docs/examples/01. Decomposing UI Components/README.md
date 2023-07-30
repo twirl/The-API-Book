@@ -10,9 +10,9 @@ The `src` folder contains a TypeScript code for the component and corresponding 
 The `index.html` page includes a living example for each of the discussed scenarios, with links pointing to external playgrounds to work through the code if needed. [View it in your browser](https://twirl.github.io/examples/01.%20Decomposing%20UI%20Components/index.html).
 
 The following improvements to the code are left as an exercise for the reader:
-  * Make all builder functions options
-
-  * Returning operation status from the `SearchBox.search` method:
+  * Make all builder functions configurable through options
+  * Create a separate composer to close the gap between `OfferPanelComponent` and its buttons
+  * Add returning an operation status from the `SearchBox.search` method:
       ```
       public search(query: string): Promise<OperationResult>
       ```

@@ -23,6 +23,7 @@ export interface ISearchResult {
         walkTime: IFormattedDuration;
         location: ILocation;
         icon?: string;
+        phone?: string;
     };
     price: IFormattedPrice;
 }
