@@ -14,7 +14,8 @@ export class DummyMapApi {
             'background-size: cover',
             'position: relative',
             'width: 100%',
-            'height: 100%'
+            'height: 100%',
+            'overflow: hidden'
         ].join(';');
     }
 
@@ -35,6 +36,7 @@ export class DummyMapApi {
                     (this.bounds[1][1] - this.bounds[0][1])
             ) - 30;
         const marker = document.createElement('div');
+        marker.dataset.markerId = markerId;
         marker.style.cssText = [
             'position: absolute',
             'width: 30px',
@@ -44,7 +46,8 @@ export class DummyMapApi {
             'align: center',
             'line-height: 30px',
             'font-size: 30px',
-            'cursor: pointer'
+            'cursor: pointer',
+            'mix-blend-mode: luminosity'
         ].join(';');
         marker.innerHTML =
             '<a href="javascript:void(0)" style="text-decoration: none;">📍</a>';
@@ -56,6 +59,17 @@ export class DummyMapApi {
         marker.addEventListener('click', listener, false);
 
         this.container.appendChild(marker);
+    }
+
+    public selectSingleMarker(markerId: string) {
+        for (const marker of this.container.childNodes) {
+            const element = <HTMLElement>marker;
+            if (element.dataset?.markerId === markerId) {
+                element.style.mixBlendMode = 'unset';
+            } else {
+                element.style.mixBlendMode = 'luminosity';
+            }
+        }
     }
 
     public destroy() {

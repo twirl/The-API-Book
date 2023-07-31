@@ -97,7 +97,9 @@ export class OfferPanelComponent implements IOfferPanelComponent {
             this.container,
             '.our-coffee-sdk-offer-panel-buttons'
         );
-        this.container.classList.add('our-coffee-sdk-cover-blur');
+        if (!this.options.transparent) {
+            this.container.classList.add('our-coffee-sdk-cover-blur');
+        }
         this.setupButtons();
         this.shown = true;
     }
@@ -150,11 +152,12 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         }
     };
 
-    protected onButtonPress = ({ target: { action } }: IButtonPressEvent) => {
+    protected onButtonPress = ({ target }: IButtonPressEvent) => {
         if (this.currentOffer !== null) {
             this.events.emit('action', {
-                action,
-                offerId: this.currentOffer.offerId
+                action: target.action,
+                target,
+                currentOfferId: this.currentOffer.offerId
             });
         } else {
             // TBD
@@ -165,6 +168,7 @@ export class OfferPanelComponent implements IOfferPanelComponent {
 export interface OfferPanelComponentOptions
     extends IOfferPanelComponentOptions {
     buttonBuilders?: ButtonBuilder[];
+    transparent?: boolean;
 }
 
 export type ButtonBuilder = (

@@ -87,6 +87,46 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         );
     }
 
+    public selectOffer(offerId: string) {
+        const offer = this.findOfferById(offerId);
+        // Offer may be missing for a variety of reasons,
+        // most notably of `OfferListComponent` renders
+        // offers asynchronously
+        if (offer !== null) {
+            this.currentOffer = offer;
+            this.events.emit('offerFullViewToggle', {
+                offer: this.generateCurrentOfferFullView(
+                    this.currentOffer,
+                    this.contextOptions
+                )
+            });
+        } else {
+            // TDB
+        }
+    }
+
+    public performAction({
+        action,
+        currentOfferId: offerId
+    }: IOfferPanelActionEvent) {
+        switch (action) {
+            case 'createOrder':
+                const offer = this.findOfferById(offerId);
+                // Offer may be missing if `OfferPanelComponent`
+                // renders offers asynchronously
+                if (offer !== null) {
+                    this.events.emit('createOrder', { offer });
+                }
+                break;
+            case 'close':
+                if (this.currentOffer !== null) {
+                    this.currentOffer = null;
+                    this.events.emit('offerFullViewToggle', { offer: null });
+                }
+                break;
+        }
+    }
+
     public destroy() {
         for (const disposer of this.listenerDisposers) {
             disposer.off();
@@ -120,45 +160,12 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         });
     };
 
-    protected onOfferPanelAction = ({
-        action,
-        offerId
-    }: IOfferPanelActionEvent) => {
-        switch (action) {
-            case 'createOrder':
-                const offer = this.findOfferById(offerId);
-                // Offer may be missing if `OfferPanelComponent`
-                // renders offers asynchronously
-                if (offer !== null) {
-                    this.events.emit('createOrder', { offer });
-                }
-                break;
-            case 'close':
-                if (this.currentOffer !== null) {
-                    this.currentOffer = null;
-                    this.events.emit('offerFullViewToggle', { offer: null });
-                }
-                break;
-        }
+    protected onOfferPanelAction = (event: IOfferPanelActionEvent) => {
+        this.performAction(event);
     };
 
-    protected onOfferListOfferSelect = ({ offerId }: IOfferSelectedEvent) => {
-        const offer = this.findOfferById(offerId);
-        // Offer may be missing for a variety of reasons,
-        // most notably of `OfferListComponent` renders
-        // offers asynchronously
-        if (offer !== null) {
-            this.currentOffer = offer;
-            this.events.emit('offerFullViewToggle', {
-                offer: this.generateCurrentOfferFullView(
-                    this.currentOffer,
-                    this.contextOptions
-                )
-            });
-        } else {
-            // TDB
-        }
-    };
+    protected onOfferListOfferSelect = ({ offerId }: IOfferSelectedEvent) =>
+        this.selectOffer(offerId);
 
     protected buildOfferListComponent(
         context: ISearchBoxComposer,

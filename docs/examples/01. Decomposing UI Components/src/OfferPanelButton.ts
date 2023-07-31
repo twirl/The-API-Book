@@ -18,7 +18,7 @@ export class OfferPanelButton implements IButton {
         protected readonly options: IButtonOptions
     ) {
         this.container.innerHTML = html`<button
-            class="our-coffee-sdk-sdk-offer-panel-button"
+            class="our-coffee-sdk-offer-panel-button"
         >
             ${this.options.iconUrl
                 ? html`<img src="${attrValue(this.options.iconUrl)}" />`
@@ -27,7 +27,7 @@ export class OfferPanelButton implements IButton {
         </button>`.toString();
         this.button = $<HTMLButtonElement>(
             this.container,
-            '.our-coffee-sdk-sdk-offer-panel-button'
+            '.our-coffee-sdk-offer-panel-button'
         );
 
         this.button.addEventListener('click', this.onClickListener, false);

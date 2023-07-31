@@ -1,55 +1,75 @@
-class CustomOfferList {
-  constructor(context, container, offerList) {
-    this.context = context;
-    this.container = container;
-    this.events =
-      new ourCoffeeSdk.util.EventEmitter();
-    this.offerList = null;
-    this.map = null;
-
-    this.onMarkerSelect = (markerId) => {
-      this.events.emit("offerSelect", {
-        offerId: markerId
-      });
-    };
-    this.setOfferList = ({
-      offerList: newOfferList
-    }) => {
-      if (this.map) {
-        this.map.destroy();
-        this.map = null;
-      }
-      this.offerList = newOfferList;
-      if (newOfferList) {
-        this.map = new ourCoffeeSdk.DummyMapApi(
-          this.container,
-          [
-            [16.355, 48.206],
-            [16.375, 48.214]
-          ]
-        );
-        for (const offer of newOfferList) {
-          this.map.addMarker(
-            offer.offerId,
-            offer.location,
-            this.onMarkerSelect
+class CustomOfferList extends ourCoffeeSdk.OfferListComponent {
+  constructor(
+    context,
+    container,
+    offerList,
+    options
+  ) {
+    super(context, container, offerList, options);
+    this.onOfferButtonClickListener = (e) => {
+      const action = e.target.dataset.action;
+      const offerId = e.target.dataset.offerId;
+      if (action === "offerSelect") {
+        this.events.emit(action, { offerId });
+      } else if (action === "createOffer") {
+        const offer =
+          this.context.findOfferById(offerId);
+        if (offer) {
+          this.context.events.emit(
+            "createOrder",
+            {
+              offer
+            }
           );
         }
       }
     };
-
-    this.setOfferList({ offerList });
-    this.contextListener = context.events.on(
-      "offerPreviewListChange",
-      this.setOfferList
-    );
   }
 
-  destroy() {
-    if (this.map) {
-      this.map.destroy();
+  generateOfferHtml(offer) {
+    return ourCoffeeSdk.util.html`<li
+      class="custom-offer"
+    >
+      <aside><button 
+      data-offer-id="${ourCoffeeSdk.util.attrValue(
+        offer.offerId
+      )}"
+      data-action="createOffer">Buy now for ${
+        offer.price.formattedValue
+      }</button><button 
+        data-offer-id="${ourCoffeeSdk.util.attrValue(
+          offer.offerId
+        )}"
+        data-action="offerSelect">View details
+      </button></aside>
+      <div><strong>${offer.title}</strong></div>
+      <div>${offer.subtitle}</div>
+      <div>${offer.bottomLine}</div>
+    </li>`.toString();
+  }
+
+  setupDomListeners() {
+    const buttons =
+      this.container.querySelectorAll("button");
+    for (const button of buttons) {
+      button.addEventListener(
+        "click",
+        this.onOfferButtonClickListener
+      );
     }
-    this.contextListener.off();
+  }
+
+  teardownDomListeners() {
+    const buttons = document.querySelectorAll(
+      this.container,
+      "button"
+    );
+    for (const button of buttons) {
+      button.removeEventListener(
+        "click",
+        this.onOfferButtonClickListener
+      );
+    }
   }
 }
 
@@ -71,19 +91,6 @@ class CustomComposer extends ourCoffeeSdk.SearchBoxComposer {
         contextOptions
       )
     );
-  }
-
-  generateOfferPreviews(offerList) {
-    const result = super.generateOfferPreviews(
-      offerList
-    );
-    return result === null
-      ? result
-      : result.map((preview, index) => ({
-          ...preview,
-          location:
-            offerList[index].place.location
-        }));
   }
 }
 

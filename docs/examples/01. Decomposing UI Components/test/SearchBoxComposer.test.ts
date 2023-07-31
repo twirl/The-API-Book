@@ -161,7 +161,7 @@ describe('SearchBoxComposer', () => {
             'createOrder',
             () => {
                 mockOfferPanel.events.emit('action', {
-                    offerId: CAFEE_CHAMOMILE_LUNGO_OFFER.offerId,
+                    currentOfferId: CAFEE_CHAMOMILE_LUNGO_OFFER.offerId,
                     action: 'createOrder'
                 });
             }
@@ -180,7 +180,7 @@ describe('SearchBoxComposer', () => {
             event = e;
         });
         mockOfferPanel.events.emit('action', {
-            offerId: 'fakeOfferId',
+            currentOfferId: 'fakeOfferId',
             action: 'createOrder'
         });
         expect(event).toEqual(null);
@@ -200,7 +200,7 @@ describe('SearchBoxComposer', () => {
             'offerFullViewToggle',
             () => {
                 mockOfferPanel.events.emit('action', {
-                    offerId: CAFEE_CHAMOMILE_LUNGO_OFFER.offerId,
+                    currentOfferId: CAFEE_CHAMOMILE_LUNGO_OFFER.offerId,
                     action: 'close'
                 });
             }

@@ -137,8 +137,9 @@ describe('OfferPanelComponent', () => {
         });
         expect(events).toEqual([
             {
-                offerId: CAFEE_CHAMOMILE_LUNGO_OFFER_FULL_VIEW.offerId,
-                action: MOCK_ACTION
+                currentOfferId: CAFEE_CHAMOMILE_LUNGO_OFFER_FULL_VIEW.offerId,
+                action: MOCK_ACTION,
+                target: mockButton
             }
         ]);
         offerPanel.destroy();

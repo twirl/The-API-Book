@@ -18,5 +18,6 @@ export interface IOfferPanelComponentEvents {
 
 export interface IOfferPanelActionEvent {
     action: string;
-    offerId: string;
+    currentOfferId: string;
+    target?: any;
 }
