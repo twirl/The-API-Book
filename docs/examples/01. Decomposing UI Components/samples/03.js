@@ -7,8 +7,7 @@ const {
   dummyCoffeeApi
 } = ourCoffeeSdk;
 
-const { buildCreateOrderButton, buildCloseButton } =
-  OfferPanelComponent;
+const { buildCloseButton } = OfferPanelComponent;
 
 const buildCustomOrderButton = function (offer, container) {
   return OfferPanelComponent.buildCreateOrderButton(
@@ -91,7 +90,7 @@ class CustomOfferPanel extends OfferPanelComponent {
     if (offer.previousOfferId) {
       buttons.push(buildPreviousOfferButton);
     }
-    buttons.push(buildCreateOrderButton);
+    buttons.push(buildCustomOrderButton);
     if (offer.phone) {
       buttons.push(buildCallButton);
     }

@@ -185,20 +185,71 @@
 
 .custom-offer {
     clear: right;
-    border-bottom: 0.5px solid rgba(60, 60, 67, 0.36);
     font-size: 15px;
     line-height: 34px;
     letter-spacing: -0.24px;
     margin: 5px 23px 0 0;
+    box-sizing: border-box;
 }
 
-.custom-offer > aside {
-    float: right;
-    width: 120px;
-    text-align: right;
+.custom-offer .preview,
+.custom-offer .fullview {
+    display: block;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 17px;
+    line-height: 22px;
+    letter-spacing: -0.408px;
+    padding: 7px 8px;
+    background: rgba(118, 118, 128, 0.12);
+    border-radius: 10px;
+    padding-left: 22px;
+    box-sizing: border-box;
+    font-family: local-serif;
 }
 
-.custom-offer > aside > button {
+.custom-offer .preview {
+    cursor: pointer;
+}
+
+.custom-offer .preview .expand-action,
+.custom-offer .fullview .collapse-action {
+    float: left;
+    margin-left: -22px;
+    font-size: 22px;
+    line-height: 22px;
+    padding: 0 1px;
+    width: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.custom-offer .fullview .collapse-action {
+    cursor: pointer;
+    margin-top: -2px;
+}
+
+.custom-offer .fullview {
+    display: none;
+}
+
+.custom-offer .fullview button {
+    background: none;
+    border: none;
+    font-family: local-serif;
+}
+
+.custom-offer.expanded .preview {
+    display: none;
+}
+
+.custom-offer.expanded .fullview {
+    display: block;
+}
+
+.custom-offer .fullview .action-button {
     height: 30px;
     width: 120px;
     background: #3a3a3c;

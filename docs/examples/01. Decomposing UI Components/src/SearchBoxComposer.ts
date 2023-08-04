@@ -111,12 +111,7 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
     }: IOfferPanelActionEvent) {
         switch (action) {
             case 'createOrder':
-                const offer = this.findOfferById(offerId);
-                // Offer may be missing if `OfferPanelComponent`
-                // renders offers asynchronously
-                if (offer !== null) {
-                    this.events.emit('createOrder', { offer });
-                }
+                this.createOrder(offerId);
                 break;
             case 'close':
                 if (this.currentOffer !== null) {
@@ -124,6 +119,15 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
                     this.events.emit('offerFullViewToggle', { offer: null });
                 }
                 break;
+        }
+    }
+
+    public createOrder(offerId: string) {
+        const offer = this.findOfferById(offerId);
+        // Offer may be missing if `OfferPanelComponent`
+        // renders offers asynchronously
+        if (offer !== null) {
+            this.events.emit('createOrder', { offer });
         }
     }
 

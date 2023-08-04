@@ -93,3 +93,27 @@ export const hrefValue = (
             ? httpHrefEscape(str)
             : hrefEscapeBuilder(allowedProtocols)(str)
     );
+
+export const findDataField = (
+    target: HTMLElement,
+    fieldName: string
+): {
+    target: HTMLElement | null;
+    value: string | null;
+} => {
+    let node = target;
+    while (node) {
+        if (node.dataset && node.dataset[fieldName] !== undefined) {
+            return {
+                target: node,
+                value: node.dataset[fieldName]
+            };
+        }
+        node = node.parentElement;
+    }
+
+    return {
+        target: null,
+        value: null
+    };
+};

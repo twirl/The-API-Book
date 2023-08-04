@@ -1,79 +1,72 @@
-class CustomOfferList extends ourCoffeeSdk.OfferListComponent {
-  constructor(
-    context,
-    container,
-    offerList,
-    options
-  ) {
+const {
+  SearchBox,
+  SearchBoxComposer,
+  OfferListComponent,
+  dummyCoffeeApi,
+  util
+} = ourCoffeeSdk;
+
+class CustomOfferList extends OfferListComponent {
+  constructor(context, container, offerList, options) {
     super(context, container, offerList, options);
-    this.onOfferButtonClickListener = (e) => {
-      const action = e.target.dataset.action;
-      const offerId = e.target.dataset.offerId;
-      if (action === "offerSelect") {
-        this.events.emit(action, { offerId });
-      } else if (action === "createOffer") {
-        const offer =
-          this.context.findOfferById(offerId);
-        if (offer) {
-          this.context.events.emit(
-            "createOrder",
-            {
-              offer
-            }
-          );
-        }
+
+    this.onClickListener = (e) => {
+      const { target, value: action } = util.findDataField(
+        e.target,
+        "action"
+      );
+      if (target === null || action === null) {
+        return;
+      }
+      const { target: container, value: offerId } =
+        util.findDataField(target, "offerId");
+      if (container === null || offerId === null) {
+        return;
+      }
+      switch (action) {
+        case "expand":
+          this.expand(container);
+          break;
+        case "collapse":
+          this.collapse(container);
+          break;
+        case "createOrder":
+          this.context.createOrder(offerId);
+          break;
       }
     };
   }
 
+  expand(item) {
+    item.classList.add("expanded");
+  }
+
+  collapse(item) {
+    item.classList.remove("expanded");
+  }
+
   generateOfferHtml(offer) {
-    return ourCoffeeSdk.util.html`<li
+    return util.html`<li
       class="custom-offer"
+      data-offer-id="${util.attrValue(offer.offerId)}"
     >
-      <aside><button 
-      data-offer-id="${ourCoffeeSdk.util.attrValue(
-        offer.offerId
-      )}"
-      data-action="createOffer">Buy now for ${
-        offer.price.formattedValue
-      }</button><button 
-        data-offer-id="${ourCoffeeSdk.util.attrValue(
-          offer.offerId
-        )}"
-        data-action="offerSelect">View details
-      </button></aside>
-      <div><strong>${offer.title}</strong></div>
-      <div>${offer.subtitle}</div>
-      <div>${offer.bottomLine}</div>
+      <button data-action="expand" class="preview"><aside class="expand-action">&gt;</aside><strong>${
+        offer.title
+      }</strong> · ${offer.price.formattedValue}</button>
+      <div class="fullview">
+        <button data-action="collapse" class="collapse-action">∧</button>
+        <div><strong>${offer.title}</strong> · ${
+      offer.price.formattedValue
+    }</div>
+        <div>${offer.subtitle}</div>
+        <div>${offer.bottomLine}</div>
+        <button data-action="createOrder" class="action-button">Place an Order</button>
+      </div>
     </li>`.toString();
-  }
-
-  setupDomListeners() {
-    const buttons =
-      this.container.querySelectorAll("button");
-    for (const button of buttons) {
-      button.addEventListener(
-        "click",
-        this.onOfferButtonClickListener
-      );
-    }
-  }
-
-  teardownDomListeners() {
-    const buttons = document.querySelectorAll(
-      this.container,
-      "button"
-    );
-    for (const button of buttons) {
-      button.removeEventListener(
-        "click",
-        this.onOfferButtonClickListener
-      );
-    }
   }
 }
 
-class CustomComposer extends ourCoffeeSdk.SearchBoxComposer {
+class CustomComposer extends SearchBoxComposer {
   buildOfferListComponent(
     context,
     container,
@@ -83,24 +76,15 @@ class CustomComposer extends ourCoffeeSdk.SearchBoxComposer {
     return new CustomOfferList(
       context,
       container,
-      this.generateOfferPreviews(
-        offerList,
-        contextOptions
-      ),
-      this.generateOfferListComponentOptions(
-        contextOptions
-      )
+      this.generateOfferPreviews(offerList, contextOptions),
+      this.generateOfferListComponentOptions(contextOptions)
     );
   }
 }
 
-class CustomSearchBox extends ourCoffeeSdk.SearchBox {
+class CustomSearchBox extends SearchBox {
   buildComposer(context, container, options) {
-    return new CustomComposer(
-      context,
-      container,
-      options
-    );
+    return new CustomComposer(context, container, options);
   }
 
   createOrder(offer) {
@@ -111,6 +95,6 @@ class CustomSearchBox extends ourCoffeeSdk.SearchBox {
 
 const searchBox = new CustomSearchBox(
   document.getElementById("search-box"),
-  ourCoffeeSdk.dummyCoffeeApi
+  dummyCoffeeApi
 );
 searchBox.search("Lungo");
