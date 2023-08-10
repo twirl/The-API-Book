@@ -11,6 +11,7 @@ The `index.html` page includes a living example for each of the discussed scenar
 
 The following improvements to the code are left as an exercise for the reader:
   * Make all builder functions configurable through options
+  * Make `ISearchBoxComposer` a composition of two interfaces: one facade to interact with a `SearchBox`, and another facade to communicate with child components.
   * Create a separate composer to close the gap between `OfferPanelComponent` and its buttons
   * Add returning an operation status from the `SearchBox.search` method:
       ```
