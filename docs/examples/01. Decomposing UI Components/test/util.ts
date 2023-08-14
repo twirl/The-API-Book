@@ -1,3 +1,8 @@
+/**
+ * @fileoverview
+ * Various helpers for testing the components
+ */
+
 import { IEventEmitter } from '../src/interfaces/common';
 
 export async function waitForEvents<

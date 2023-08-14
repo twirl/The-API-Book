@@ -1,3 +1,9 @@
+/**
+ * @fileoverview
+ * A dummy implementation of the coffee API. Always emits
+ * the predefined array of results
+ */
+
 import { ICoffeeApi, INewOrder } from '../../src/interfaces/ICoffeeApi';
 import {
     IOfferFullView,
@@ -128,6 +134,14 @@ export const DUMMY_ORDER = {
 };
 
 export const dummyCoffeeApi: ICoffeeApi = {
-    search: async () => [...DUMMY_RESPONSE],
-    createOrder: async (): Promise<INewOrder> => DUMMY_ORDER
+    search: async () => timeouted([...DUMMY_RESPONSE], 300),
+    createOrder: async (): Promise<INewOrder> => timeouted(DUMMY_ORDER, 300)
 };
+
+function timeouted<T>(result: T, timeoutMs: number): Promise<T> {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(result);
+        }, timeoutMs);
+    });
+}

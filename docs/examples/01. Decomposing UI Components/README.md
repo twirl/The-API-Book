@@ -1,24 +1,26 @@
 # Decomposing UI Components
 
-This is the example illustrating complexities of decomposing a UI component into a series of subcomponents that would simultaneously allow to:
-  * Redefining the appearance of each of the subcomponent
-  * Introducing new business logic while keeping styling consistent
+This example illustrates the complexities of decomposing a UI component into a series of subcomponents that would simultaneously allow:
+  * Redefining the appearance of each of the subcomponents.
+  * Introducing new business logic while keeping styling consistent.
   * Inheriting the UX of the component while changing both UI and business logic.
 
-The `src` folder contains a TypeScript code for the component and corresponding interfaces, and the `index.js` file contains the compiled JavaScript (check `tsconfig.json` for compiler settings).
+The `src` folder contains TypeScript code for the component and corresponding interfaces, while the `index.js` file contains the compiled JavaScript (please refer to `tsconfig.json` for compiler settings).
 
-The `index.html` page includes a living example for each of the discussed scenarios, with links pointing to external playgrounds to work through the code if needed. [View it in your browser](https://twirl.github.io/examples/01.%20Decomposing%20UI%20Components/index.html).
+The `index.html` page includes a live example for each of the discussed scenarios, with a live code playgrounds for further code exploration. Feel free to view it in your browser.
 
 The following improvements to the code are left as an exercise for the reader:
-  * Make all builder functions configurable through options
-  * Make `ISearchBoxComposer` a composition of two interfaces: one facade to interact with a `SearchBox`, and another facade to communicate with child components.
-  * Create a separate composer to close the gap between `OfferPanelComponent` and its buttons
-  * Add returning an operation status from the `SearchBox.search` method:
+  1. Make all builder functions configurable through the `SearchBox` options (instead of subclassing components and overriding builder functions)
+  2. Make a better abstraction of the `SearchBoxComposer` internal state. Make the `findOfferById` function asynchronous
+  3. Make rendering functions asynchronous
+  4. Refactor `ISearchBoxComposer` as a composition of two interfaces: one facade for interacting with a `SearchBox`, and another for communication with child components.
+  5. Create a separate composer to bridge the gap between `OfferPanelComponent` and its buttons.
+  6. Enhance the `SearchBox.search` method to return an operation status:
       ```
       public search(query: string): Promise<OperationResult>
       ```
 
-      Where
+      Where OperationResult is defined as:
 
       ```
       type OperationResult =
@@ -31,7 +33,11 @@ The following improvements to the code are left as an exercise for the reader:
             status: OperationResultStatus.FAIL;
             error: any;
         };
+      ```
 
+      With the enum:
+
+      ```
       export enum OperationResultStatus {
         SUCCESS = 'success',
         FAIL = 'fail',
@@ -39,18 +45,11 @@ The following improvements to the code are left as an exercise for the reader:
       }
       ```
 
-  * Make an offer list paginated (implying adding pagination parameters to `ICoffeeApi.search` request and response, and dynamically loading new items while scrolling the offer list)
-
-  * Make the input string and the search button a separate `ISeachBoxInput` component. Add an ability to cancel the ongoing request. Add a “skeleton” animation to indicate that search results are being loading.
-
-  * Localize the component, making a locale and a dictionary a part of the `ISearchBox` options.
-
-  * Parametrize `context` parameter for `OfferListComponent` and `OfferPanelComponent`. Make it comprise only events needed by the component, so that `ISearchBoxComposer` would be implementing `IOfferListComponentContext` and `IOfferPanelComponentContext` interfaces.
-
-  * Make `options` mutable (expose an `optionChange` event and implement `Composers`'s reaction to relevant option changes).
-
-  * Parametrize all extra options, content fields, actions and events.
-
-  * Parametrize markups of components, either by:
-      * Incapsulating them in some `Layout` entities controlled through options. Create interfaces for each of the layouts. Create a `VisualComponent` base class for entities that have a layout and inherit `SearchBox`, `OfferListComponent` and `OfferPanelComponent` from it, or
-      * Rewriting components as React / ReactNative / SwiftUI / Android View component or as a UI component for any other platform of your choice.
+  7. Implement pagination for the offer list (add pagination parameters to `ICoffeeApi.search` request and response, and load new items dynamically while scrolling the offer list).
+  8. Create a separate `ISeachBoxInput` component for the input string and the search button. Add the ability to cancel ongoing requests and include a "skeleton" animation to indicate that search results are loading.
+  9. Localize the component by making locale and a dictionary part of the `ISearchBox` options.
+  10. Make options mutable by exposing an `optionChange` event and implementing the `Composer`'s reaction to relevant option changes.
+  11. Parameterize all extra options, content fields, actions, and events.
+  12. Parametrize the markups of components either by:
+    * Encapsulating them in Layout entities controlled through options. Create interfaces for each layout and a VisualComponent base class for entities with layouts. Inherit SearchBox, OfferListComponent, and OfferPanelComponent from this base class.
+    * Rewriting components as React / ReactNative / SwiftUI / Android View components or as UI components for other platforms of your choice.

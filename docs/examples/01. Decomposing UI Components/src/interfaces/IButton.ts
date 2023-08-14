@@ -1,5 +1,9 @@
 import { IEventEmitter } from './common';
 
+/**
+ * An interface of a “button” — a UI control
+ * to represent a call to action.
+ */
 export interface IButton {
     action: string;
     events: IEventEmitter<IButtonEvents>;

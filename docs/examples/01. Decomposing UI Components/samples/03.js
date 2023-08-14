@@ -1,3 +1,11 @@
+/**
+ * @fileoverview
+ * In this example, we enhance the standard offer list with
+ * icons of the coffee shops and the offer view panel,
+ * with an additional business logic, exposing several additional
+ * controls and customizing the existing ones
+ */
+
 const {
   SearchBox,
   SearchBoxComposer,
@@ -9,7 +17,16 @@ const {
 
 const { buildCloseButton } = OfferPanelComponent;
 
-const buildCustomOrderButton = function (offer, container) {
+/**
+ * This is the factory method to create a customized
+ * “Place an order” button that augments the button
+ * look depending on the additional data fields
+ * in the assiciated offer
+ */
+const buildCustomCreateOrderButton = function (
+  offer,
+  container
+) {
   return OfferPanelComponent.buildCreateOrderButton(
     offer,
     container,
@@ -24,6 +41,10 @@ const buildCustomOrderButton = function (offer, container) {
   );
 };
 
+/**
+ * This is the factory method to create a customized
+ * button that allows for making a phone call
+ */
 const buildCallButton = function (
   offer,
   container,
@@ -38,6 +59,11 @@ const buildCallButton = function (
   });
 };
 
+/**
+ * This is the factory method to create a customized
+ * button that allows for navigating back to the
+ * previous offer
+ */
 const buildPreviousOfferButton = function (
   offer,
   container
@@ -49,6 +75,10 @@ const buildPreviousOfferButton = function (
   );
 };
 
+/**
+ * This is the factory method to create a customized
+ * button that allows for navigating to the next offer
+ */
 const buildNextOfferButton = function (offer, container) {
   return new NavigateButton(
     "right",
@@ -57,10 +87,17 @@ const buildNextOfferButton = function (offer, container) {
   );
 };
 
+/**
+ * This is a new implementation of the `IButton` interface
+ * from scratch. As “Back” and “Forward” buttons share little
+ * logic with the standard button (they do not have
+ * text or icon, feature a different design, etc.) it's
+ * more convenient to make a new class.
+ */
 class NavigateButton {
-  constructor(direction, offerId, container) {
+  constructor(direction, targetOfferId, container) {
     this.action = "navigate";
-    this.offerId = offerId;
+    this.targetOfferId = targetOfferId;
     this.events = new util.EventEmitter();
     const button = (this.button =
       document.createElement("button"));
@@ -83,6 +120,16 @@ class NavigateButton {
   }
 }
 
+/**
+ * This is the customization of the standard `OfferPanelComponent`
+ * class. In this custom implementation, the array of
+ * buttons is contructed dynamically depending on the data
+ * shown in the pannel.
+ *
+ * This is a bit of a shortcut (we should have a separate
+ * composer between a panel and its buttons). The full solution
+ * is left as an exercise for the reader.
+ */
 class CustomOfferPanel extends OfferPanelComponent {
   show() {
     const buttons = [];
@@ -90,7 +137,7 @@ class CustomOfferPanel extends OfferPanelComponent {
     if (offer.previousOfferId) {
       buttons.push(buildPreviousOfferButton);
     }
-    buttons.push(buildCustomOrderButton);
+    buttons.push(buildCustomCreateOrderButton);
     if (offer.phone) {
       buttons.push(buildCallButton);
     }
@@ -103,6 +150,18 @@ class CustomOfferPanel extends OfferPanelComponent {
   }
 }
 
+/**
+ * To work with the augmented panel we need
+ * an augmented composer:
+ *   * Add the coffee chain icon to the
+ *     “preview” data for the offer list
+ *   * Use the enhanced offer panel instead
+ *     of the standard one
+ *   * Enrich the data for the panel needs
+ *     with additional fields, such as
+ *     the custom icon, phone, and the identifiers
+ *     of the previous and next offers
+ */
 class CustomComposer extends SearchBoxComposer {
   buildOfferPanelComponent(
     context,
@@ -167,7 +226,12 @@ class CustomComposer extends SearchBoxComposer {
 
   performAction(event) {
     if (event.action === "navigate") {
-      this.selectOffer(event.target.offerId);
+      // NB: `event` itself contains an `offerId`
+      // However, this is the identifier of a currently
+      // displayed offer. With `navigate` buttons
+      // we need a different offer, the one we
+      // need to navigate ro
+      this.selectOffer(event.target.targetOfferId);
     } else {
       super.performAction(event);
     }
@@ -180,6 +244,10 @@ CustomComposer.DEFAULT_OPTIONS = {
   closeButtonText: "❌Not Now"
 };
 
+/**
+ * We're subclassing `SearchBox` to use our
+ * enhanced composer
+ */
 class CustomSearchBox extends SearchBox {
   buildComposer(context, container, options) {
     return new CustomComposer(context, container, options);

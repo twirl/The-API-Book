@@ -1,5 +1,8 @@
 import { IDisposer, IEventEmitter } from '../interfaces/common';
 
+/**
+ * A helper class to subscribe for events and emit them
+ */
 export class EventEmitter<EventList extends Record<string, any>>
     implements IEventEmitter<EventList>
 {
@@ -23,6 +26,10 @@ export class EventEmitter<EventList extends Record<string, any>>
         }
     };
 
+    /**
+     * Subscribes for an event
+     * @returns a `Disposer` which allows to unsubscribe
+     */
     public on<Type extends Extract<keyof EventList, string>>(
         type: Type,
         callback: (event: EventList[Type]) => void
@@ -40,6 +47,10 @@ export class EventEmitter<EventList extends Record<string, any>>
         return disposer;
     }
 
+    /**
+     * Emits an event, i.e., call all the subscribers for the
+     * specified event type
+     */
     public emit<Type extends Extract<keyof EventList, string>>(
         type: Type,
         event: EventList[Type]

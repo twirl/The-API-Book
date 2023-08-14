@@ -1,3 +1,9 @@
+/**
+ * @fileoverview
+ * This file comprises a reference implementation
+ * of the `IOfferPanelComponent` interface called simply `OfferPanelComponent`
+ */
+
 import { omitUndefined } from '../test/util';
 import { CloseButton, CreateOrderButton } from './OfferPanelButton';
 import { IButton, IButtonPressEvent } from './interfaces/IButton';
@@ -10,22 +16,51 @@ import {
     IOfferFullView,
     ISearchBoxComposer
 } from './interfaces/ISearchBoxComposer';
-import { IDisposer, IEventEmitter, IExtraFields } from './interfaces/common';
+import { IDisposer, IEventEmitter } from './interfaces/common';
 import { EventEmitter } from './util/EventEmitter';
 import { $, html } from './util/html';
 
+/**
+ * A `OfferPanelComponent` represents a UI to display
+ * the detailed information regarding an offer (a “full view”)
+ * implying that user can act on the offer (for example,
+ * to create an order).
+ *
+ * The responsibility of the component is:
+ *   * Displaying detailed information regarding an offer
+ *     and update it if the corresponding context state
+ *     change event happens
+ *   * Rendering “buttons,” i.e. the control elements
+ *     for user to express their intentions
+ *   * Emitting “actions” when the user interacts with the buttons
+ *   * Closing itself if needed
+ */
 export class OfferPanelComponent implements IOfferPanelComponent {
+    /**
+     * An accessor to subscribe for events or emit them.
+     */
     public events: IEventEmitter<IOfferPanelComponentEvents> =
         new EventEmitter();
-
+    /**
+     * A DOM element container for buttons
+     */
     protected buttonsContainer: HTMLElement | null = null;
+    /**
+     * An array of currently displayed buttons
+     */
     protected buttons: Array<{
         button: IButton;
         listenerDisposer: IDisposer;
         container: HTMLElement;
     }> = [];
+    /**
+     * Event listeners
+     */
     protected listenerDisposers: IDisposer[] = [];
-
+    /**
+     * An inner state of the component, whether it's open
+     * or closed
+     */
     protected shown: boolean = false;
 
     constructor(
@@ -45,6 +80,10 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         }
     }
 
+    /**
+     * A static helper function to build a specific button
+     * for creating orders
+     */
     public static buildCreateOrderButton: ButtonBuilder = (
         offer,
         container,
@@ -58,6 +97,10 @@ export class OfferPanelComponent implements IOfferPanelComponent {
             })
         );
 
+    /**
+     * A static helper function to build a specific button
+     * for closing the panel
+     */
     public static buildCloseButton: ButtonBuilder = (
         offer,
         container,
@@ -71,10 +114,14 @@ export class OfferPanelComponent implements IOfferPanelComponent {
             })
         );
 
+    /* Exposed for consistency */
     public getOffer(): IOfferFullView | null {
         return this.currentOffer;
     }
 
+    /**
+     * Destroys the panel and its buttons
+     */
     public destroy() {
         this.currentOffer = null;
         for (const disposer of this.listenerDisposers) {
@@ -85,6 +132,7 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         }
     }
 
+    /* A pair of helper methods to show and hide the panel */
     protected show() {
         this.container.innerHTML = html`<div class="our-coffee-sdk-offer-panel">
             <h1>${this.currentOffer.title}</h1>
@@ -112,6 +160,11 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         this.shown = false;
     }
 
+    /**
+     * Instantiates all buttons when a new offer is to be
+     * displayed. Exposed as a protected method to allow for
+     * an additional UX functionality in subclasses
+     */
     protected setupButtons() {
         const buttonBuilders = this.options.buttonBuilders ?? [
             OfferPanelComponent.buildCreateOrderButton,
@@ -133,6 +186,9 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         }
     }
 
+    /**
+     * Destroys all buttons once the panel is hidden
+     */
     protected destroyButtons() {
         for (const { button, listenerDisposer, container } of this.buttons) {
             listenerDisposer.off();
@@ -142,6 +198,11 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         this.buttons = [];
     }
 
+    /**
+     * A listener for the parent context's state change.
+     * Exposed as a protected method to allow for adding additional
+     * functionality
+     */
     protected onOfferFullViewToggle = ({ offer }) => {
         if (this.shown) {
             this.hide();
@@ -152,6 +213,11 @@ export class OfferPanelComponent implements IOfferPanelComponent {
         }
     };
 
+    /**
+     * A listener for button pressing events. Exposed
+     * as a protected method to allow for adding custom
+     * reactions
+     */
     protected onButtonPress = ({ target }: IButtonPressEvent) => {
         if (this.currentOffer !== null) {
             this.events.emit('action', {
@@ -159,15 +225,25 @@ export class OfferPanelComponent implements IOfferPanelComponent {
                 target,
                 currentOfferId: this.currentOffer.offerId
             });
-        } else {
-            // TBD
         }
     };
 }
 
+/**
+ * `OfferPanelComponent` options
+ */
 export interface OfferPanelComponentOptions
     extends IOfferPanelComponentOptions {
+    /**
+     * An array of factory methods to initialize
+     * buttons
+     */
     buttonBuilders?: ButtonBuilder[];
+    /**
+     * A UI options, whether an Offer Panel
+     * fully disables the interactivity of the
+     * underlying markup, or allows for interacting with it
+     */
     transparent?: boolean;
 }
 

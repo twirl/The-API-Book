@@ -1,3 +1,9 @@
+/**
+ * @fileoverview
+ * This file comprises a reference implementation
+ * of the `ISearchBoxComposer` interface called simply `SearchBoxComposer`
+ */
+
 import { ISearchResult } from './interfaces/ICoffeeApi';
 import {
     ISearchBox,
@@ -26,21 +32,64 @@ import { OfferListComponent } from './OfferListComponent';
 import { OfferPanelComponent } from './OfferPanelComponent';
 import { EventEmitter } from './util/EventEmitter';
 
+/**
+ * A `SearchBoxComposer` stands for an entity which
+ * controls the data flow between an abstract `ISearchBox`
+ * and a specific UI concept.
+ *
+ * This reference implementation assumes that each offer
+ * might be represented as a list item (a 'preview') and
+ * as a detailed representation (a `full view`).
+ *
+ * The responsibility of the composer is:
+ *   * Instantiating and destroying nested components
+ *     that handles previews (`IOfferListComponent`) and
+ *     a full view (`IOfferPanelComponent`)
+ *   * Handling an internal state (a list of offers and
+ *     a currently selected offer) and emitting events when
+ *     it changes
+ *   * Generating previews, full views, and UI options when
+ *     needed
+ *   * Notifying parent `ISearchBox` about the user's intention
+ *     to place an order
+ */
 export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
     implements ISearchBoxComposer
 {
+    /**
+     * An accessor to subscribe for events or emit them.
+     */
     public events: IEventEmitter<ISearchBoxComposerEvents> =
         new EventEmitter<ISearchBoxComposerEvents>();
 
+    /**
+     * Instances of subcomponents and HTML element containers
+     * to host them
+     */
     protected offerListContainer: HTMLElement | null = null;
     protected offerListComponent: IOfferListComponent | null = null;
     protected offerPanelContainer: HTMLElement | null = null;
     protected offerPanelComponent: IOfferPanelComponent | null = null;
+    /**
+     * A current state of the composer itself
+     */
     protected offerList: ISearchResult[] | null = null;
     protected currentOffer: ISearchResult | null = null;
 
-    protected listenerDisposers: IDisposer[];
-
+    /**
+     * Event listeners
+     */
+    private onOfferPanelAction = (event: IOfferPanelActionEvent) => {
+        this.performAction(event);
+    };
+    private onOfferListOfferSelect = ({ offerId }: IOfferSelectedEvent) =>
+        this.selectOffer(offerId);
+    private listenerDisposers: IDisposer[];
+    /**
+     * A `SearchBoxComposer` synchoronously initializes itself
+     * in the context of the given `SearchBox` with provided
+     * options and HTML container element.
+     */
     constructor(
         protected readonly context: ISearchBox,
         protected readonly container: HTMLElement,
@@ -76,6 +125,9 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         ];
     }
 
+    /**
+     * Allows for searching for a displayed offer
+     */
     public findOfferById(offerIdToFind: string): ISearchResult | null {
         // Theoretically, we could have built a `Map`
         // for quickly searching offers by their id
@@ -87,6 +139,10 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         );
     }
 
+    /**
+     * Exposed publicly to allow developers to programmatically
+     * select an offer (which typically implies opening an offer panel)
+     */
     public selectOffer(offerId: string) {
         const offer = this.findOfferById(offerId);
         // Offer may be missing for a variety of reasons,
@@ -105,6 +161,12 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         }
     }
 
+    /**
+     * Exposed publicly to allow programmatically
+     * performing actions the composer is capable of,
+     * i.e., creating an order or closing the offer panel,
+     * or to add new actions in subclasses
+     */
     public performAction({
         action,
         currentOfferId: offerId
@@ -122,6 +184,9 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         }
     }
 
+    /**
+     * Exposed publicly as a helper function
+     */
     public createOrder(offerId: string) {
         const offer = this.findOfferById(offerId);
         // Offer may be missing if `OfferPanelComponent`
@@ -131,6 +196,9 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         }
     }
 
+    /**
+     * Destroys the composer and all its subcomponents
+     */
     public destroy() {
         for (const disposer of this.listenerDisposers) {
             disposer.off();
@@ -146,6 +214,13 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         );
     }
 
+    /**
+     * The event subscriber for the parent context `offerListChange`
+     * event. Transforms the high-level event into a couple of lover-level
+     * ones and maintaints the composer's internal state.
+     * Exposed as a protected method to allow custom reactions
+     * to parent context state change in subclasses.
+     */
     protected onContextOfferListChange = ({
         offerList
     }: ISearchBoxOfferListChangeEvent) => {
@@ -164,13 +239,11 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         });
     };
 
-    protected onOfferPanelAction = (event: IOfferPanelActionEvent) => {
-        this.performAction(event);
-    };
-
-    protected onOfferListOfferSelect = ({ offerId }: IOfferSelectedEvent) =>
-        this.selectOffer(offerId);
-
+    /**
+     * A factory method to build an instance of an offer list
+     * sub-component. Exposed as a protected method to allow
+     * custom implementations of an offer list in subclasses
+     */
     protected buildOfferListComponent(
         context: ISearchBoxComposer,
         container: HTMLElement,
@@ -185,6 +258,11 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         );
     }
 
+    /**
+     * A helper to generate “preview” data for the offer list component.
+     * Exposed as a protected method to allow enriching preview data
+     * with custom fields in subclasses.
+     */
     protected generateOfferPreviews(
         offerList: ISearchResult[] | null,
         contextOptions: ISearchBoxOptions & ExtraOptions
@@ -196,16 +274,27 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
                   title: offer.place.title,
                   subtitle: offer.recipe.shortDescription,
                   price: offer.price,
-                  bottomLine: this.generateOfferBottomLine(offer)
+                  bottomLine: SearchBoxComposer.generateOfferBottomLine(offer)
               }));
     }
 
+    /**
+     * A helper to translate context options (i.e., the options of the
+     * parent `ISearchBox`) into the options of the offer list subcomponent.
+     * Exposed as a protected method to allow for an additional logic of
+     * generating options or passing extra options in subclasses
+     */
     protected generateOfferListComponentOptions(
         options: ISearchBoxOptions
     ): IOfferListComponentOptions {
         return {};
     }
 
+    /**
+     * A factory method to build an instance of an offer panel
+     * sub-component. Exposed as a protected method to allow
+     * custom implementations of an offer panel in subclasses
+     */
     protected buildOfferPanelComponent(
         context: ISearchBoxComposer,
         container: HTMLElement,
@@ -220,6 +309,11 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
         );
     }
 
+    /**
+     * A helper to generate “full view” data for the offer panel component.
+     * Exposed as a protected method to allow enriching full view data
+     * with custom fields in subclasses.
+     */
     protected generateCurrentOfferFullView(
         offer: ISearchResult | null,
         contextOptions: ISearchBoxOptions & ExtraOptions
@@ -231,19 +325,28 @@ export class SearchBoxComposer<ExtraOptions extends IExtraFields = {}>
                   title: offer.place.title,
                   description: [
                       offer.recipe.mediumDescription,
-                      this.generateOfferBottomLine(offer)
+                      SearchBoxComposer.generateOfferBottomLine(offer)
                   ],
                   price: offer.price
               };
     }
 
+    /**
+     * A helper to translate context options (i.e., the options of the
+     * parent `ISearchBox`) into the options of the offer panel subcomponent.
+     * Exposed as a protected method to allow for an additional logic of
+     * generating options or passing extra options in subclasses
+     */
     protected generateOfferPanelComponentOptions(
         options: ISearchBoxOptions & ExtraOptions
     ): IOfferPanelComponentOptions {
         return options.offerPanel ?? {};
     }
 
-    protected generateOfferBottomLine(offer: ISearchResult): string {
+    /**
+     * A small helper method to generate “bottomlines” for offers
+     */
+    public static generateOfferBottomLine(offer: ISearchResult): string {
         return offer.place.walkingDistance.numericValueMeters >= 100
             ? `${offer.place.walkTime.formattedValue} · ${offer.place.walkingDistance.formattedValue}`
             : 'Just around the corner';

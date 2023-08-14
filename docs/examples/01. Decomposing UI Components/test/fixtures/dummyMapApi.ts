@@ -1,3 +1,8 @@
+/**
+ * @fileoverview
+ * A dummy implementation of map component.
+ * Shows a statical picture
+ */
 import { ILocation } from '../../src/interfaces/common';
 
 export class DummyMapApi {

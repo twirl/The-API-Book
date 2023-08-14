@@ -1,3 +1,7 @@
+/**
+ * Helper function to find a single HTML element
+ * matching a selector or fail
+ */
 export function $<T extends Element>(
     ...args: [HTMLElement, string] | [string]
 ): T {
@@ -78,7 +82,10 @@ export function hrefEscapeBuilder(
 }
 
 export const httpHrefEscape = hrefEscapeBuilder();
-
+/**
+ * Template function to safely render HTML templates
+ * and automatically escape substituted value
+ */
 export const html = makeTemplate(htmlEscape);
 export const raw = (str: string) => new HtmlSerializable(str);
 export const attr = makeTemplate(attrEscape);

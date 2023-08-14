@@ -1,8 +1,23 @@
+/**
+ * @fileoverview
+ * This file comprises a reference implementation
+ * of the `IButton` interface adapted for using with
+ * the `OfferPanelComponent` parent element
+ */
+
 import { IButton, IButtonEvents, IButtonOptions } from './interfaces/IButton';
 import { IEventEmitter } from './interfaces/common';
 import { EventEmitter } from './util/EventEmitter';
 import { $, attrValue, html, raw } from './util/html';
 
+/**
+ * Displays an UI element that represents a call to action
+ * for a user.
+ *
+ * The responsibility of this class is:
+ *   * Rendering the corresponding UI
+ *   * Emitting 'press' events
+ */
 export class OfferPanelButton implements IButton {
     public events: IEventEmitter<IButtonEvents> = new EventEmitter();
 

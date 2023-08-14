@@ -1,6 +1,12 @@
 import { INewOrder, ISearchResult } from './ICoffeeApi';
 import { IEventEmitter } from './common';
 
+/**
+ * An interface for an abstract component
+ * that allows the user or the developer to enter
+ * a search phrase and interact with the search results,
+ * including creating an order
+ */
 export interface ISearchBox {
     events: IEventEmitter<ISearchBoxEvents>;
     search: (query: string) => void;

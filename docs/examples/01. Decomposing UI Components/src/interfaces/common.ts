@@ -1,3 +1,8 @@
+/**
+ * @fileoverview
+ * Various interfaces for representing common data
+ */
+
 export interface IFormattedPrice {
     decimalValue: string;
     formattedValue: string;
