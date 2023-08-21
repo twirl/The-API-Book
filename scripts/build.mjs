@@ -30,6 +30,7 @@ const targets = (
 }, {});
 
 const chapters = process.argv[4];
+const noCache = process.argv[5] == '--no-cache';
 
 console.log(`Building langs: ${langsToBuild.join(', ')}…`);
 langsToBuild.forEach((lang) => {
@@ -51,7 +52,9 @@ langsToBuild.forEach((lang) => {
                     plugins.ast.h5Counter,
                     plugins.ast.aImg,
                     plugins.ast.imgSrcResolve,
-                    plugins.ast.mermaid,
+                    plugins.ast.highlighter({
+                        languages: ['javascript', 'typescript']
+                    }),
                     plugins.ast.ref,
                     plugins.ast.ghTableFix,
                     plugins.ast.stat
@@ -70,7 +73,8 @@ langsToBuild.forEach((lang) => {
                 postProcess: [plugins.html.imgDataUri]
             }
         },
-        chapters
+        chapters,
+        noCache
     }).then((builder) => {
         Object.keys(targets).forEach((target) => {
             if (target !== 'landing') {

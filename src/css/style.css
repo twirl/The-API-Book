@@ -245,3 +245,16 @@ a.anchor {
     color: inherit;
     text-decoration: none;
 }
+
+.hljs-keyword,
+.hljs-variable {
+    font-weight: bold;
+}
+
+.hljs-string {
+    color: #2a9292;
+}
+
+.hljs-comment {
+    color: #655f6d;
+}
