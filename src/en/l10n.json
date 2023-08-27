@@ -8,6 +8,8 @@
     "copyright": "© Sergey Konstantinov, 2023",
     "locale": "en_US",
     "file": "API",
+    "isbn": "ISBN",
+    "references": "References",
     "aboutMe": {
         "title": "About the Author",
         "content": [
@@ -15,9 +17,8 @@
             "<p>During this tenure, Sergey gained unique experience in building world-class APIs with a daily audience of tens of millions, planning roadmaps for such a service, and delivering numerous public speeches. Additionaly, he served as a member of the W3C Technical Architecture Group for a year and a half.</p>",
             "<p>After being nine years in Maps, Sergey transitioned to technical lead roles in other departments and companies. In these positions, he led integration efforts and was responsible for the technical architecture of entire business units. Currently, Sergey resides in Tallinn, Estonia, and works as a staff software engineer at Bolt.</p>"
         ],
-        "imageCredit": "Photo by <a href=\"http://linkedin.com/in/zloylos/\">Denis Hananein</a>"
+        "imageCredit": "Photo by <a href=\"https://linkedin.com/in/zloylos/\">Denis Hananein</a>"
     },
-    "ctl": "Click to enlarge",
     "landingFile": "index.html",
     "url": "https://twirl.github.io/The-API-Book/",
     "favicon": "/img/favicon.png",
@@ -45,7 +46,7 @@
             },
             {
                 "key": "reddit",
-                "link": "http://www.reddit.com/submit?url=${url}&title=${text}"
+                "link": "https://www.reddit.com/submit?url=${url}&title=${text}"
             }
         ]
     },
@@ -84,7 +85,7 @@
             "<li>API product management.</ul>",
             "<p class=\"text-align-left\">Illustrations &amp; inspiration by Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a></p>",
             "<img class=\"cc-by-nc-img\" alt=\"Creative Commons «Attribution-NonCommercial» Logo\" src=\"https://i.creativecommons.org/l/by-nc/4.0/88x31.png\"/>",
-            "<p class=\"cc-by-nc\">This book is distributed under the <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>"
+            "<p class=\"cc-by-nc\">This book is distributed under the <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>"
         ]
     },
     "landing": {
@@ -110,7 +111,7 @@
         "or": "or",
         "readOnline": "read it online",
         "liveExamples": "Live Examples",
-        "license": "This book is distributed under the <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.",
+        "license": "This book is distributed under the <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.",
         "footer": [
             "<p>Книгу «API» можно <a href=\"index.ru.html\">читать по-русски</a>.</p>"
         ]

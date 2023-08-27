@@ -4,9 +4,18 @@ import { init, plugins } from '@twirl/book-builder';
 import templates from '../src/templates.js';
 import { buildLanding } from './build-landing.mjs';
 
-if (process.argv[2] == '--clean') {
+const flags = process.argv.reduce((flags, v) => {
+    switch (v) {
+        case '--clean-cache':
+            flags.cleanCache = true;
+            break;
+    }
+    return flags;
+}, {});
+
+if (flags.cleanCache) {
+    console.log('Cleaning cache…');
     clean();
-    process.exit(0);
 }
 
 const l10n = {
@@ -33,71 +42,78 @@ const chapters = process.argv[4];
 const noCache = process.argv[5] == '--no-cache';
 
 console.log(`Building langs: ${langsToBuild.join(', ')}…`);
-langsToBuild.forEach((lang) => {
-    init({
-        l10n: l10n[lang],
-        basePath: pathResolve(`src`),
-        path: pathResolve(`src/${lang}/clean-copy`),
-        templates,
-        pipeline: {
-            css: {
-                beforeAll: [
-                    plugins.css.backgroundImageDataUri,
-                    plugins.css.fontFaceDataUri
-                ]
+(async () => {
+    for (const lang of langsToBuild) {
+        await init({
+            l10n: l10n[lang],
+            basePath: pathResolve(`src`),
+            path: pathResolve(`src/${lang}/clean-copy`),
+            templates,
+            pipeline: {
+                css: {
+                    beforeAll: [
+                        plugins.css.backgroundImageDataUri,
+                        plugins.css.fontFaceDataUri
+                    ]
+                },
+                ast: {
+                    preProcess: [
+                        plugins.ast.h3ToTitle,
+                        plugins.ast.h5Counter,
+                        plugins.ast.aImg,
+                        plugins.ast.imgSrcResolve,
+                        plugins.ast.highlighter({
+                            languages: ['javascript', 'typescript']
+                        }),
+                        plugins.ast.ref,
+                        plugins.ast.ghTableFix,
+                        plugins.ast.stat
+                    ]
+                },
+                htmlSourceValidator: {
+                    validator: 'WHATWG',
+                    ignore: [
+                        'heading-level',
+                        'no-raw-characters',
+                        'wcag/h37',
+                        'no-missing-references'
+                    ]
+                },
+                html: {
+                    postProcess: [plugins.html.imgDataUri]
+                }
             },
-            ast: {
-                preProcess: [
-                    plugins.ast.h3ToTitle,
-                    plugins.ast.h5Counter,
-                    plugins.ast.aImg,
-                    plugins.ast.imgSrcResolve,
-                    plugins.ast.highlighter({
-                        languages: ['javascript', 'typescript']
-                    }),
-                    plugins.ast.ref,
-                    plugins.ast.ghTableFix,
-                    plugins.ast.stat
-                ]
-            },
-            htmlSourceValidator: {
-                validator: 'WHATWG',
-                ignore: [
-                    'heading-level',
-                    'no-raw-characters',
-                    'wcag/h37',
-                    'no-missing-references'
-                ]
-            },
-            html: {
-                postProcess: [plugins.html.imgDataUri]
-            }
-        },
-        chapters,
-        noCache
-    }).then((builder) => {
-        Object.keys(targets).forEach((target) => {
-            if (target !== 'landing') {
-                builder.build(
-                    target,
-                    pathResolve('docs', `${l10n[lang].file}.${lang}.${target}`)
-                );
-                console.log(
-                    `Finished lang=${lang} target=${target}\n${Object.entries({
-                        sources: 'Sources',
-                        references: 'references',
-                        words: 'words',
-                        characters: 'characters'
-                    })
-                        .map(([k, v]) => `${v}: ${builder.structure[k]}`)
-                        .join(', ')}`
-                );
-            } else {
-                buildLanding(builder.structure, lang, l10n, templates);
+            chapters,
+            noCache
+        }).then(async (builder) => {
+            for (const target of Object.keys(targets)) {
+                if (target !== 'landing') {
+                    await builder.build(
+                        target,
+                        pathResolve(
+                            'docs',
+                            `${l10n[lang].file}.${lang}.${target}`
+                        )
+                    );
+                    console.log(
+                        `Finished lang=${lang} target=${target}\n${Object.entries(
+                            {
+                                sources: 'Sources',
+                                references: 'references',
+                                words: 'words',
+                                characters: 'characters'
+                            }
+                        )
+                            .map(([k, v]) => `${v}: ${builder.structure[k]}`)
+                            .join(', ')}`
+                    );
+                } else {
+                    buildLanding(builder.structure, lang, l10n, templates);
+                }
             }
         });
-    });
-});
+    }
+})();
 
 function clean() {
     const tmpDir = pathResolve('.', '.tmp');

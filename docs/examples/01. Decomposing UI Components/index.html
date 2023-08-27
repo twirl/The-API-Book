@@ -6,63 +6,89 @@
             “The API” book by Sergey Konstantinov. Examples to the “Decomposing
             UI Components” chapter.
         </title>
-        <link rel="stylesheet" type="text/css" href="../fonts.css" />
+        <link rel="stylesheet" type="text/css" href="../../assets/fonts.css" />
         <link rel="icon" type="image/png" href="../../assets/favicon.png" />
         <script
             type="text/javascript"
             src="../../assets/monaco-editor/dev/vs/loader.js"
         ></script>
-        <script type="text/javascript" src="./index.js"></script>
         <style>
-            body {
-                padding: 5px;
+            :root {
+                --example-list-width: 200px;
+                --live-example-width: 390px;
             }
 
-            header * {
-                font-size: 16px;
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                height: 100%;
                 margin: 0;
                 padding: 0;
             }
 
             header {
-                padding-bottom: 10px;
+                margin: 8px;
             }
 
-            ul#example-list {
-                list-style-type: none;
+            body {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            p {
                 margin: 0;
-                padding: 0 0 5px 0;
-            }
-            ul#example-list > li {
-                margin: 2px 5px;
-                padding: 3px;
-                border: 2px solid rgba(128, 128, 128, 0.3);
-                display: inline-block;
             }
 
-            ul#example-list > li > a {
-                color: inherit;
-            }
-
-            ul#example-list > li.selected {
-                border: 2px solid black;
-            }
-
-            #examples {
-                min-width: 400px;
-            }
-
-            #examples #editor {
-                min-height: 500px;
-                min-width: 400px;
-                width: calc(100% - 400px);
-                float: left;
+            #playground {
+                display: flex;
+                flex-direction: row-reverse;
+                gap: 8px;
+                flex-grow: 1;
             }
 
             #live-example {
-                min-width: 390px;
+                width: var(--live-example-width);
+            }
+
+            #examples {
+                display: flex;
+                width: calc(100% - var(--live-example-width) - 16px);
+            }
+
+            #example-list {
+                width: var(--example-list-width);
+                font-size: 80%;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            #example-list li {
+                border: 2px solid rgba(80, 80, 80, 0.2);
+                margin: 4px 0;
+                padding: 2px;
+            }
+
+            #example-list li.selected {
+                border: 2px solid black;
+            }
+
+            #example-list a {
+                display: block;
+                text-decoration: none;
+                color: inherit;
+            }
+
+            #editor {
+                min-width: 0 !important;
                 min-height: 500px;
-                float: left;
+                width: calc(100% - var(--example-list-width));
+                float: none;
+                flex: 1 0 auto;
             }
 
             #live-example iframe {
@@ -90,7 +116,7 @@
             <p>
                 <a
                     href="https://twirl.github.io/The-API-Book/API.en.html#chapter-44"
-                    >Chapter 43: Problems of Introducing UI Components</a
+                    >Chapter 44: Problems of Introducing UI Components</a
                 >. Find the source code of the components and additional tasks
                 for self-study at the
                 <a

@@ -23,6 +23,13 @@ module.exports = {
     mainScript: () =>
         `<script>${readFileSync(resolve('./src/scripts/sidebar.js'))}</script>`,
 
+    referenceIsbnHref: (href, text, l10n) => {
+        const isbn = escapeHtml(href.replace('isbn:', ''));
+        return `<a target="_blank" class="external${
+            text ? '' : ' text'
+        }" href="https://isbnsearch.org/isbn/${isbn}">${l10n.isbn} ${isbn}</a>`;
+    },
+
     sidePanel: ({
         structure,
         l10n,
@@ -136,6 +143,7 @@ module.exports = {
         property="og:url"
         content="${l10n.links.githubHref}"
     />
+    <link rel="stylesheet" href="assets/fonts.css"/>
     <link rel="stylesheet" href="assets/landing.css"/>
 </head>
 <body>
@@ -242,35 +250,26 @@ module.exports = {
 </html>`;
     },
     aImg: ({ src, href, title, alt, l10n, className = 'img-wrapper' }) => {
+        const withCredit = alt != 'APP' && alt != 'PLOT';
         const fullTitle = escapeHtml(
             `${title}${title.at(-1).match(/[\.\?\!\)]/) ? ' ' : '. '}${
-                alt != 'APP'
-                    ? ` ${
-                          alt == 'CTL'
-                              ? l10n.ctl
-                              : `${l10n.imageCredit}: ${alt}`
-                      }`
-                    : ''
+                withCredit ? ` ${l10n.imageCredit}: ${alt}` : ''
             }`
         );
         const fullClass =
             alt == 'APP' ? `${className} app-img-wrapper` : className;
-        return `<div class="${escapeHtml(
-            fullClass
-        )}"><a href="${src}" target="_blank"><img src="${escapeHtml(
+        return `<div class="${escapeHtml(fullClass)}"><img src="${escapeHtml(
             src
-        )}" alt="${fullTitle}" title="${fullTitle}"/></a><h6>${escapeHtml(
-            title
-        )}. ${
-            alt == 'CTL' || alt == 'APP'
-                ? l10n.ctl
-                : `${escapeHtml(l10n.imageCredit)}: ${
+        )}" alt="${fullTitle}" title="${fullTitle}"/><h6>${escapeHtml(title)}${
+            withCredit
+                ? `. ${escapeHtml(l10n.imageCredit)}: ${
                       href
                           ? `<a href="${escapeHtml(href)}">${escapeHtml(
                                 alt
                             )}</a>`
                           : escapeHtml(alt)
                   }`
+                : ''
         }
         </h6></div>`;
     },

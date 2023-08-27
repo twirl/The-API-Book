@@ -28,9 +28,9 @@ window.onload = function () {
         }
         iframe = document.createElement('iframe');
         iframe.srcdoc = `<!doctype html><html><head>
-            <link rel="stylesheet" type="text/css" href="../fonts.css" />
-            <link rel="stylesheet" type="text/css" href="./style.css" />
             <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+            <link rel="stylesheet" type="text/css" href="../../assets/fonts.css" />
+            <link rel="stylesheet" type="text/css" href="./style.css" />
             <script type="text/javascript" src="./index.js"></script>
             <style>
                 html, body {width: 100%; height: 100%; margin: 0; padding: 0; background-color: #F9F9F9;}

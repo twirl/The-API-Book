@@ -26,6 +26,7 @@
         property="og:url"
         content="https://github.com/twirl/The-API-Book"
     />
+    <link rel="stylesheet" href="assets/fonts.css"/>
     <link rel="stylesheet" href="assets/landing.css"/>
 </head>
 <body>
@@ -40,7 +41,7 @@
         <br />Subscribe for updates on <a class="github" href="https://github.com/twirl/The-API-Book"></a>
         <br/>Follow me on <a class="linkedin" href="https://www.linkedin.com/in/twirl/"></a> · <a class="twitter" href="https://twitter.com/blogovodoved"></a> · <a class="substack" href="https://twirl.substack.com/">Substack</a>
         <br />Support this work on <a class="patreon" href="https://www.patreon.com/yatwirl">Patreon</a> · <a class="kindle" href="https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0">buy Kindle version [1st edition]</a>
-        <br />Share: <a class="share share-facebook" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F" target="_blank"></a> · <a class="share share-twitter" href="https://twitter.com/intent/tweet?text=The%20API%20by%20Sergey%20Konstantinov%20%E2%80%94%20a%20book%20about%20designing%20APIs%2C%20extending%20them%20and%20finding%20a%20proper%20place%20in%20the%20market&url=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F&hashtags=API%2CTheAPIBook&via=blogovodoved" target="_blank"></a> · <a class="share share-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F" target="_blank"></a> · <a class="share share-reddit" href="http://www.reddit.com/submit?url=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F&title=The%20API%20by%20Sergey%20Konstantinov%20%E2%80%94%20a%20book%20about%20designing%20APIs%2C%20extending%20them%20and%20finding%20a%20proper%20place%20in%20the%20market" target="_blank"></a><br/>⚙️⚙️⚙️
+        <br />Share: <a class="share share-facebook" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F" target="_blank"></a> · <a class="share share-twitter" href="https://twitter.com/intent/tweet?text=The%20API%20by%20Sergey%20Konstantinov%20%E2%80%94%20a%20book%20about%20designing%20APIs%2C%20extending%20them%20and%20finding%20a%20proper%20place%20in%20the%20market&url=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F&hashtags=API%2CTheAPIBook&via=blogovodoved" target="_blank"></a> · <a class="share share-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F" target="_blank"></a> · <a class="share share-reddit" href="https://www.reddit.com/submit?url=https%3A%2F%2Ftwirl.github.io%2FThe-API-Book%2F&title=The%20API%20by%20Sergey%20Konstantinov%20%E2%80%94%20a%20book%20about%20designing%20APIs%2C%20extending%20them%20and%20finding%20a%20proper%20place%20in%20the%20market" target="_blank"></a><br/>⚙️⚙️⚙️
     </nav>
     <p>API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well.</p>
 <p>This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics:</p>
@@ -125,7 +126,7 @@
                     <li><a href="API.en.html#sdk-toc">Chapter 41. On the Content of This Section</a></li>
 <li><a href="API.en.html#sdk-problems-solutions">Chapter 42. SDKs: Problems and Solutions</a></li>
 <li><a href="API.en.html#sdk-ui-components">Chapter 43. Problems of Introducing UI Components</a></li>
-<li><a href="API.en.html#chapter-44">Chapter 44. Decomposing UI Components</a></li>
+<li><a href="API.en.html#sdk-decomposing">Chapter 44. Decomposing UI Components</a></li>
 <li><a href="API.en.html#chapter-45">Chapter 45. The MV* Frameworks</a></li>
 <li><a href="API.en.html#chapter-46">Chapter 46. The Backend-Driven UI</a></li>
 <li><a href="API.en.html#chapter-47">Chapter 47. Shared Resources and Asynchronous Locks</a></li>
@@ -157,11 +158,11 @@
             </ul>
         </li>
     </ul>
-    <p>This book is distributed under the <a href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>
+    <p>This book is distributed under the <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>
     <p>Source code available at <a href="https://github.com/twirl/The-API-Book">github.com/twirl/The-API-Book</a></p>
     <h3><a name="about-author">About the Author</a></h3>
     <section class="about-me">
-        <aside><img src="https://konstantinov.cc/static/me.png"/><br/>Photo by <a href="http://linkedin.com/in/zloylos/">Denis Hananein</a></aside>
+        <aside><img src="https://konstantinov.cc/static/me.png"/><br/>Photo by <a href="https://linkedin.com/in/zloylos/">Denis Hananein</a></aside>
         <div class="content">
         <p>Sergey Konstantinov has been working with APIs for over a decade. He began his career as a software engineer in the Maps API division at Yandex and eventually became the head of the service. In this role, he was responsible for both technical architecture and product management.</p>
 <p>During this tenure, Sergey gained unique experience in building world-class APIs with a daily audience of tens of millions, planning roadmaps for such a service, and delivering numerous public speeches. Additionaly, he served as a member of the W3C Technical Architecture Group for a year and a half.</p>

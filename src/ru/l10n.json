@@ -6,8 +6,10 @@
     "description": "Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики разработки API. Книга состоит из шести разделов, посвящённых проектированию API, паттернам дизайна API, поддержанию обратной совместимости, HTTP API и архитектурным принципам REST, SDK и UI-библиотекам, продуктовому управлению API.",
     "publisher": "Сергей Константинов",
     "copyright": "© Сергей Константинов, 2023",
+    "isbn": "ISBN",
     "locale": "ru_RU",
     "file": "API",
+    "references": "Примечания",
     "landingFile": "index.ru.html",
     "aboutMe": {
         "title": "Об авторе",
@@ -16,9 +18,8 @@
             "<p>За это время Сергей получил уникальный опыт построения API мирового уровня с дневной аудиторией в десятки миллионов человек, планирования роадмапов для такого продукта и многочисленных публичных выступлений. Он также проработал полтора года в составе Технической архитектурной группы W3C.</p>",
             "<p>После девяти лет в Картах Сергей переключился на технические роли в других департаментах и компаниях, занимаясь интеграционными проектами и будучи ответственным за техническую архитектуру целых продуктов компании. Сегодня Сергей живёт в Таллинне, Эстония, и работает ведущим инженером в компании Bolt.</p>"
         ],
-        "imageCredit": "Фото: <a href=\"http://linkedin.com/in/zloylos/\">Denis Hananein</a>"
+        "imageCredit": "Фото: <a href=\"https://linkedin.com/in/zloylos/\">Denis Hananein</a>"
     },
-    "ctl": "Нажмите для увеличения",
     "url": "https://twirl.github.io/The-API-Book/index.ru.html",
     "favicon": "/img/favicon.png",
     "sidePanel": {
@@ -45,7 +46,7 @@
             },
             {
                 "key": "reddit",
-                "link": "http://www.reddit.com/submit?url=${url}&title=${text}"
+                "link": "https://www.reddit.com/submit?url=${url}&title=${text}"
             }
         ]
     },
@@ -86,7 +87,7 @@
             "<li>продуктовому управлению API.</li></ul>",
             "<p class=\"text-align-left\">Иллюстрации и вдохновение: Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>",
             "<img class=\"cc-by-nc-img\" alt=\"Creative Commons «Attribution-NonCommercial» Logo\" src=\"https://i.creativecommons.org/l/by-nc/4.0/88x31.png\"/>",
-            "<p class=\"cc-by-nc\">Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.</p>"
+            "<p class=\"cc-by-nc\">Это произведение доступно по <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.</p>"
         ]
     },
     "landing": {
@@ -112,7 +113,7 @@
         "or": "или",
         "readOnline": "прочитать её онлайн",
         "liveExamples": "Интерактивные примеры",
-        "license": "Это произведение доступно по <a href=\"http://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.",
+        "license": "Это произведение доступно по <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.",
         "footer": [
             "<p>You might also <a href=\"index.html\">read ‘The API’ in English</a>.</p>"
         ]
