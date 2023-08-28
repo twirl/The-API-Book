@@ -37,9 +37,7 @@ Thanks [Ilya Subbotin](https://ru.linkedin.com/in/isubbotin) and [Fedor Golubev]
 
 Thanks [Ira Gorelik](https://pixabay.com/users/igorelick-680927/) for the Aqueduct.
 
-Thanks [ParaType](https://www.paratype.ru/) for PT Sans and PT Serif.
-
-Thanks [Christian Robertson](https://twitter.com/cr64) for Roboto Mono.
+Thanks [Friedrich Althausen](http://www.grafikfritze.de/) for Vollkorn, [Christian Robertson](https://twitter.com/cr64) for Roboto Mono, and [ParaType](https://www.paratype.ru/) for PT Sans.
 
 Thanks [Knut Sveidqvist and Mermaid Comminuty](https://mermaid.js.org/) for Mermaid.
 

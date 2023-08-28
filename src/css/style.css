@@ -1,37 +1,17 @@
 @font-face {
     font-family: local-serif;
-    src: url(/fonts/PTSerif-Regular.ttf);
+    src: url(/fonts/Vollkorn-VariableFont_wght.ttf);
 }
 
 @font-face {
     font-family: local-serif;
-    src: url(/fonts/PTSerif-Italic.ttf);
+    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
     font-style: italic;
 }
 
 @font-face {
     font-family: local-serif;
-    src: url(/fonts/PTSerif-Italic.ttf);
-    font-style: oblique;
-}
-
-@font-face {
-    font-family: local-serif;
-    src: url(/fonts/PTSerif-Bold.ttf);
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: local-serif;
-    src: url(/fonts/PTSerif-BoldItalic.ttf);
-    font-weight: bold;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: local-serif;
-    src: url(/fonts/PTSerif-BoldItalic.ttf);
-    font-weight: bold;
+    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
     font-style: oblique;
 }
 
@@ -195,7 +175,6 @@ h5 {
 }
 
 body,
-h5,
 h6 {
     font-family: local-serif, serif;
     font-size: 14pt;
@@ -263,17 +242,43 @@ a.anchor {
     text-decoration: none;
 }
 
-.hljs-keyword,
+table {
+    border-collapse: separate;
+    line-height: 24px;
+    margin: 2em 0;
+    text-align: left;
+    font-size: 80%;
+    border-spacing: 0.2em 0;
+}
+
+table td,
+table th {
+    border-bottom: 1px solid gray;
+    padding: 0.5em 0.7em;
+}
+
+.hljs-keyword {
+    color: rgb(207, 34, 46);
+}
+
 .hljs-variable {
-    font-weight: bold;
+    color: rgb(149, 56, 0);
 }
 
 .hljs-string {
-    color: #2a9292;
+    color: rgb(10, 48, 105);
 }
 
 .hljs-comment {
-    color: #655f6d;
+    color: rgb(110, 119, 129);
+}
+
+.hljs-attr {
+    color: rgb(149, 56, 0);
+}
+
+.hljs-substitution {
+    color: rgb(149, 56, 0);
 }
 
 ul.references,
@@ -281,12 +286,6 @@ ul.bibliography {
     list-style: none;
     padding: 0;
     text-align: left;
-}
-
-a.ref sup,
-ul.references sup,
-ul.bibliography sup {
-    font-size: 60%;
 }
 
 ul.references li,

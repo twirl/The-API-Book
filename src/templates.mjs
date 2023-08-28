@@ -1,10 +1,10 @@
-const { readFileSync } = require('fs');
-const { resolve } = require('path');
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 const escapeHtml = (str) =>
     str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;');
 
-module.exports = {
+export const templates = {
     pageBreak: '<div class="page-break"></div>',
 
     mainContent: (content) => `<section class="main-content">

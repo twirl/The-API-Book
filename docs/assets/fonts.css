@@ -1,12 +1,18 @@
 @font-face {
     font-family: local-serif;
-    src: url(../assets/PTSerif-Regular.ttf);
+    src: url(/fonts/Vollkorn-VariableFont_wght.ttf);
 }
 
 @font-face {
     font-family: local-serif;
-    src: url(../assets/PTSerif-Bold.ttf);
-    font-weight: bold;
+    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
+    font-style: oblique;
 }
 
 @font-face {

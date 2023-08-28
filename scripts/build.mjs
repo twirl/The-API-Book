@@ -1,7 +1,9 @@
 import { readFileSync, readdirSync, unlinkSync } from 'fs';
 import { resolve as pathResolve } from 'path';
-import { init, plugins } from '@twirl/book-builder';
-import templates from '../src/templates.js';
+//import { init, plugins } from '@twirl/book-builder';
+import { init, plugins } from '../../The-Book-Builder/index.js';
+import { templates } from '../src/templates.mjs';
+import { apiHighlight } from '../src/api-highlight.mjs';
 import { buildLanding } from './build-landing.mjs';
 
 const flags = process.argv.reduce((flags, v) => {
@@ -63,7 +65,10 @@ console.log(`Building langs: ${langsToBuild.join(', ')}…`);
                         plugins.ast.aImg,
                         plugins.ast.imgSrcResolve,
                         plugins.ast.highlighter({
-                            languages: ['javascript', 'typescript']
+                            languages: ['javascript', 'typescript', 'json'],
+                            languageDefinitions: {
+                                json: apiHighlight
+                            }
                         }),
                         plugins.ast.ref,
                         plugins.ast.ghTableFix,
