@@ -1,47 +1,51 @@
 import { readFileSync, readdirSync, unlinkSync } from 'fs';
 import { resolve as pathResolve } from 'path';
-//import { init, plugins } from '@twirl/book-builder';
-import { init, plugins } from '../../The-Book-Builder/index.js';
+import { init, plugins } from '@twirl/book-builder';
 import { templates } from '../src/templates.mjs';
 import { apiHighlight } from '../src/api-highlight.mjs';
 import { buildLanding } from './build-landing.mjs';
 
-const flags = process.argv.reduce((flags, v) => {
-    switch (v) {
-        case '--clean-cache':
-            flags.cleanCache = true;
-            break;
+const { flags, args } = process.argv.slice(2).reduce(
+    ({ flags, args }, v) => {
+        switch (v) {
+            case '--no-cache':
+                flags.noCache = true;
+                break;
+        }
+        if (!v.startsWith('--')) {
+            args.push(v);
+        }
+        return { flags, args };
+    },
+    {
+        args: [],
+        flags: {}
     }
-    return flags;
-}, {});
-
-if (flags.cleanCache) {
-    console.log('Cleaning cache…');
-    clean();
-}
+);
 
 const l10n = {
     en: JSON.parse(readFileSync('./src/en/l10n.json', 'utf-8')),
     ru: JSON.parse(readFileSync('./src/ru/l10n.json', 'utf-8'))
 };
 
-const langsToBuild = (process.argv[2] &&
-    process.argv[2].split(',').map((s) => s.trim())) || ['ru', 'en'];
+const langsToBuild = (args[0] && args[0].split(',').map((s) => s.trim())) || [
+    'ru',
+    'en'
+];
 
 const targets = (
-    (process.argv[3] && process.argv[3].split(',')) || [
-        'html',
-        'pdf',
-        'epub',
-        'landing'
-    ]
+    (args[1] && args[1].split(',')) || ['html', 'pdf', 'epub', 'landing']
 ).reduce((targets, arg) => {
     targets[arg.trim()] = true;
     return targets;
 }, {});
 
-const chapters = process.argv[4];
-const noCache = process.argv[5] == '--no-cache';
+const chapters = args[2];
+const noCache = flags.noCache;
+
+if (flags.noCache) {
+    clean();
+}
 
 console.log(`Building langs: ${langsToBuild.join(', ')}…`);
 (async () => {

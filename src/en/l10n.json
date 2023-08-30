@@ -6,7 +6,7 @@
     "description": "API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well. This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics: the API design, API patterns, maintaining backward compatibility, HTTP APIs & the REST architectural principles, SDKs and UI libraries, API product management.",
     "publisher": "Sergey Konstantinov",
     "copyright": "© Sergey Konstantinov, 2023",
-    "locale": "en_US",
+    "locale": "en-US",
     "file": "API",
     "isbn": "ISBN",
     "references": "References",

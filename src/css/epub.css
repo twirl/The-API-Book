@@ -8,34 +8,6 @@ body {
     background: transparent none;
 }
 
-code,
-pre {
-    font-family: monospace;
-}
-
-code {
-    white-space: nowrap;
-}
-
-pre {
-    margin: 1em 0;
-    padding: 1em;
-    border-radius: 0.25em;
-    border-top: 1px solid rgba(0, 0, 0, 0.45);
-    border-left: 1px solid rgba(0, 0, 0, 0.45);
-    box-shadow: 0.1em 0.1em 0.1em rgba(0, 0, 0, 0.45);
-    page-break-inside: avoid;
-    overflow-x: auto;
-    font-size: 80%;
-    widows: 20;
-    orphans: 20;
-    display: inline-block;
-}
-
-pre code {
-    white-space: pre;
-}
-
 a {
     text-decoration: none;
 }
