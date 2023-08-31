@@ -93,7 +93,8 @@ console.log(`Building langs: ${langsToBuild.join(', ')}…`);
                 }
             },
             chapters,
-            noCache
+            noCache,
+            cover: 'src/cover_embed.png'
         }).then(async (builder) => {
             for (const target of Object.keys(targets)) {
                 if (target !== 'landing') {

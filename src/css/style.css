@@ -111,10 +111,11 @@ code {
     font-size: 80%;
 }
 
-pre code em {
-    color: red;
-    font-weight: bold;
-    font-style: normal;
+pre code em,
+pre code em * {
+    color: red !important;
+    font-weight: bold !important;
+    font-style: normal !important;
 }
 
 .img-wrapper {
@@ -177,7 +178,7 @@ h5 {
 body,
 h6 {
     font-family: local-serif, serif;
-    font-size: 14pt;
+    font-size: 16pt;
 }
 
 h6 {
