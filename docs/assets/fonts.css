@@ -1,34 +1,34 @@
 @font-face {
     font-family: local-serif;
-    src: url(/fonts/Vollkorn-VariableFont_wght.ttf);
+    src: url(./Vollkorn-VariableFont_wght.ttf);
 }
 
 @font-face {
     font-family: local-serif;
-    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
+    src: url(./Vollkorn-Italic-VariableFont_wght.ttf);
     font-style: italic;
 }
 
 @font-face {
     font-family: local-serif;
-    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
+    src: url(./Vollkorn-Italic-VariableFont_wght.ttf);
     font-style: oblique;
 }
 
 @font-face {
     font-family: local-sans;
-    src: url(../assets/PTSans-Regular.ttf);
+    src: url(./PTSans-Regular.ttf);
 }
 
 @font-face {
     font-family: local-sans;
-    src: url(../assets/PTSans-Bold.ttf);
+    src: url(./PTSans-Bold.ttf);
     font-weight: bold;
 }
 
 @font-face {
     font-family: local-monospace;
-    src: url(../assets/RobotoMono-VariableFont_wght.ttf);
+    src: url(./RobotoMono-VariableFont_wght.ttf);
 }
 
 body {
@@ -38,4 +38,13 @@ body {
 pre,
 code {
     font-family: local-monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+input,
+button {
+    font-family: local-sans;
 }

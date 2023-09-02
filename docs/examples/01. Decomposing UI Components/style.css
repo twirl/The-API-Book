@@ -2,6 +2,7 @@
     width: 390px;
     height: 500px;
     overflow: hidden;
+    font-family: local-sans;
 }
 
 .our-coffee-sdk-search-box-head {
