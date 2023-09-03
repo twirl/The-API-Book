@@ -36,8 +36,10 @@
             src="assets/header.jpg"
             alt="Сергей Константинов. API"
         /><br />
-        <h1>Сергей Константинов<br/><span class="title">API</span></h1>
-        <h2>Бесплатная электронная книга</h2>
+        <header>
+            <h1>Сергей Константинов<br/><span class="title">API</span></h1>
+            <h2>Бесплатная электронная книга</h2>
+        </header>
         <br />Подпишитесь на обновления на <a class="habr" href="https://habr.com/ru/users/forgotten/">Хабре</a>
         <br/>Follow me on <a class="linkedin" href="https://www.linkedin.com/in/twirl/"></a> · <a class="twitter" href="https://twitter.com/blogovodoved"></a> · <a class="substack" href="https://twirl.substack.com/">Substack</a>
         <br />Поддержите эту работу на <a class="patreon" href="https://www.patreon.com/yatwirl">Patreon</a>
@@ -55,9 +57,9 @@
     <p>Вы можете скачать книгу «API» в формате <a href="API.ru.pdf">PDF</a> / <a href="API.ru.epub">EPUB</a> или <a href="API.ru.html">прочитать её онлайн</a>.
     </p>
     <h3>Содержание</h3>
-    <ul><li>
+    <ul class="toc"><li>
                 <h4><a href="API.ru.html#section-1">Введение</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.ru.html#intro-structure">Глава 1. О структуре этой книги</a></li>
 <li><a href="API.ru.html#intro-api-definition">Глава 2. Определение API</a></li>
 <li><a href="API.ru.html#intro-api-solutions-overview">Глава 3. Обзор существующих решений в области разработки API</a></li>
@@ -70,7 +72,7 @@
             </li>
 <li>
                 <h4><a href="API.ru.html#section-2">Раздел I. Проектирование API</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.ru.html#api-design-context-pyramid">Глава 9. Пирамида контекстов API</a></li>
 <li><a href="API.ru.html#api-design-defining-field">Глава 10. Определение области применения</a></li>
 <li><a href="API.ru.html#api-design-separating-abstractions">Глава 11. Разделение уровней абстракции</a></li>
@@ -81,7 +83,7 @@
             </li>
 <li>
                 <h4><a href="API.ru.html#section-3">Раздел II. Паттерны дизайна API</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.ru.html#chapter-15">Глава 15. О паттернах проектирования в контексте API</a></li>
 <li><a href="API.ru.html#api-patterns-aa">Глава 16. Аутентификация партнёров и авторизация вызовов API</a></li>
 <li><a href="API.ru.html#api-patterns-sync-strategies">Глава 17. Стратегии синхронизации</a></li>
@@ -97,7 +99,7 @@
             </li>
 <li>
                 <h4><a href="API.ru.html#section-4">Раздел III. Обратная совместимость</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.ru.html#back-compat-statement">Глава 26. Постановка проблемы обратной совместимости</a></li>
 <li><a href="API.ru.html#back-compat-iceberg-waterline">Глава 27. О ватерлинии айсберга</a></li>
 <li><a href="API.ru.html#back-compat-abstracting-extending">Глава 28. Расширение через абстрагирование</a></li>
@@ -109,7 +111,7 @@
             </li>
 <li>
                 <h4><a href="API.ru.html#section-5">Раздел IV. HTTP API и архитектурные принципы REST</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.ru.html#http-api-concepts">Глава 33. О концепции HTTP API и терминологии</a></li>
 <li><a href="API.ru.html#http-api-pros-and-cons">Глава 34. Преимущества и недостатки HTTP API в сравнении с альтернативными технологиями</a></li>
 <li><a href="API.ru.html#http-api-rest-myth">Глава 35. Мифология REST</a></li>
@@ -122,7 +124,7 @@
             </li>
 <li>
                 <h4><a href="API.ru.html#section-6">[В разработке] Раздел V. SDK и UI</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.ru.html#sdk-toc">Глава 41. О содержании раздела</a></li>
 <li><a href="API.ru.html#sdk-problems-solutions">Глава 42. SDK: проблемы и решения</a></li>
 <li><a href="API.ru.html#sdk-ui-components">Глава 43. Проблемы встраивания UI-компонентов</a></li>
@@ -136,7 +138,7 @@
             </li>
 <li>
                 <h4><a href="API.ru.html#section-7">Раздел VI. API как продукт</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.ru.html#api-product">Глава 50. Продукт API</a></li>
 <li><a href="API.ru.html#api-product-business-models">Глава 51. Бизнес-модели API</a></li>
 <li><a href="API.ru.html#api-product-vision">Глава 52. Формирование продуктового видения</a></li>
@@ -154,7 +156,7 @@
             </li>
         <li>
             <h4>Интерактивные примеры</h3>
-            <ul><li><a href="examples/01. Decomposing UI Components">Decomposing UI Components</a></li>
+            <ul class="section"><li><a href="examples/01. Decomposing UI Components">Decomposing UI Components</a></li>
             </ul>
         </li>
     </ul>

@@ -153,8 +153,10 @@ export const templates = {
             src="assets/header.jpg"
             alt="${l10n.author}. ${l10n.title}"
         /><br />
-        <h1>${l10n.author}<br/><span class="title">${l10n.title}</span></h1>
-        <h2>${l10n.landing.subTitle}</h2>
+        <header>
+            <h1>${l10n.author}<br/><span class="title">${l10n.title}</span></h1>
+            <h2>${l10n.landing.subTitle}</h2>
+        </header>
         <br />${l10n.landing.subscribeOn} ${l10n.landing.updates
             .map(
                 (source) =>
@@ -202,13 +204,13 @@ export const templates = {
         } <a href="${link()}">${l10n.landing.readOnline}</a>.
     </p>
     <h3>${l10n.toc}</h3>
-    <ul>${structure.sections
+    <ul class="toc">${structure.sections
         .map(
             (section) => `<li>
                 <h4><a href="${link(section.anchor)}">${section.title}</a></h4>
                 ${
                     section.chapters.length
-                        ? `<ul>
+                        ? `<ul class="section">
                     ${section.chapters
                         .map(
                             (chapter) =>
@@ -225,7 +227,7 @@ export const templates = {
         .join('\n')}
         <li>
             <h4>${l10n.landing.liveExamples}</h3>
-            <ul>${examples
+            <ul class="section">${examples
                 .map(
                     ({ name, path }) => `<li><a href="${path}">${name}</a></li>`
                 )

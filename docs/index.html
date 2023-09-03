@@ -36,8 +36,10 @@
             src="assets/header.jpg"
             alt="Sergey Konstantinov. The API"
         /><br />
-        <h1>Sergey Konstantinov<br/><span class="title">The API</span></h1>
-        <h2>Free e-book</h2>
+        <header>
+            <h1>Sergey Konstantinov<br/><span class="title">The API</span></h1>
+            <h2>Free e-book</h2>
+        </header>
         <br />Subscribe for updates on <a class="github" href="https://github.com/twirl/The-API-Book"></a>
         <br/>Follow me on <a class="linkedin" href="https://www.linkedin.com/in/twirl/"></a> · <a class="twitter" href="https://twitter.com/blogovodoved"></a> · <a class="substack" href="https://twirl.substack.com/">Substack</a>
         <br />Support this work on <a class="patreon" href="https://www.patreon.com/yatwirl">Patreon</a> · <a class="kindle" href="https://www.amazon.com/gp/product/B09RHH44S5/ref=dbs_a_def_rwt_hsch_vapi_tkin_p1_i0">buy Kindle version [1st edition]</a>
@@ -55,9 +57,9 @@
     <p>You might download ‘The API’ in <a href="API.en.pdf">PDF</a> / <a href="API.en.epub">EPUB</a> or <a href="API.en.html">read it online</a>.
     </p>
     <h3>Table of Contents</h3>
-    <ul><li>
+    <ul class="toc"><li>
                 <h4><a href="API.en.html#section-1">Introduction</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.en.html#intro-structure">Chapter 1. On the Structure of This Book</a></li>
 <li><a href="API.en.html#intro-api-definition">Chapter 2. The API Definition</a></li>
 <li><a href="API.en.html#intro-api-solutions-overview">Chapter 3. An Overview of Existing API Development Solutions</a></li>
@@ -70,7 +72,7 @@
             </li>
 <li>
                 <h4><a href="API.en.html#section-2">Section I. The API Design</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.en.html#api-design-context-pyramid">Chapter 9. The API Contexts Pyramid</a></li>
 <li><a href="API.en.html#api-design-defining-field">Chapter 10. Defining an Application Field</a></li>
 <li><a href="API.en.html#api-design-separating-abstractions">Chapter 11. Separating Abstraction Levels</a></li>
@@ -81,7 +83,7 @@
             </li>
 <li>
                 <h4><a href="API.en.html#section-3">Section II. The API Patterns</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.en.html#api-patterns-context">Chapter 15. On Design Patterns in the API Context</a></li>
 <li><a href="API.en.html#api-patterns-aa">Chapter 16. Authenticating Partners and Authorizing API Calls</a></li>
 <li><a href="API.en.html#api-patterns-sync-strategies">Chapter 17. Synchronization Strategies</a></li>
@@ -97,7 +99,7 @@
             </li>
 <li>
                 <h4><a href="API.en.html#section-4">Section III. The Backward Compatibility</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.en.html#back-compat-statement">Chapter 26. The Backward Compatibility Problem Statement</a></li>
 <li><a href="API.en.html#back-compat-iceberg-waterline">Chapter 27. On the Waterline of the Iceberg</a></li>
 <li><a href="API.en.html#back-compat-abstracting-extending">Chapter 28. Extending through Abstracting</a></li>
@@ -109,7 +111,7 @@
             </li>
 <li>
                 <h4><a href="API.en.html#section-5">Section IV. HTTP APIs & the REST Architectural Principles</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.en.html#http-api-concepts">Chapter 33. On the HTTP API Concept and Terminology</a></li>
 <li><a href="API.en.html#http-api-pros-and-cons">Chapter 34. Advantages and Disadvantages of HTTP APIs Compared to Alternative Technologies</a></li>
 <li><a href="API.en.html#http-api-rest-myth">Chapter 35. The REST Myth</a></li>
@@ -122,7 +124,7 @@
             </li>
 <li>
                 <h4><a href="API.en.html#section-6">[Work in Progress] Section V. SDKs & UI Libraries</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.en.html#sdk-toc">Chapter 41. On the Content of This Section</a></li>
 <li><a href="API.en.html#sdk-problems-solutions">Chapter 42. SDKs: Problems and Solutions</a></li>
 <li><a href="API.en.html#sdk-ui-components">Chapter 43. Problems of Introducing UI Components</a></li>
@@ -136,13 +138,13 @@
             </li>
 <li>
                 <h4><a href="API.en.html#section-7">Section VI. The API Product</a></h4>
-                <ul>
+                <ul class="section">
                     <li><a href="API.en.html#api-product">Chapter 50. The API as a Product</a></li>
 <li><a href="API.en.html#api-product-business-models">Chapter 51. API Business Models</a></li>
 <li><a href="API.en.html#api-product-vision">Chapter 52. Developing a Product Vision</a></li>
 <li><a href="API.en.html#api-product-devrel">Chapter 53. Communicating with Developers</a></li>
 <li><a href="API.en.html#api-product-business-comms">Chapter 54. Communicating with Business Owners</a></li>
-<li><a href="API.en.html#api-product-range">Chapter 55. An API Services Range</a></li>
+<li><a href="API.en.html#api-product-lineup">Chapter 55. An API Services Lineup</a></li>
 <li><a href="API.en.html#api-product-kpi">Chapter 56. API Key Performance Indicators</a></li>
 <li><a href="API.en.html#api-product-antifraud">Chapter 57. Identifying Users and Preventing Fraud</a></li>
 <li><a href="API.en.html#api-product-tos-violations">Chapter 58. The Technical Means of Preventing ToS Violations</a></li>
@@ -154,7 +156,7 @@
             </li>
         <li>
             <h4>Live Examples</h3>
-            <ul><li><a href="examples/01. Decomposing UI Components">Decomposing UI Components</a></li>
+            <ul class="section"><li><a href="examples/01. Decomposing UI Components">Decomposing UI Components</a></li>
             </ul>
         </li>
     </ul>

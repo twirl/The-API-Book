@@ -16,13 +16,14 @@ The following improvements to the code are left as an exercise for the reader:
   4. Refactor `ISearchBoxComposer` as a composition of two interfaces: one facade for interacting with a `SearchBox`, and another for communication with child components.
   5. Create a separate composer to bridge the gap between `OfferPanelComponent` and its buttons.
   6. Enhance the `SearchBox.search` method to return an operation status:
-      ```
+
+      ```typescript
       public search(query: string): Promise<OperationResult>
       ```
 
       Where OperationResult is defined as:
 
-      ```
+      ```typescript
       type OperationResult =
         | {
             status: OperationResultStatus.SUCCESS;
@@ -37,7 +38,7 @@ The following improvements to the code are left as an exercise for the reader:
 
       With the enum:
 
-      ```
+      ```typescript
       export enum OperationResultStatus {
         SUCCESS = 'success',
         FAIL = 'fail',
@@ -51,5 +52,7 @@ The following improvements to the code are left as an exercise for the reader:
   10. Make options mutable by exposing an `optionChange` event and implementing the `Composer`'s reaction to relevant option changes.
   11. Parameterize all extra options, content fields, actions, and events.
   12. Parametrize the markups of components either by:
-    * Encapsulating them in Layout entities controlled through options. Create interfaces for each layout and a VisualComponent base class for entities with layouts. Inherit SearchBox, OfferListComponent, and OfferPanelComponent from this base class.
-    * Rewriting components as React / ReactNative / SwiftUI / Android View components or as UI components for other platforms of your choice.
+
+      * Encapsulating them in Layout entities controlled through options. Create interfaces for each layout and a VisualComponent base class for entities with layouts. Inherit SearchBox, OfferListComponent, and OfferPanelComponent from this base class.
+
+      * Rewriting components as React / ReactNative / SwiftUI / Android View components or as UI components for other platforms of your choice.

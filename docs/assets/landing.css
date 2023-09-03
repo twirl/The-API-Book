@@ -2,22 +2,32 @@
     margin: 0;
     padding: 0;
     border: none;
-    font-family: local-serif, Arial, Helvetica, sans-serif;
     list-style-type: none;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
     font-size: 150%;
 }
-h1.title {
+h1 .title {
     font-size: 200%;
 }
 h2 {
     font-size: 120%;
 }
 
-ul > li {
+ul.toc > li,
+ul.section > li {
     padding-left: 1em;
+    font-family: local-sans;
+}
+
+ul.section > li {
+    text-transform: none;
 }
 
 p,
@@ -29,6 +39,11 @@ h3 {
 body {
     font-size: 16pt;
     margin: 5px;
+}
+
+body > ul.toc > li,
+h3 {
+    text-transform: uppercase;
 }
 
 nav {
