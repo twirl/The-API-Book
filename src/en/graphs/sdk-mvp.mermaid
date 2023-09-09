@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant M as Model
+    participant P as Presenter
+    participant V as View
+    participant U as User
+    M ->> P: Data
+    P ->> V: Computed<br/>application state
+    V ->> U: Presents
+    U ->> V: Interacts
+    V ->> P: Interactions
+    P ->> M: Updates
+    

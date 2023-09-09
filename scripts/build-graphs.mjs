@@ -2,7 +2,7 @@ import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve, basename } from 'path';
 import puppeteer from 'puppeteer';
-import templates from '../src/templates.js';
+import { templates } from '../src/templates.mjs';
 
 const args = process.argv.slice(2);
 const dir = process.cwd();
@@ -51,12 +51,12 @@ async function buildGraph(lang, target, dstDir, tmpDir) {
     await writeFile(tmpFileName, templates.graphHtmlTemplate(graph));
     console.log(`Tmp file ${tmpFileName} written`);
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: 'new',
         product: 'chrome',
         defaultViewport: {
             deviceScaleFactor: 2,
-            width: 1000,
-            height: 1000
+            width: 1200,
+            height: 1200
         }
     });
     const outFile = resolve(
@@ -67,11 +67,14 @@ async function buildGraph(lang, target, dstDir, tmpDir) {
     await page.goto(tmpFileName, {
         waitUntil: 'networkidle0'
     });
+    const $canvas = await page.$('svg');
+    const bounds = await $canvas.boundingBox();
     const body = await page.$('body');
     await body.screenshot({
         path: outFile,
         type: 'png',
-        captureBeyondViewport: true
+        captureBeyondViewport: true,
+        clip: bounds
     });
     await browser.close();
 }

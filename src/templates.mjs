@@ -278,6 +278,7 @@ export const templates = {
     graphHtmlTemplate: (graph) => `<!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="../docs/assets/fonts.css"/>
         <style>
             html, body {
                 margin: 0;
@@ -285,32 +286,25 @@ export const templates = {
                 width: 100%;
                 height: auto;
             }
-            
-            @font-face {
-                font-family: local-monospace;
-                src: url(../src/fonts/RobotoMono-Regular.ttf);
-            }
-            
-            .actor-line {
-                stroke: lightgray;
-                opacity: 0.2;
+
+            * {
+                font-family: local-sans !important;
             }
         </style>
     </head>
     <body>
-        <div class="mermaid">${graph
+        <pre class="mermaid">${graph
             .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')}</div>
+            .replace(/>/g, '&gt;')}</pre>
         <script src="../src/scripts/mermaid.min.js"></script>
         <script>mermaid.initialize({
             theme: 'neutral',
-            fontFamily: 'local-monospace, monospace',
-            fontSize: 14,
+            fontSize: '16pt',
             sequence: {
                 diagramMarginX: 20,
                 diagramMarginY: 10,
-                actorMargin: 5,
-                mirrorActors: false,
+                actorMargin: 20,
+                mirrorActors: true,
                 showSequenceNumbers: true
             }
           });</script>

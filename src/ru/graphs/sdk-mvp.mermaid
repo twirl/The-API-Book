@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant M as Model
+    participant P as Presenter
+    participant V as View
+    participant U as User
+    M ->> P: Данные
+    P ->> V: Вычисленное<br/>состояние приложения
+    V ->> U: Представляет
+    U ->> V: Взаимодействует
+    V ->> P: Действия
+    P ->> M: Обновления
+    

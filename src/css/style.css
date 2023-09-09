@@ -236,6 +236,7 @@ ul.table-of-contents ul {
 
 ul.table-of-contents ul li {
     text-transform: none;
+    font-family: local-sans;
 }
 
 a.anchor {
