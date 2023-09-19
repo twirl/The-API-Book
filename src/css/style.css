@@ -226,7 +226,7 @@ ul.table-of-contents {
     text-align: left;
 }
 
-ul.table-of-contents li {
+ul.table-of-contents > li > a {
     text-transform: uppercase;
 }
 
@@ -234,8 +234,7 @@ ul.table-of-contents ul {
     list-style-type: none;
 }
 
-ul.table-of-contents ul li {
-    text-transform: none;
+ul.table-of-contents li {
     font-family: local-sans;
 }
 
