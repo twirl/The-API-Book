@@ -6,7 +6,7 @@ This is the working repository for ‘The API’ book written by Sergey Konstant
 API-first development is one of the hottest technical topics nowadays since many companies started to realize that API serves as a multiplicator to their opportunities—but it also amplifies the design mistakes as well.
 
 This book is written to share the expertise and describe the best practices in designing and developing APIs. It comprises six sections dedicated to:
-  * the API design
+  * The API design
   * API patterns
   * backwards compatibility
   * HTTP API & REST
@@ -17,19 +17,19 @@ This is an open-source book distributed under the [Creative Commons Attribution-
 
 ## Current State and the Roadmap
 
-Right now three sections (‘The API Design’, ‘The Backwards Compatibility’, and ‘The API Product’) are finished, comprising the [first edition of the book](/docs/v1/). Three other sections are drafted and are now being added to the clean copy chapter after chapter.
+The second edition of the book is finished! This is everything I ever wanted to tell the reader.
 
-Also, the book still lacks readable schemes which I'm still planning to plot with mermaid.
-
-## Translation
-
-I am translating new chapters into English at the moment they're ready. I'm not a native speaker, so feel free to correct my grammar.
+There are several areas to improve:
+  * Add more diagrams
+  * Add more live code examples (specifically — `SearchBox` designed in MVP paradigm and using React/Redux).
 
 ## Contributing
 
 I am accepting inquiries. Feel free to open issues.
 
 I am NOT accepting pull requests introducing any new content, since I'm willing to be the only author. I would gratefully accept typo fixes, though.
+
+## Acknowledgments
 
 Thanks [art.mari.ka](https://www.instagram.com/art.mari.ka/) for the illustration & inspiration.
 
