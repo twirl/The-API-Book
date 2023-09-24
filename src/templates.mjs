@@ -77,7 +77,7 @@ export const templates = {
         >${l10n.frontPage.title}</span
     >
     </h1>
-</div><div class="page-break"></div><div class="annotation"><p class="text-align-left">
+</div><div class="annotation"><p class="text-align-left">
     <strong>${l10n.author}. ${l10n.title}.</strong><br />
     <a target="_blank" href="mailto:${l10n.links.email}">${
         l10n.links.emailString

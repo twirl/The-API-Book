@@ -1,101 +1,86 @@
-@page {
-    margin: 20mm 18mm 27mm 25mm;
-    size: 145mm 204mm;
-}
+@media print {
+    @page {
+        margin: 20mm 18mm 27mm 25mm;
+        size: letter;
+    }
 
-@page:first {
-    margin: 0;
-    size: 102mm 157mm;
-};
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 14pt;
+    }
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-}
+    .toc a,
+    ul li,
+    ol li {
+        text-size-adjust: none;
+    }
 
-.toc a, ul li, ol li {
-    text-size-adjust: none;
-    font-size: 11pt !important;
-}
+    pre {
+        margin: 0 0 1em 0;
+        width: calc(100% - 2px);
+        line-height: 0.8em !important;
+    }
 
-pre {
-    margin: 0 0 1em 0;
-    width: calc(100% - 2px);
-    line-height: 0.8em !important;
-}
+    p code,
+    pre code {
+        font-size: 12pt !important;
+    }
 
-p code, pre code {
-    font-size: 9pt !important;
-}
+    img {
+        margin: 1px;
+    }
 
-img {
-    margin: 1px;
-}
+    img.cc-by-nc-img {
+        width: 90px;
+    }
 
-img.cc-by-nc-img {
-    width: 90px;
-}
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        break-after: avoid;
+        line-height: 1.2em;
+        font-size: 120%;
+    }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    page-break-before: auto;
-    page-break-after: avoid;
-    line-height: 1.2em;
-    font-size: 80%;
-}
+    h6 {
+        break-before: avoid;
+    }
 
-p {
-    orphans: 5;
-    font-size: 11pt;
-}
+    p {
+        orphans: 5;
+        widows: 5;
+    }
 
-img {
-    margin-top: 1em;
-    page-break-before: auto;
-    page-break-after: avoid;
-}
+    img {
+        margin-top: 1em;
+        break-after: avoid;
+    }
 
-.cover {
-    background-image: url(/cover_300dpi.png);
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    margin: 0;
-    aspect-ratio: 102/150;
-}
+    .cover {
+        display: none;
+    }
 
-.cover h1 {
-    font-size: 7mm;
-    text-align: left;
-    padding: 8mm 18mm 10mm 18mm;
-    line-height: 12mm;
-}
+    .toc ul li ul li + li,
+    h4 + ul,
+    h4 + p {
+        break-inside: avoid;
+        break-before: avoid;
+        break-after: avoid;
+    }
 
-.cover h1 .title {
-    font-size: 10mm;
-}
+    .page-break {
+        break-after: page;
+    }
 
-p,
-ul,
-ol {
-    orphans: 4;
-}
+    .no-page-break {
+        break-inside: avoid;
+    }
 
-.page-break,
-.cover {
-    page-break-after: always;
-}
-
-.no-page-break {
-    page-break-inside: avoid;
-}
-
-nav.page-main {
-    display: none;
+    nav.page-main {
+        display: none;
+    }
 }
