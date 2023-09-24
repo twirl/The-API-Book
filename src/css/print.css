@@ -1,9 +1,4 @@
 @media print {
-    @page {
-        margin: 20mm 18mm 27mm 25mm;
-        size: letter;
-    }
-
     html,
     body {
         margin: 0;
@@ -50,7 +45,8 @@
         break-before: avoid;
     }
 
-    p {
+    p,
+    li {
         orphans: 5;
         widows: 5;
     }

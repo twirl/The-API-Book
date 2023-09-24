@@ -88,6 +88,11 @@
             "<p class=\"cc-by-nc\">This book is distributed under the <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">Creative Commons Attribution-NonCommercial 4.0 International licence</a>.</p>"
         ]
     },
+    "samplePage": {
+        "contents": [
+            "<p>This is a sample fragment comprising chapters 21 and 22 of the Section II: The API Patterns.</p>"
+        ]
+    },
     "landing": {
         "subTitle": "Free e-book",
         "subscribeOn": "Subscribe for updates on",

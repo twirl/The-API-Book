@@ -30,6 +30,31 @@ export const templates = {
         }" href="https://isbnsearch.org/isbn/${isbn}">${l10n.isbn} ${isbn}</a>`;
     },
 
+    footerTemplate: (l10n) => {
+        return `<html><head><style>
+.content {
+    width: 100%;
+    font-size: 12pt;
+    font-family: local-serif, Vollkorn;
+    text-align: right;
+    margin: 0 25mm 18mm 25mm;
+    border-top: 1px solid black;
+    padding-top: 2mm;
+}
+.pageNumber {
+    display: inline-block;
+    border-left: 1px solid black;
+    width: 30pt;
+}
+.title {
+    padding-right: 4pt;
+}
+</style></head><body>
+    <div class="content"><span class="title">${l10n.author}. ${l10n.title}</span>
+    <span class="pageNumber"></span></div>
+</body></html>`;
+    },
+
     sidePanel: ({
         structure,
         l10n,
@@ -98,6 +123,26 @@ export const templates = {
         l10n,
         templates
     })}</p><div class="page-break"></div>`,
+
+    samplePage: ({ l10n }) => `
+<div class="cover">
+    <h1>
+    <span class="author">${l10n.author}</span><br /><span class="title"
+        >${l10n.frontPage.title}</span
+    >
+    </h1>
+</div><div class="annotation"><p class="text-align-left">
+    <strong>${l10n.author}. ${l10n.title}.</strong><br />
+    <a target="_blank" href="mailto:${l10n.links.email}">${
+        l10n.links.emailString
+    }</a> &middot; <a target="_blank" href="${l10n.links.linkedinHref}">${
+        l10n.links.linkedinString
+    }</a> &middot; <a target="_blank" href="${l10n.links.substackHref}">${
+        l10n.links.substackString
+    }</a></p>
+    ${l10n.samplePage.contents.join('\n')}
+    <div class="page-break"></div>
+</div>`,
 
     shareLink: (link, parameters) => {
         let result = link;

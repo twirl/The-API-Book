@@ -1,5 +1,5 @@
 body {
-    font-family: serif;
+    font-family: 'Vollkorn', serif;
     font-size: 14pt;
     text-align: justify;
 }
@@ -18,7 +18,7 @@ h3,
 h4,
 h5 {
     text-align: left;
-    font-family: sans-serif;
+    font-family: 'PT Sans', sans-serif;
     font-weight: bold;
     page-break-after: avoid;
 }
@@ -51,4 +51,9 @@ p,
 div {
     widows: 2;
     orphans: 2;
+}
+
+pre,
+code {
+    font-family: 'Roboto Mono', monospace;
 }

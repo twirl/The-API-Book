@@ -1,0 +1,57 @@
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/Vollkorn-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: local-serif;
+    src: url(/fonts/Vollkorn-Italic-VariableFont_wght.ttf);
+    font-style: oblique;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Bold.ttf);
+    font-weight: bold;
+}
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Italic.ttf);
+    font-style: oblique;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-Italic.ttf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-BoldItalic.ttf);
+    font-style: oblique;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: local-sans;
+    src: url(/fonts/PTSans-BoldItalic.ttf);
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: local-monospace;
+    src: url(/fonts/RobotoMono-VariableFont_wght.ttf);
+}

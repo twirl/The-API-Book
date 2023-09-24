@@ -90,6 +90,11 @@
             "<p class=\"cc-by-nc\">Это произведение доступно по <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.</p>"
         ]
     },
+    "samplePage": {
+        "contents": [
+            "<p>Этот ознакомительный фрагмент содержит главы 21 и 22 раздела «Паттерны API».</p>"
+        ]
+    },
     "landing": {
         "subTitle": "Бесплатная электронная книга",
         "subscribeOn": "Подпишитесь на обновления на",

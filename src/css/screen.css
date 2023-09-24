@@ -197,11 +197,6 @@ article ul.share {
     z-index: 1;
 }
 
-body > article {
-    margin: 2em auto;
-    max-width: 60%;
-}
-
 a.anchor:before {
     display: inline-block;
     content: '¶';
@@ -234,46 +229,32 @@ ul.references li p a.back-anchor {
     flex-shrink: 0;
 }
 
+a.anchor:before {
+    display: inline-block;
+    content: '¶';
+    width: 0.8em;
+    color: lightgray;
+    text-indent: 0;
+}
+
+h5 a.anchor:before {
+    color: transparent;
+}
+
+a.anchor:hover:before {
+    color: black;
+}
+
+h2:not(.toc),
+h3,
+h5 {
+    text-indent: -0.8em;
+}
+
 @media screen {
-    .github-corner:hover .octo-arm {
-        animation: octocat-wave 560ms ease-in-out;
-    }
-
-    a.anchor:before {
-        display: inline-block;
-        content: '¶';
-        width: 0.8em;
-        color: lightgray;
-        text-indent: 0;
-    }
-
-    h5 a.anchor:before {
-        color: transparent;
-    }
-
-    a.anchor:hover:before {
-        color: black;
-    }
-
-    h2:not(.toc),
-    h3,
-    h5 {
-        text-indent: -0.8em;
-    }
-
-    @keyframes octocat-wave {
-        0%,
-        100% {
-            transform: rotate(0);
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-            transform: rotate(10deg);
-        }
+    body > article {
+        margin: 2em auto;
+        max-width: 60%;
     }
 }
 

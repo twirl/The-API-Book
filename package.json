@@ -7,7 +7,7 @@
     "version": "2.0.0",
     "devDependencies": {
         "@jest/globals": "^29.6.4",
-        "@twirl/book-builder": "0.0.27",
+        "@twirl/book-builder": "0.0.28",
         "@types/jest": "^29.5.4",
         "express": "^4.18.2",
         "jest": "^29.6.4",
@@ -22,9 +22,9 @@
     },
     "scripts": {
         "build": "node scripts/build.mjs",
+        "build-samples": "node scripts/build.mjs en,ru epub 21-22 --sample",
         "build-v1": "node scripts/build-v1.mjs",
         "build-graphs": "node scripts/build-graphs.mjs",
-        "build-clean": "node scripts/build.mjs --clean",
         "build-examples": "node scripts/build-examples.js \"docs/examples/01. Decomposing UI Components\"",
         "docs-server": "node scripts/docs-server 3000",
         "test": "jest"

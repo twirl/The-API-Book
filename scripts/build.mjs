@@ -11,6 +11,8 @@ const { flags, args } = process.argv.slice(2).reduce(
             case '--no-cache':
                 flags.noCache = true;
                 break;
+            case '--sample':
+                flags.sample = true;
         }
         if (!v.startsWith('--')) {
             args.push(v);
@@ -26,6 +28,24 @@ const { flags, args } = process.argv.slice(2).reduce(
 const l10n = {
     en: JSON.parse(readFileSync('./src/en/l10n.json', 'utf-8')),
     ru: JSON.parse(readFileSync('./src/ru/l10n.json', 'utf-8'))
+};
+
+const css = ['fonts', 'common', 'screen', 'print', 'page', 'epub'].reduce(
+    (css, file) => {
+        css[file] = readFileSync(`src/css/${file}.css`).toString('utf-8');
+        return css;
+    },
+    {}
+);
+
+const targetCss = {
+    html: [css.fonts, css.common, css.screen, css.print],
+    pdf: [css.fonts, css.common, css.print],
+    epub: [css.common, css.epub]
+};
+const extraCss = {
+    html: css.page,
+    pdf: css.page
 };
 
 const langsToBuild = (args[0] && args[0].split(',').map((s) => s.trim())) || [
@@ -51,6 +71,7 @@ console.log(`Building langs: ${langsToBuild.join(', ')}…`);
 (async () => {
     for (const lang of langsToBuild) {
         await init({
+            lang,
             l10n: l10n[lang],
             basePath: pathResolve(`src`),
             path: pathResolve(`src/${lang}/clean-copy`),
@@ -94,6 +115,7 @@ console.log(`Building langs: ${langsToBuild.join(', ')}…`);
             },
             chapters,
             noCache,
+            sample: flags.sample,
             cover: 'src/cover_embed.png'
         }).then(async (builder) => {
             for (const target of Object.keys(targets)) {
@@ -102,8 +124,14 @@ console.log(`Building langs: ${langsToBuild.join(', ')}…`);
                         target,
                         pathResolve(
                             'docs',
-                            `${l10n[lang].file}.${lang}.${target}`
-                        )
+                            `${l10n[lang].file}.${lang}${
+                                flags.sample ? '.sample' : ''
+                            }.${target}`
+                        ),
+                        {
+                            css: targetCss[target],
+                            extraCss: extraCss[target]
+                        }
                     );
                     console.log(
                         `Finished lang=${lang} target=${target}\n${Object.entries(
