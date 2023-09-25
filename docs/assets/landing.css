@@ -92,7 +92,6 @@ a.substack {
     background-image: url(substack.png);
 }
 
-a.patreon,
 a.medium,
 a.habr,
 a.substack {
@@ -102,17 +101,8 @@ a.substack {
     background-position: 0 0.2em;
 }
 
-a.patreon {
-    background-image: url(patreon.png);
-}
-
-a.medium {
-    background-image: url(medium.png);
-    padding-left: 1.3em;
-    background-size: 1.42em 1em;
-}
-
-a.kindle {
+a.kindle,
+a.apple {
     width: auto;
     vertical-align: unset;
 }
