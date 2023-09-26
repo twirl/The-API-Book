@@ -1,7 +1,8 @@
-body {
+html > body {
     font-family: 'Vollkorn', serif;
     font-size: 14pt;
     text-align: justify;
+    width: 98%;
 }
 
 .cc-by-nc {
@@ -56,4 +57,16 @@ div {
 pre,
 code {
     font-family: 'Roboto Mono', monospace;
+}
+
+body > article {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
