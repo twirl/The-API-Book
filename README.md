@@ -1,5 +1,4 @@
-# Read [‘The API’ Book by Sergey Konstantinov](https://twirl.github.io/The-API-Book) in English
-# Читать [книгу ‘The API’ Сергея Константинова](https://twirl.github.io/The-API-Book/index.ru.html) по-русски
+# Sergey Konstantinov. The API
 
 This is the working repository for ‘The API’ book written by Sergey Konstantinov ([email](mailto:yatwirl@gmail.com), [Linkedin profile](https://linkedin.com/in/twirl), [Medium blog](https://twirl.medium.com)).
 
@@ -14,6 +13,9 @@ This book is written to share the expertise and describe the best practices in d
   * API product management.
 
 This is an open-source book distributed under the [Creative Commons Attribution-NonCommercial 4.0 International](/LICENSE.md) license.
+
+* Read [‘The API’ Book by Sergey Konstantinov](https://twirl.github.io/The-API-Book) in English
+* Читать [книгу ‘The API’ Сергея Константинова](https://twirl.github.io/The-API-Book/index.ru.html) по-русски
 
 ## Current State and the Roadmap
 

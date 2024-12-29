@@ -93,7 +93,6 @@
         ]
     },
     "landing": {
-        "subTitle": "Бесплатная электронная книга",
         "subscribeOn": "Подпишитесь на обновления на",
         "followOn": "Follow me on",
         "follow": ["linkedin", "twitter", "substack"],
@@ -111,9 +110,7 @@
             "<li>— продуктовому управлению API.</li></ul>",
             "<p>Иллюстрации и вдохновение: Maria Konstantinova &middot; <a href=\"https://www.instagram.com/art.mari.ka/\">art.mari.ka</a>.</p>"
         ],
-        "download": "Вы можете скачать книгу «API» в формате",
-        "or": "или",
-        "readOnline": "прочитать её онлайн",
+        "readOnline": "Вы можете прочитать онлайн-версию «The API»",
         "liveExamples": "Интерактивные примеры",
         "license": "Это произведение доступно по <a href=\"https://creativecommons.org/licenses/by-nc/4.0/\">лицензии Creative Commons «Attribution-NonCommercial» («Атрибуция — Некоммерческое использование») 4.0 Всемирная</a>.",
         "footer": [

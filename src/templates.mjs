@@ -200,7 +200,7 @@ export const templates = {
         /><br />
         <header>
             <h1>${l10n.author}<br/><span class="title">${l10n.title}</span></h1>
-            <h2>${l10n.landing.subTitle}</h2>
+            ${l10n.landing.subTitle ? `<h2>${l10n.landing.subTitle}</h2>` : ''}
         </header>
         <br />${l10n.landing.subscribeOn} ${l10n.landing.updates
             .map(
@@ -241,13 +241,17 @@ export const templates = {
             .join(' · ')}<br/>⚙️⚙️⚙️
     </nav>
     ${l10n.landing.content.join('\n')}
-    <p>${l10n.landing.download} <a href="${link(
-            null,
-            'pdf'
-        )}">PDF</a> / <a href="${link(null, 'epub')}">EPUB</a> ${
-            l10n.landing.or
-        } <a href="${link()}">${l10n.landing.readOnline}</a>.
-    </p>
+    ${
+        l10n.landing.download
+            ? `<p>${l10n.landing.download} <a href="${link(
+                  null,
+                  'pdf'
+              )}">PDF</a> / <a href="${link(null, 'epub')}">EPUB</a> ${
+                  l10n.landing.or
+              } <a href="${link()}">${l10n.landing.readOnline}</a>.
+    </p>`
+            : `<p>${l10n.landing.readOnline}.</p>`
+    }
     <h3>${l10n.toc}</h3>
     <ul class="toc">${structure.sections
         .map(
