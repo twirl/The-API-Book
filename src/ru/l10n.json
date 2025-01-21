@@ -2,10 +2,13 @@
     "title": "API",
     "author": "Сергей Константинов",
     "chapter": "Глава",
+    "chapterTitle": "Глава",
     "toc": "Содержание",
+    "bibliography": "Библиография",
     "description": "Разработка API — особый навык: API является как мультипликатором ваших возможностей, так и мультипликатором ваших ошибок. Эта книга написана для того, чтобы поделиться опытом и изложить лучшие практики разработки API. Книга состоит из шести разделов, посвящённых проектированию API, паттернам дизайна API, поддержанию обратной совместимости, HTTP API и архитектурным принципам REST, SDK и UI-библиотекам, продуктовому управлению API.",
     "publisher": "Сергей Константинов",
     "copyright": "© Сергей Константинов, 2023",
+    "clickToEnlarge": "Нажмите для увеличения",
     "isbn": "ISBN",
     "locale": "ru-RU",
     "file": "API",
@@ -25,6 +28,7 @@
     "sidePanel": {
         "shareTo": "Поделиться",
         "copyLink": "Ссылка",
+        "shareLink": "Поделиться ссылкой",
         "shareParameters": {
             "url": "https://twirl.github.io/The-API-Book/index.ru.html",
             "text": "«API» Сергея Константинова — книга о дизайне API и его продуктовом и техническом развитии",
@@ -38,7 +42,7 @@
             },
             {
                 "key": "twitter",
-                "link": "https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${tags}&via=${viaTwitter}"
+                "link": "https://x.com/intent/tweet?url=${url}"
             },
             {
                 "key": "linkedin",
@@ -58,7 +62,7 @@
         "linkedinString": "linkedin.com/in/twirl",
         "githubHref": "https://github.com/twirl/The-API-Book",
         "githubString": "github.com/twirl/The-API-Book",
-        "twitterHref": "https://twitter.com/blogovodoved",
+        "twitterHref": "https://x.com/blogovodoved",
         "kindleTag": "Amazon Kindle",
         "kindleHref": "https://www.amazon.com/gp/product/B09RHH44S5/",
         "appleTag": "Apple Books",

@@ -1,0 +1,11 @@
+### Communicating with Business Owners
+
+The basics of interacting with business partners are to some extent paradoxically contrary to the basics of communicating with developers:
+  * On one hand, partners are much more loyal and sometimes even enthusiastic regarding the opportunities you offer (especially free ones).
+  * On the other hand, conveying the meaning of your offer to business owners is much more complicated than explaining it to developers, as it is generally hard to explain the advantages of integrating via APIs as a concept to a non-technical person.
+
+After all, working with a business audience essentially means elucidating the characteristics and advantages of the product. In that sense, an API “sells” just like any other kind of software.
+
+As a rule, the farther an industry sector is from information technologies, the more enthusiastic its representatives are about your API features and the less likely this enthusiasm will be converted into a real integration. One thing that could help the case is extensive work with the developer community (see the previous chapter), which will result in establishing a circle of freelancers and outsourcers eager to help non-IT businesses with integrations. You can contribute to developing this market by creating educational courses and issuing certificates that prove the bearer's skills in working with your API (or a broader layer of technology).
+
+Market research and gathering feedback from business owners work similarly. Businesses that are far from IT usually struggle to articulate their demands, so you should be rather creative (and critical-minded) when analyzing the gathered data.

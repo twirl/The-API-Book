@@ -1,0 +1,85 @@
+### Problems of Introducing UI Components
+
+Introducing UI components to an SDK brings an additional dimension to an already complex setup comprising a low-level API and a client wrapper on top of it. Now both developers (who write the application) and end users (who use the application) interact with your API. This might not appear as a game changer at first glance; however, we assure you that it is. Involving an end-user has significant consequences from the API / SDK design point of view as it requires much more careful and elaborate program interfaces compared to a “pure” client-server API. Let us explain this statement with a concrete example.
+
+Imagine that we decided to provide a client SDK for our API that features ready-to-use components for application developers. The functionality is simple: the user enters a search phrase and observes the results in the form of a list.
+
+[![APP](/img/mockups/01.size-s.png "The main screen of an application with search results")]()
+
+The user can select an item and view the offer details with available actions.
+
+[![APP](/img/mockups/02.size-s.png "Offer view panel")]()
+
+To implement this scenario, we provide an object-oriented API in the form of, let's say, a class named `SearchBox` that realizes the aforementioned functionality by utilizing the `search` method in our client-server API.
+
+#### The Problems
+
+At first glance, it might appear that this UI is a superstructure atop the `search` method, which simply visualizes the results or in other words, a graphical interface is a different representation of a program interface. However, is it viable to claim that the UI we discussed in the previous paragraph, with its buttons and modal panels (let alone animations) is just a projection of two methods, `search` and `createOrder`? We would rather say that this statement is an overstretch. To build a fine UI, we need to intersect two planes:
+  * The functionality of the underlying API
+  * The methods of visualizing data and interacting with UI controls that are conventional for the application platform (possibly, creatively improved by our UX designers).
+
+These two subject areas could be far away from each other. Furthermore, **the closer a UI is to representing the raw data, the less convenient it is for the user** (huge forms for entering field values as a classical example[ref Lepinsky, R. Google and Apple Versus Your Company’s Application](https://rodgersnotes.wordpress.com/2010/10/25/google-and-apple-versus-your-companys-application/)). If we aim to make an interface ergonomic, we need to replace “forms” with complex interfaces built atop both data and graphical primitives of the platform. Furthermore, these complex UI components will inevitably have their own inner state. This eventually leads to piling up complexities in the SDK architecture:
+
+##### Coupling Heterogeneous Functionality in One Entity
+
+We have placed two buttons (to make an order and to show the coffee shop's location) plus a cancel action onto the offer view panel. These buttons may look identical and they react to the user's actions in the same way, but the way the `SearchBox` component handles pressing each of them is completely different.
+
+Imagine if we allow developers to add their own action buttons onto the panel, for which purpose we introduce a `Button` class. We will soon learn that this functionality will be used to cover two diametrically opposite scenarios:
+  * Adding extra buttons to the panel, such as “Call the coffee shop,” while *sharing the design with the standard ones*
+  * Changing the appearance of the standard buttons to match the partner's corporate design guidelines *while preserving the functionality intact*.
+
+Furthermore, a third scenario is possible: developers might want to create a “Call” button that both looks different and performs different actions but *inherits the UX* of the standard button, such as animating button presses, stacking with other buttons, etc.
+
+From the developers' perspective, this means that the `Button` class should allow redefining the appearance of the button, the actions it performs, and the UX elements — in other words, each of these three subsystems might be replaced with an alternative implementation so that the other two subsystems continue working normally.
+
+##### Shared Ownership of Resources
+
+Imagine that we need to allow developers to programmatically create a `SearchBox` with a specific query already entered. This functionality seems reasonable as it would allow displaying a “find lungo nearby” banner in the application, clicking on which would show a `SearchBox` with the pre-entered “lungo” query. Developers will just need to open the corresponding screen in the app and call a method that we are to design. Let's simply name it `search`.
+
+Two of our `search` methods (the “pure” client-server one and the component-bound `SearchBox.search`) accept the same parameters and emit the same results. However, their *behavior* is totally different:
+  * If requested several times, `SearchBox.search` must discard all server responses except for the one corresponding to the latest request (even if it is not the one received last).
+      * Additional question: What should `SearchBox.search` return if it is interrupted by another search? If an error, then what was the error of the caller? If a success, then why are the results not displayed?
+  * This leads to another problem: what should happen if `SearchBox.search` was called when it was processing a request by an end user? Which of the callers is more important — a developer or a user?
+
+While implementing a client-server API, we don't typically face this issue. Every actor calling a search function will receive the response independently. With UI components this approach doesn't work as all the components ultimately share one common resource: the screen of the application and the user's attention.
+
+Any asynchronous operation in a UI component, especially if it is visibly indicated with animation or other continuous action, could disrupt other visual operations, including cases when the disruption happened because of the user's actions.
+
+##### Multiple Inheritance in Entity Hierarchies
+
+Imagine that a developer decided to enhance the design of the offer list with icons of coffee shop chains. If the icon is set, it should be shown in every place related to a specific coffee shop's offer.
+
+[![APP](/img/mockups/03.size-s.png "Search results with a coffee shop chain icon")]()
+
+Now let's also imagine that the developer additionally customized all buttons in the SDK by adding action icons.
+
+[![APP](/img/mockups/04.size-s.png "The offer view panel with action icons")]()
+
+A question arises: if an offer of the coffee chain is shown in the panel, which icon should be featured on the order creation button: the one inherited from the offer properties (the coffee chain logo) or the one inherited from the action type of the button itself? The order creation control element is incorporated into two entity hierarchies [visual one and data-bound (semantic) one] and inherits from both equally.
+
+It is very easy to demonstrate how coupling several subject areas in one entity leads to highly sophisticated and unobvious logic. As the same arguments are applicable to the “Show location” button as well, it is kind of obvious that specialized options should take precedence over general ones. In our case, the type of a button should have more priority than some abstract “icon” data property.
+
+But it is not the end of the story. If the developer still wants exactly this, i.e., to show a coffee shop chain icon (if any) on the order creation button, then what should they do? Following the same logic, we should provide an even more specialized possibility to do so. For example, we can adopt the following logic: if there is a `createOrderButtonIconUrl` property in the data, the icon will be taken from this field. Developers could customize the order creation button by overwriting this `createOrderButtonIconUrl` field for every search result:
+
+```typescript
+let searchBox = new SearchBox({
+  // For simplicity, let's allow
+  // to override the search function
+  searchFunction: function (params) {
+    let res = await api.search(params);
+    res.forEach(function (item) {
+        item.createOrderButtonIconUrl = 
+          <the URL of the icon>;
+    });
+    return res;
+  }
+})
+```
+
+*Formally speaking*, this code is correct and does not violate any agreements. However, the readability and maintainability of this code are a catastrophe. The last place the next developer asked to change the *button icon* will look is the *offer search function*.
+
+This functionality would appear more maintainable if no such customization opportunity was provided at all. Developers will be unhappy as they would need to implement their own search control from scratch just to replace an icon, but this implementation would be at least *logical* with icons defined somewhere in the rendering function.
+
+**NB**: There are many other possibilities to allow developers to customize a button nested deeply within a component, such as exposing dependency injection or sub-component class factories, giving direct access to a rendered view, allowing to provide custom button layouts, etc. All of them are inherently subject to the same problem: it is complicated to consistently define the order and the priority of injections / rendering callbacks / custom layouts.
+
+Consistently solving all the problems listed above is unfortunately a very complex task. In the following chapters, we will discuss design patterns that allow for splitting responsibility areas between the component's sub-entities. However, it is important to understand one thing: full separation of concerns, meaning developing a functional SDK+UI that allows developers to independently overwrite the look, business logic, and UX of the components, is extremely expensive. In the best-case scenario, the nomenclature of entities will be tripled. So the universal advice is: *think thrice before exposing the functionality of customizing UI components*. Though the price of design mistakes in UI library APIs is typically not very high (customers rarely request a refund if button press animation is broken), a badly structured, unreadable and buggy SDK could hardly be viewed as a competitive advantage of your API.

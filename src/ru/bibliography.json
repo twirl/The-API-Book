@@ -1,0 +1,56 @@
+{
+    "birrel-nelson-implementing-rpc": {
+        "authors": "Birrell, A. D., Nelson, B. J.",
+        "publicationDate": "1984",
+        "title": "Implementing Remote Procedure Calls",
+        "subtitle": [
+            "ACM Transactions on Computer Systems (TOCS), Volume 2, Issue 1",
+            "Pages 39 - 59"
+        ],
+        "hrefs": ["https://dl.acm.org/doi/10.1145/2080.357392"]
+    },
+    "fielding-architectural-styles": {
+        "authors": "Fielding, R. T.",
+        "publicationDate": "2001",
+        "title": "Architectural Styles and the Design of Network-based Software Architectures",
+        "hrefs": ["https://ics.uci.edu/~fielding/pubs/dissertation/top.htm"]
+    },
+    "fowler-gui-architectures": {
+        "authors": "Fowler, M.",
+        "publicationDate": "2006",
+        "title": "GUI Architectures",
+        "hrefs": ["https://www.martinfowler.com/eaaDev/uiArchs.html"]
+    },
+    "gang-of-four-patterns": {
+        "authors": "Gamma, E., Helm, R., Johnson, R., Vlissides, J.",
+        "publicationDate": "1994",
+        "title": "Design Patterns",
+        "subtitle": ["Elements of Reusable Object-Oriented Software"],
+        "hrefs": ["isbn:9780321700698"]
+    },
+    "grigorik-high-performance-browser-networking": {
+        "authors": "Grigorik, I.",
+        "publicationDate": "2013",
+        "title": "High Performance Browser Networking",
+        "hrefs": ["isbn:9781449344764", "https://hpbn.co"]
+    },
+    "hoffman-web-application-security": {
+        "authors": "Hoffman, A.",
+        "publicationDate": "2024",
+        "title": "Web Application Security",
+        "subtitle": ["Second Edition"],
+        "hrefs": ["isbn:9781098143930"]
+    },
+    "martin-functional-design": {
+        "authors": "Martin, R. C.",
+        "publicationDate": "2023",
+        "title": "Functional Design: Principles, Patterns, and Practices",
+        "hrefs": ["isbn:9780138176518"]
+    },
+    "nelson-rpc": {
+        "authors": "Nelson, B. J.",
+        "publicationDate": "1981",
+        "title": "Remote Procedure Call",
+        "hrefs": ["https://dl.acm.org/doi/10.5555/910306"]
+    }
+}

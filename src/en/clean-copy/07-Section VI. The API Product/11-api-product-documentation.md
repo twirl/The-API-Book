@@ -1,0 +1,102 @@
+### Documentation
+
+Regrettably, many API providers pay miserable attention to the quality of documentation. Meanwhile, documentation is the face of the product and the entry point to it. The problem becomes even worse when we acknowledge that it's almost impossible to write help articles that developers will find satisfactory.
+
+Before we delve into describing documentation types and formats, we should emphasize one important point: developers interact with your help articles quite differently from what you might expect. Think about yourself working on a project; you take very specific actions:
+
+  1. First, you need to quickly determine whether this service meets your needs in general.
+  2. If it does, you then search for specific functionality to resolve your particular case.
+
+Newcomers (i.e., developers who are not familiar with the API) typically want just one thing: to assemble the code that solves their problem from existing code samples and never return to this issue again. Sounds not exactly reassuringly, given the amount of work invested in the API and its documentation development, but it is how the reality looks like. This is also the root cause of developers' dissatisfaction with the documentation: it is literally impossible to have articles that precisely cover the problem the developer is facing detailed exactly to the extent the developer understands the API concepts. Additionally, experienced users (i.e., developers who have already learned the basic concepts and are now trying to solve more advanced problems) do not need these “mixed examples” articles as they seek a deeper understanding.
+
+#### Introductory Notes
+
+Documentation frequently suffers from excessive formality. It's often unnecessary inflated and written using terminology that requires consulting the glossary before reading the actual article. So instead of a concise answer to a user's question, a couple of paragraphs is conceived — a practice we strongly disapprove of. Ideal documentation must be simple and laconic, with all terms either explained in the text or referenced for clarification. However, “simple” doesn't mean “illiterate”: remember, documentation is the face of your product, so grammar errors and improper use of terms are unacceptable.
+
+Also, keep in mind that documentation will be used for searching. Therefore, every page should contain all the necessary keywords to be properly ranked by search engines. Unfortunately, this requirement contradicts the principle of simplicity and conciseness. This is the way.
+
+#### Documentation Content Types
+
+##### Specification / Reference
+
+Every documentation starts with a formal functional description. This content type is the most inconvenient to use, but it is essential. A reference is the hygienic minimum of the API documentation. If you don't have all methods, parameters, options, variable types, and their allowed values described, it's not an API but amateur dramatics.
+
+Today, a reference must also be a machine-readable specification compatible with some standard, for example, OpenAPI.
+
+The specification must comprise not only formal descriptions but also implicit agreements, such as the order of event generation or the less obvious side-effects of API methods. Its important applied value lies in advisory consulting: developers will refer to it to clarify unclear situations.
+
+**Importantly**, a formal specification *is not documentation* per se. Documentation is *the words you write* in the descriptions of each field and method. Without these descriptions, the specification can only be used to check whether your naming is fine enough for developers to guess the meaning of signatures.
+
+Today, method nomenclature descriptions are often additionally presented as ready-to-use request collections or code fragments for Postman or similar tools.
+
+##### Code Samples
+
+From the above-mentioned, it is evident that code samples are a crucial tool for acquiring and retaining new API users. Well-chosen examples help newcomers start working with the API while improper example selection will greatly reduce the quality of your documentation. When assembling a set of code samples, it is important to follow these rules:
+
+  * Examples must cover actual API use cases: the better you understand the most frequent developers' needs, the more friendly and straightforward your API will appear to them.
+
+  * Examples must be concise and atomic: mixing a bunch of tricks in one code sample dramatically reduces its readability and applicability.
+
+  * Examples must resemble real-world app code. The author of this book once faced a situation when a synthetic code sample, totally meaningless in the real world, was mindlessly replicated by developers in abundance.
+
+Ideally, examples should be linked to all other kinds of documentation. For example, the reference might contain code samples relevant to the entity being described.
+
+##### Sandboxes
+
+Code samples will be much more useful to developers if they are “live,” i.e., provided as editable pieces of code that could be modified and executed. In the case of library APIs, an online sandbox featuring a selection of code samples will suffice, and existing online services like JSFiddle might be used. With other types of APIs, developing sandboxes could be much more complicated:
+
+  * If the API provides access to some data, then the sandbox must allow working with a real dataset, either a developer's own (e.g., bound to their user profile) or some test data.
+  * If the API provides an interface, visual or programmatic, to some non-online environment, like UI libs for mobile devices do, then the sandbox itself must be an emulator or a simulator of that environment, in the form of an online service or a standalone app.
+
+##### Tutorials
+
+A tutorial is a specifically written human-readable text describing concepts of working with the API. A tutorial is something in-between a reference and examples. It implies some learning, more thorough than copy-pasting code samples, but requires less time investment than reading the whole reference.
+
+A tutorial is a sort of “book” that you write to explain to the reader how to work with your API. So, a proper tutorial must follow book-writing patterns, i.e., explain the concepts coherently and consecutively chapter after chapter. Also, a tutorial must provide:
+  * General knowledge of the subject area; for example, a tutorial for cartographical APIs must explain trivia regarding geographical coordinates and working with them
+  * Proper API usage scenarios, i.e., the “happy paths”
+  * Proper reactions to program errors that could happen
+  * Detailed studies on advanced API functionality (with detailed examples).
+
+Usually, a tutorial comprises a common section (basic terms and concepts, notation keys) and a set of sections regarding each functional domain exposed via the API. Frequently, tutorials contain a “Quick Start” (“Hello, world!”) section: the smallest possible code sample that would allow developers to build a small app atop the API. “Quick Starts” aim to cover two needs:
+  * To provide a default entry-point, the easiest to understand and the most useful text for those who heard about your API for the first time
+  * To engage developers, to make them interact with the service by means of a real-world example.
+
+Also, “Quick starts” are a good indicator of how well you have done your homework of identifying the most important use cases and providing helper methods. If your Quick Start comprises more than ten lines of code, you have definitely done something wrong.
+
+##### Frequently Asked Questions and Knowledge Bases
+
+After you publish the API and start supporting users (see the previous chapter) you will also accumulate some knowledge about what questions are asked most frequently. If you can't easily integrate answers into the documentation, it's useful to compile a specific “Frequently Asked Questions” (aka FAQ) article. A FAQ article must meet the following criteria:
+  * Address the real questions (you might frequently find FAQs that were reflecting not users' needs, but the API owner's desire to repeat some important information once more; it's useless, or worse — annoying; perfect examples of this anti-pattern realization might be found on any bank or airline company website)
+  * Both questions and answers must be formulated clearly and succinctly. It's acceptable (and even desirable) to provide links to corresponding reference and tutorial articles, but the answer itself can't be longer than a couple of paragraphs.
+
+Also, FAQs are a convenient place to explicitly highlight the advantages of the API. In a question-answer form, you might demonstrably show how your API solves complex problems easily and handsomely. (Or at least, *solves them*, unlike the competitors' products.)
+
+If technical support conversations are public, it makes sense to store all the questions and answers as a separate service to form a knowledge base, i.e., a set of “real-life” questions and answers.
+
+##### Offline Documentation
+
+Though we live in the online world, an offline version of the documentation (in the form of a generated file) still might be useful — first of all, as a snapshot of the API specification valid for a specific date.
+
+#### Content Duplication Problems
+
+A significant problem that harms documentation clarity is API versioning: articles describing the same entity across different API versions are usually quite similar. Organizing convenient searching capability over such datasets is a problem for internal and external search engines as well. To tackle this problem ensure that:
+  * The API version is highlighted on the documentation pages
+  * If a version of the current page exists for newer API versions, there is an explicit link to the actual version
+  * Docs for deprecated API versions are pessimized or even excluded from indexing.
+
+If you're strictly maintaining backward compatibility, it is possible to create a single documentation for all API versions. To do so, each entity is to be marked with the API version it is supported from. However, there is an apparent problem with this approach: it's not that simple to get docs for a specific (outdated) API version (and, generally speaking, to understand which capabilities this API version provides). (Though the offline documentation we mentioned earlier will help.)
+
+The problem becomes worse if you're supporting not only different API versions but also different environments / platforms / programming languages; for example, if your UI lib supports both iOS and Android. Then both documentation versions are equal, and it's impossible to pessimize one of them.
+
+In this case, you need to choose one of the following strategies:
+  * If the documentation topic content is totally identical for every platform, i.e., only the code syntax differs, you will need to develop generalized documentation: each article provides code samples (and maybe some additional notes) for every supported platform on a single page.
+  * On the contrary, if the content differs significantly, as is the case with iOS / Android, we might suggest splitting the documentation sites (up to having separate domains for each platform): the good news is that developers almost always need one specific version, and they don't care about other platforms.
+
+#### The Documentation Quality
+
+The best documentation happens when you start viewing it as a product in the API product range, i.e., begin analyzing customer experience (with specialized tools), collect and process feedback, set KPIs and work on improving them.
+
+#### Was This Article Helpful to You?
+
+[Yes / No](https://forms.gle/WPdQ9KsJt3fxqpyw6)

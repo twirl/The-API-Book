@@ -1,0 +1,37 @@
+### Testing Environments
+
+If the operations executed via the API have consequences for end users or partners (especially those that involve costs) you must provide a test version of the API. In this testing API, real-world actions either don't occur at all (for instance, orders are created but nobody serves them) or are simulated using cost-effective methods (for example, sending an email to the developer's mailbox instead of an SMS to the user).
+
+However, in many cases having a test version is not enough, as in our coffee-machine API example. If an order is created but not fulfilled, partners cannot test the functionality of delivering the order or requesting a refund. To conduct a complete testing cycle, developers need the capability of pushing the order through stages, just as it would happen in reality.
+
+A direct solution to this problem is providing test versions for a full set of APIs and administrative interfaces. This means that developers will be able to run a second application in parallel — the one you provide to coffee shops for receiving and serving orders (and if there is a delivery functionality, a third app, for couriers) — and perform all the actions that coffee shop staff normally does. Obviously, this is not an ideal solution for several reasons:
+
+  * Developers of end user applications will need to additionally learn how coffee shop and courier apps work, which is unrelated to the task they're solving.
+
+  * You will need to invent and implement some matching algorithm: an order made through a test application must be assigned to a specific virtual courier. This actually means creating an isolated virtual “sandbox” (meaning — a full set of services) for each specific partner.
+
+  * Executing a full “happy path” of an order will take minutes, maybe tens of minutes, and will require performing a multitude of actions in several different interfaces.
+
+There are two main approaches to addressing these problems.
+
+##### The Testing Environment API
+
+The first option is to provide a meta-API for the testing environment itself. Instead of running the coffee-shop app in a separate simulator, developers are given helper methods (like `simulateOrderPreparation`) or a visual interface that allows them to control the order execution pipeline with minimal effort.
+
+Ideally, you should equip this meta-API with helper methods for any actions that are conducted by people in the production environment. It makes sense to provide ready-to-use scripts or request collections that demonstrate the correct API call orders for standard scenarios. 
+
+The disadvantage of this approach is that client developers still need to understand how the “flip side” of the system works, albeit in simplified terms.
+
+##### The Simulator of Pre-Defined Scenarios
+
+The alternative to providing the testing environment API is to simulate the working scenarios. In this case, the testing environment takes control over the “underwater” parts of the system and “plays out” all external agents' actions. In our coffee example, this means that after the order is submitted, the system will simulate all the preparation steps and then the delivery of the beverage to the customer.
+
+The advantage of this approach is that it vividly demonstrates how the system works according to the API vendor's design plans. For example, it shows the sequence in which events are generated and the stages the order passes through. It also reduces the chance of making mistakes in testing scripts since the API vendor guarantees that the actions will be executed in the correct order with the right parameters.
+
+The main disadvantage is the necessity to create a separate scenario for each unhappy path (effectively, for every possible error) and give developers the capability to specify which scenario they want to run. (For example, like this: if there is a pre-agreed comment in the order, the system will simulate a specific error, and developers will be able to write and debug the code that deals with the error.)
+
+#### The Automation of Testing
+
+Your final goal in implementing testing APIs, regardless of which option you choose, is to allow partners to automate the QA process for their products. The testing environment should be developed with this purpose in mind. For example, if an end user might be directed to a 3-D Secure page to pay for the order, the testing environment API must provide a way to simulate the successful (or unsuccessful) completion of this step. Also, in both variants, it's possible (and desirable) to allow running the scenarios in a fast-forward manner to make automated testing much faster than manual testing.
+
+Of course, not every partner will be able to take advantage of this possibility (which also means that a “manual” way of testing usage scenarios must always be supported alongside the programmatic one) simply because not every business could afford to hire a QA automation engineer. Nevertheless, the ability to write such automated tests is a significant competitive advantage for your API from a technically advanced partner's point of view. 

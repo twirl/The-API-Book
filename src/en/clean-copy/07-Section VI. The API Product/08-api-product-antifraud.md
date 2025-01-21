@@ -1,0 +1,73 @@
+### Identifying Users and Preventing Fraud
+
+In the context of working with an API, we talk about two kinds of users of the system:
+  * Users-developers, i.e., your partners writing code atop of the API
+  * End users interacting with applications implemented by the users-developers.
+
+In most cases, you need to have both of them identified (in a technical sense: discern one unique customer from another) to answer the following questions:
+  * How many users are interacting with the system (simultaneously, daily, monthly, and yearly)?
+  * How many actions does each user perform?
+
+**NB**: Sometimes, when an API is very large and/or abstract, the chain linking the API vendor to end users might comprise more than one developer as large partners provide services implemented atop of the API to the smaller ones. You need to count both direct and “derivative” partners.
+
+Gathering this data is crucial for two reasons:
+  * To understand the system's limits and to be capable of planning its growth
+  * To understand the number of resources (ultimately, money) that are spent (and gained) on each user.
+
+In the case of commercial APIs, the quality and timeliness of gathering this data are twice as important because the tariff plans (and therefore the entire business model) depend on it. Therefore, the question of *how exactly* we're identifying users is crucial.
+
+#### Identifying Applications and Their Owners
+
+Let's start with the first user category, i.e., API business partners-developers. The important remark: there are two different entities we must learn to identify, namely applications and their owners.
+
+An application is roughly speaking a logically separate case of API usage, usually — literally an application (mobile or desktop one) or a website, i.e., some technical entity. Meanwhile, an owner is a legal body that you have the API usage agreement signed. If API Terms of Service (ToS) imply different limits and/or tariffs depending on the type of the service or the way it uses the API, this automatically means the necessity to track one owner's applications separately.
+
+In the modern world, the factual standard for identifying both entities is using API keys: a developer who wants to start using an API must obtain an API key bound to their contact info. Thus the key identifies the application while the contact data identifies the owner.
+
+Though this practice is universally widespread we can't help but notice that in most cases it's useless, and sometimes just destructive.
+
+Its general advantage is the necessity to supply actual contact info to get a key, which theoretically allows for contacting the application owner if needed. (In the real world, it doesn't work: key owners often don't read mailboxes they provided upon registration; and if the owner is a company, it might easily be a no-one's mailbox or a personal email of some employee who left the company a couple of years ago.)
+
+The main disadvantage of using API keys is that they *don't* allow for reliably identifying both applications and their owners.
+
+If there are free limits to API usage, there is a temptation to obtain many API keys bound to different owners to fit those free limits. You may raise the bar of having such multi-accounts by requiring, let's say, providing a phone number or bank card data, but there are popular services for automatically issuing both.  Paying for a virtual SIM or credit card (to say nothing about buying the stolen ones) will always be cheaper than paying the proper API tariff — unless it's the API for creating those cards. Therefore, API key-based user identification (if you're not requiring the physical contract to be signed) does not mean you don't need to double-check whether users comply with the terms of service and do not issue several keys for one app.
+
+Another problem is that an API key might be simply stolen from a lawful partner; in the case of mobile or web applications, that's quite trivial.
+
+It might appear that the problem is not as significant in the case of server-to-server integrations, but it actually is. Imagine that a partner provides a public service of their own that uses your API under the hood. This usually means there is an endpoint in the partner's backend that makes a request to the API and returns the result, and this endpoint can be easily used by a cybercriminal as a free replacement for direct access to the API. Of course, you might argue that this fraud is the partner's problem, but firstly, it would be naïve to expect that every partner develops their own anti-fraud system, and secondly, it is sub-optimal: a centralized anti-fraud system would undoubtedly be way more effective than a collection of amateur implementations. Furthermore, server keys might also be stolen; although, it's more challenging than stealing client keys, it's still feasible. With any popular API, sooner or later you will encounter the situation of stolen keys being made available to the public (or a key owner sharing it with acquaintances out of kindness).
+
+In one way or another, the issue of independent validation arises: how can we control whether the API endpoint is being requested by a user in compliance with the terms of service?
+
+Mobile applications could be conveniently tracked through their identifiers in the corresponding store (Google Play, App Store, etc.), so it makes sense to require this identifier to be passed by partners as an API initialization parameter. Websites, with some degree of confidence, can be identified by the `Referer` and `Origin` HTTP headers.
+
+This data is not entirely reliable, but it allows for cross-checks:
+  * If a key was issued for one specific domain but requests are coming with a different `Referer`, it makes sense to investigate the situation and maybe ban the possibility of accessing the API with this `Referer` or this key.
+  * If an application initializes the API by providing a key registered to another application, it makes sense to contact the store administration and request the removal of one of the apps.
+
+**NB**: Don't forget to set infinite limits for using the API with the `localhost` and `127.0.0.1` / `[::1]` `Referer`s, and also for your own sandbox if it exists. Yes, abusers will sooner or later learn this fact and start exploiting it, but otherwise, you will ban local development and your own website much sooner than that.
+
+The general conclusion is:
+  * It is highly desirable to have partners formally identified (either through obtaining API keys or by providing contact data such as website domain or application identifier in a store during API initialization).
+  * This information should not be blindly trusted; double-checking mechanisms are necessary to identify suspicious requests.
+
+#### Identifying End Users
+
+Usually, you can impose requirements for partners to self-identify, but it's often impossible to ask end users to disclose their contact information. All the methods of measuring the audience described below are imprecise and often heuristic. (Even if partner application functionality is only available after registration and you do have access to that profile data, it's still a game of assumptions, as an individual account is not the same as an individual user: several different persons might use a single account, or, vice versa, one person might register many accounts.) Also, note that gathering such data might be subject to legal regulations, even when discussing anonymized data.
+
+  1. The simplest and most obvious indicator is an IP address. It's very hard to counterfeit them (i.e., the API server always knows the remote address), and statistics related to IP addresses are reasonably demonstrative.
+
+      If the API is provided server-to-server, there will be no access to the end user's IP address. However, it makes sense to require partners to propagate the IP address (for example, in the form of the `X-Forwarded-For` header) — among other things, to assist partners in combating fraud and unintended API usage.
+
+      Until recently, IP addresses were also a convenient statistical indicator because acquiring a large pool of unique addresses was quite expensive. However, with the advancement of IPv6, this restriction is no longer applicable. IPv6 has rather shed light on the fact that you can't just count unique addresses — the aggregates are to be tracked:
+
+        * The cumulative number of requests by networks, i.e., hierarchical calculations (the number of /8, /16, /24, etc. networks)
+        * The cumulative statistics by autonomous networks (AS)
+        * The API requests through known public proxies and TOR network.
+      
+      An abnormal number of requests from one network might be evidence of the API being actively used within a corporate environment (or the widespread use of NATs in the region).
+
+  2. An additional means of tracking are users' unique identifiers, most notably cookies. However, recently this method of data gathering has been under attack from several directions: browser makers are restricting third-party cookies, users are employing anti-tracker software, and lawmakers have started rolling out legal requirements against data collection. In the current situation, it's much easier to stop using cookies than to comply with all the regulations.
+
+      All this leads to a situation where public APIs (especially those installed on free-to-use sites and applications) are very limited in their ability to collect statistics and analyze user behavior. These restrictions impact not only the fight against various types of fraud but also the analysis of user scenarios. This is the way.
+
+**NB**: In some jurisdictions, IP addresses are considered personal data, and collecting them is prohibited as well. We don't dare to advise on how an API vendor might simultaneously fight prohibited content on the platform and not have access to users' IP addresses. We presume that complying with such legislation implies storing statistics by IP address hashes. (And just in case we won't mention that building a rainbow table for SHA-256 hashes covering the entire 4-billion range of IPv4 addresses would take several hours on a regular office-grade computer.)

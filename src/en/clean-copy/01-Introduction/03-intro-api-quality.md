@@ -1,0 +1,20 @@
+### API Quality Criteria
+
+Before we start laying out the recommendations for designing API architecture, we ought to specify what constitutes a “high-quality API,” and what the benefits of having a high-quality API are. Quite obviously, the quality of an API is primarily defined through its capability to solve developers' and users' problems. (Let's leave out the part where an API vendor pursues its own goals, not providing a useful product.)
+
+So, how can a “high-quality” API design assist developers in solving their (and their users') problems? Quite simply: a well-designed API allows developers to do their jobs in the most efficient and convenient manner. The gap between formulating a task and writing working code must be as short as possible. Among other things, this means that:
+
+  * It must be entirely obvious from your API's structure how to solve a task:
+      * Ideally, developers should be able to understand at first glance, which entities are meant to solve their problem.
+  * The API must be readable:
+      * Developers should be able to write correct code simply by examining the methods' nomenclature without becoming entangled in details (especially API implementation details!).
+      * It is also essential to mention that not only should the problem solution (the “happy path”) be obvious, but also the handling of errors and exceptions (the “unhappy path”).
+  * The API must be consistent:
+      * When developing new functionality (i.e., using previously unknown API entities) developers may write new code similar to the code they have already written using the known API concepts, and this new code should work.
+      * It is highly desirable that the API aligns well with the principles and rules of the used platform and framework (if any).
+
+However, the static convenience and clarity of APIs are simple parts. After all, nobody seeks to make an API deliberately irrational and unreadable. When we develop an API, we always start with clear basic concepts. Providing you have some experience in APIs, it's quite hard to make an API core that fails to meet obviousness, readability, and consistency criteria.
+
+Problems begin when we start to expand our API. Adding new functionality sooner or later results in transforming once plain and simple API into a mess of conflicting concepts, and our efforts to maintain backward compatibility will lead to illogical, unobvious, and simply bad design solutions. It is partly related to an inability to predict the future in detail: your understanding of “fine” APIs will change over time, both in objective terms (what problems the API is to solve, and what is best practice) and in subjective terms too (what obviousness, readability, and consistency *really mean* to your API design).
+
+The principles we are explaining below are specifically oriented towards making APIs evolve smoothly over time, without being turned into a pile of mixed inconsistent interfaces. It is crucial to understand that this approach isn't free: the necessity to bear in mind all possible extension variants and to preserve essential growth points means interface redundancy and possibly excessive abstractions being embedded in the API design. Besides, both make the developers' jobs harder. **Providing excess design complexities being reserved for future use makes sense only if this future actually exists for your API. Otherwise, it's simply overengineering.**

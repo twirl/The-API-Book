@@ -1,82 +1,75 @@
-@media print {
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        font-size: 14pt;
-    }
+html,
+body {
+    font-size: 14pt;
+}
 
-    .toc a,
-    ul li,
-    ol li {
-        text-size-adjust: none;
-    }
+.toc a,
+ul li,
+ol li {
+    text-size-adjust: none;
+}
 
-    pre {
-        margin: 0 0 1em 0;
-        width: calc(100% - 2px);
-        line-height: 0.8em !important;
-    }
+pre {
+    margin: 0 0 1em 0;
+    width: calc(100% - 2px);
+    line-height: 0.8em !important;
+}
 
-    p code,
-    pre code {
-        font-size: 12pt !important;
-    }
+p code,
+pre code {
+    font-size: 12pt !important;
+}
 
-    img {
-        margin: 1px;
-    }
+img.cc-by-nc-img {
+    width: 90px;
+}
 
-    img.cc-by-nc-img {
-        width: 90px;
-    }
+h1,
+h2,
+h3,
+h4,
+h5 {
+    break-after: avoid;
+    line-height: 1.2em;
+}
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5 {
-        break-after: avoid;
-        line-height: 1.2em;
-        font-size: 120%;
-    }
+h6 {
+    break-before: avoid;
+}
 
-    h6 {
-        break-before: avoid;
-    }
+p,
+li {
+    orphans: 5;
+    widows: 5;
+}
 
-    p,
-    li {
-        orphans: 5;
-        widows: 5;
-    }
+img {
+    margin-top: 1em;
+    break-after: avoid;
+    border: transparent none !important;
+    box-shadow: none !important;
+}
 
-    img {
-        margin-top: 1em;
-        break-after: avoid;
-    }
+.cover {
+    display: none;
+}
 
-    .cover {
-        display: none;
-    }
+.toc ul li ul li + li,
+h4 + ul,
+h4 + p {
+    break-inside: avoid;
+    break-before: avoid;
+    break-after: avoid;
+}
 
-    .toc ul li ul li + li,
-    h4 + ul,
-    h4 + p {
-        break-inside: avoid;
-        break-before: avoid;
-        break-after: avoid;
-    }
+.page-break {
+    break-after: page;
+}
 
-    .page-break {
-        break-after: page;
-    }
+.no-page-break {
+    break-inside: avoid;
+}
 
-    .no-page-break {
-        break-inside: avoid;
-    }
-
-    nav.page-main {
-        display: none;
-    }
+nav.page-main {
+    display: none;
 }

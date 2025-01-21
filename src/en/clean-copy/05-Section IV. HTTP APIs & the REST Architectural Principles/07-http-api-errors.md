@@ -1,0 +1,172 @@
+### Working with HTTP API Errors
+
+The examples of organizing HTTP APIs discussed in the previous chapters were mostly about “happy paths,” i.e., the direct path of working with an API in the absence of obstacles. It's now time to talk about the opposite case: how HTTP APIs should work with errors and how the standard and the REST architectural principles can help us.
+
+Imagine that some actor (a client or a gateway) tries to create a new order:
+
+```json
+POST /v1/orders?user_id=<user_id> HTTP/1.1
+Authorization: Bearer <token>
+If-Match: <revision>
+
+{ /* order parameters */ }
+```
+
+What problems could potentially happen while handling the request? Off the top of the mind, it might be:
+  1. The request cannot be parsed (invalid symbols, syntax violation, etc.)
+  2. The authorization token is missing
+  3. The authorization token is invalid
+  4. The token is valid, but the user is not permitted to create new orders
+  5. The user is deleted or deactivated
+  6. The user identifier is invalid or does not exist
+  7. The revision is missing
+  8. The revision does not match the actual one
+  9. Some required fields are missing in the request body
+  10. A value of a field exceeds the allowed boundaries
+  11. The limit for the number of requests reached
+  12. The server is overloaded and cannot respond
+  13. Unknown server error (i.e., the server is broken to the extent that it's impossible to understand why the error happened).
+
+From general considerations, the natural idea is to assign a status code for each mistake. Obviously, the `403 Forbidden` code fits well for mistake \#4, and the `429 Too Many Requests` for \#11. However, let's not be rash and ask first *for what purpose* are we assigning codes to errors?
+
+Generally speaking, there are three kinds of actors in the system: the user, the application (a client), and the server. Each of these actors needs to understand several important things about the error (and the answers could actually differ for each of them):
+  1. Who made the mistake: the end user, the developer of the client, the backend developer, or another interim agent such as the network stack programmer?
+      * And let's not forget about the possibility of the mistake being *deliberately* made by either an end user or a client developer while trying to blunt-force hijack the account of another user.
+  2. Is it possible to fix the error by just repeating the request?
+      * If yes, then after what period of waiting?
+  3. If it is not the case, is it still possible to fix it by reformulating the request?
+  4. If the error cannot be resolved, what should be done about it?
+
+One of these questions is easily answered in the HTTP API paradigm: the desired interval of repeating the request might be indicated in a `Retry-After` header. Also, HTTP helps with question \#1: to understand which side is the cause of the error, the first digit in the HTTP status code is used (see below).
+
+With the other questions, the situation is unfortunately much more complicated.
+
+#### Client Errors
+
+Status codes that start with the digit `4` indicate that it was the user or the client who made a mistake, or at least the server decided so. *Usually*, repeating a request that resulted in a `4xx` error is meaningless: the request will never be fulfilled unless some additional actions are performed. However, there are notable exceptions, most importantly `429 Too Many Requests` and `404 Not Found`. The latter implies some “uncertainty state” according to the standard: the server could use it if exposing the real cause of the error is undesirable. After receiving a `404`, the request might be repeated, possibly yielding a different outcome. To indicate the *persistent* non-existence of a resource, a separate `410 Gone` status is used.
+
+A more interesting question is what the client can (or must) do if such an error is received. As we discussed in the “[Isolating Responsibility Areas](#api-design-isolating-responsibility)” chapter, if the error can be resolved, there must be a machine-readable description for the client to interpret. In the case it cannot, human-readable instructions should be provided for the user (even “Try restarting the application” is a better user experience than “Unknown error happened”) and for the client developer.
+
+If we try to apply this principle to HTTP APIs, we will soon learn that the situation is complicated. On one hand, the protocol includes a lot of codes that indicate specific problems with using the protocol, such as `405 Method Not Allowed` (indicates that the verb in the request cannot be applied to the requested resource), `406 Not Acceptable` (the server cannot return a representation that satisfies the `Accept*` headers in the request), `411 Length Required`, `414 URI Too Long`, etc. The client code might process these errors and sometimes even perform some actions to mitigate them (for example, add a `Content-Length` header in case of a `411` error). However, this is hardly applicable to business logic. If the server returns a `429 Too Many Requests` if some limit is exceeded, there are no standardized means of indicating *which exact limit* was hit.
+
+Sometimes, the absence of a common approach to describing business logic errors is circumvented by using different codes with almost identical semantics (or just randomly chosen codes) to distinguish between different causes of the error. One notable example is the widely adopted usage of the `401 Unauthorized` status code to indicate the absence or the invalid value of authorization headers, which is a signal for an application to ask the user to log in. This usage contradicts the standard (which requires that a `401` response must contain the `WWW-Authenticate` header that describes the methods of authorization; we are unaware of a single API that follows this requirement), but it has become a *de facto* standard itself.
+
+Even if we choose this approach, there are very few status codes that can reflect different aspects of the same error type. In fact, we face the situation that all the multiplicity of business-bound errors is to be returned using a very limited set of status codes:
+  * `400 Bad Request` for all the errors related to request validation issues. (Some purists insist that `400` corresponds to format violations such as invalid JSON. For logical errors, the `422 Unprocessable Content` code is to be used. This actually changes nothing regarding the discussed problem.)
+  * `403 Forbidden` for any problems related to authorizing the user's actions.
+  * `404 Not Found` if any of the entities referred to in the request are non-existent *or* if exposing the real cause of the error is undesirable.
+  * `409 Conflict` if data integrity is violated.
+  * `410 Gone` if the resource was deleted.
+  * `429 Too Many Requests` if some quotas are exceeded.
+
+The editors of the specification are very well aware of this problem as they state that “the server SHOULD send a representation containing an explanation of the error situation, and whether it is a temporary or permanent condition.” This, however, contradicts the entire idea of a uniform machine-readable interface (and so does the idea of using arbitrary status codes). (Let us additionally emphasize that this lack of standard tools to describe business logic-bound errors is one of the reasons we consider the REST architectural style as described by Fielding in his 2008 article non-viable. The client *must* possess prior knowledge of error formats and how to work with them. Otherwise, it could restore its state after an error only by restarting the application.)
+
+**NB**: Not long ago, the editors of the standard proposed their own version of the JSON description specification for HTTP errors — RFC 9457[ref RFC 9457 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc9457.html). You can use it, but keep in mind that it covers only the most basic scenario:
+  * The error subtype is not transmitted in the metadata.
+  * There is no distinction between a message for the user and a message for the developer.
+  * The specific machine-readable format for error descriptions is left to the discretion of the developer.
+
+Additionally, there is a third dimension to this problem in the form of webserver software for monitoring system health that often relies on status codes to plot charts and emit notifications. However, two errors represented with the same status code — let's say, wrong password and expired token — might be very different. The increased rate of the former might indicate brute-forcing of accounts, while an unusually high frequency of the latter could be a result of a client error if a new version of an application wrongly caches authorization tokens.
+
+All these observations naturally lead us to the following conclusion: if we want to use errors for diagnostics and (possibly) helping clients to recover, we need to include machine-readable metadata about the error subtype and, possibly, additional properties to the error body with a detailed description of the error. For example, as we proposed in the “[Describing Final Interfaces](#api-design-describing-interfaces)” chapter:
+
+```json
+POST /v1/coffee-machines/search HTTP/1.1
+
+{ "recipes": ["lngo"],
+  "position": {"latitude": 110, "longitude": 55}}
+→ 
+HTTP/1.1 400 Bad Request
+X-OurCoffeeAPI-Error-Kind: wrong_parameter_value
+
+{
+  "reason": "wrong_parameter_value",
+  "localized_message":
+    "Something is wrong.↵
+     Contact the developer of the app.",
+  "details": { "checks_failed": [
+    { "field": "recipe",
+      "error_type": "wrong_value",
+      "message":
+        "Unknown value: 'lngo'.↵
+          Did you mean 'lungo'?" },
+    { "field": "position.latitude",
+      "error_type": "constraint_violation",
+      "constraints": { "min": -90, "max": 90 },
+      "message": "'position.latitude' value↵
+        must fall within the [-90, 90] interval" }
+  ]}
+}
+```
+
+Let us also remind the reader that the client must treat unknown `4xx` status codes as a `400 Bad Request` error. Therefore, the (meta)data format for the `400` error must be as general as possible.
+
+#### Server Errors
+
+**`5xx` errors** indicate that the client did everything right, and the problem is server-bound. For the client, the only important thing about the server error is whether it makes sense to repeat the request (and if yes, then when). Keeping in mind that in publicly available APIs, the real reason for the error is usually not exposed, having just the `500 Internal Server Error` and `503 Service Unavailable` codes is enough for most subject areas. (The latter is needed to indicate that the denial of service state is temporary and it might be replaced with just a `Retry-After` header to the `500` error.)
+
+However, for internal systems, this argumentation is wrong. To build proper monitoring and notification systems, server errors must contain machine-readable error subtypes, just like the client errors. The same approaches are applicable (either using arbitrary status codes and/or passing error kind as a header); however, this data must be stripped off by a gateway that marks the border between external and internal systems and replaced with general instructions for both developers and end users, describing actions that need to be performed upon receiving an error. 
+
+```json
+POST /v1/orders/?user_id=<user id> HTTP/1.1
+If-Match: <revision>
+
+{ "parameters" }
+→
+// The response the gateway received
+// from the server, the metadata
+// of which will be used for
+// monitoring and diagnostics
+HTTP/1.1 500 Internal Server Error
+// Error kind: timeout from the DB
+X-OurCoffeAPI-Error-Kind: db_timeout
+{ /*
+   * Additional data, such as
+   * which host returned an error
+   */ }
+```
+
+```json
+// The response as returned to
+// the client. The details regarding
+// the server error are removed
+// and replaced with instructions
+// for the client. As at the gateway
+// level it is unknown whether
+// order creation succeeded, the client
+// is advised to repeat the request 
+// and/or retrieve the actual state.
+HTTP/1.1 500 Internal Server Error
+Retry-After: 5
+
+{ 
+  "reason": "internal_server_error",
+  "localized_message": "Cannot get↵
+    a response from the server.↵
+    Please try repeating the operation
+    or reload the page.",
+  "details": {
+    "can_be_retried": true,
+    "is_operation_failed": "unknown"
+  }
+}
+```
+
+However, we go on a slippery slope here. The contemporary practice of implementing HTTP API clients allows for repeating safe requests (e.g., `GET`, `HEAD`, and `OPTIONS` methods). In the case of unsafe methods, *developers need to write code* to repeat the request, and to do so they need to read the documentation very carefully to check if it is the desired behavior and if it is actually safe.
+
+*Theoretically*, with idempotent `PUT` and `DELETE` it should be more convenient. Practically, as many developers let this knowledge pass them, frameworks for working with HTTP APIs will likely not repeat these requests. Still, we can get *some* benefit from following the standards as the signature itself indicates that the request can be retried.
+
+As for more complex operations, to make developers aware that they can repeat a potentially unsafe operation, we could introduce a format describing the possible actions in the error response itself… However, developers seldom expect to find such instructions in the error body, probably because programmers rarely see `5xx` errors during development, unlike their `4xx` counterparts, and testing environments usually do not provide capabilities to emulate server errors. All in all, you will have to describe the desirable actions in the documentation. (Be aware that this instruction will likely be ignored. This is the way.)
+
+#### Organizing HTTP API Error Nomenclature in Practice
+
+As it is obvious from what was discussed above, there are essentially three approaches to working with errors in HTTP APIs:
+
+  1. Applying an “extended interpretation” to the status code nomenclature, or in plain words, selecting or inventing a new status code for each new type of error introduced. (The author of this book has frequently observed an approach to API development that included choosing a status code based on wording resembling the error cause, disregarding its description in the standard completely.)
+
+  2. Abolishing the use of status codes and developing a format for errors enveloped in a `200` HTTP response. Most RPC frameworks choose this direction.
+      * 2a. A subvariant of this strategy is using just two status codes (`400` for every client error, `500` for every server error), optionally complemented by a third one (`404` to indicate situations of uncertainty).
+  
+  3. Employing a mixed approach, i.e., using status codes in accordance with their semantics to indicate an *error family* with additional (meta)data being passed in a specially developed format (similar to the code samples we gave above).
+
+Obviously, only approach \#3 could be considered compliant with the standard. Let us be honest and say that the benefits of following it (especially compared to option \#2a) are not very significant and only comprise better readability of logs and transparency for intermediate proxies.

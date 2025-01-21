@@ -1,0 +1,25 @@
+### The API Definition
+
+Before we start talking about the API design, we need to explicitly define what the API is. Encyclopedias tell us that “API” is an acronym for “Application Program Interface.” This definition is fine but useless, much like the “Man” definition by Plato: “Man stands upright on two legs without feathers.” This definition is fine again, but it gives us no understanding of what's so important about a Man. (Actually, it's not even “fine”: Diogenes of Sinope once brought a plucked chicken, saying “That's Plato's Man.” And Plato had to add “with broad nails” to his definition.)
+
+What does the API *mean* apart from the formal definition?
+
+You're possibly reading this book using a Web browser. To make the browser display this page correctly, a bunch of things must work correctly: parsing the URL according to the specification, the DNS service, the TLS handshake protocol, transmitting the data over the HTTP protocol, HTML document parsing, CSS document parsing, correct HTML+CSS rendering, and so on and so forth.
+
+But those are just the tip of the iceberg. To make the HTTP protocol work you need the entire network stack (comprising 4-5 or even more different level protocols) to work correctly. HTML document parsing is performed according to hundreds of different specifications. Document rendering operations call the underlying operating system APIs, or even directly graphical processor APIs. And so on, down to modern CISC processor commands that are implemented on top of the API of microcommands.
+
+In other words, hundreds or even thousands of different APIs must work correctly to make basic actions possible such as viewing a webpage. Modern Internet technologies simply couldn't exist without these tons of APIs working fine.
+
+**An API is an obligation**. A formal obligation to connect different programmable contexts.
+
+When the author of this book is asked for an example of a well-designed API, he will usually show a picture of a Roman aqueduct:
+
+[![igorelick @ pixabay](/img/pont-du-gard.jpg "The Pont-du-Gard aqueduct. Built in the 1st century AD")](https://pixabay.com/photos/pont-du-gard-france-aqueduct-bridge-3909998/)
+  * It interconnects two areas
+  * Backward compatibility has not been broken even once in two thousand years.
+
+What differs between a Roman aqueduct and a good API is that in the case of APIs, the contract is presumed to be *programmable*. To connect the two areas, *writing some code* is needed. The goal of this book is to help you design APIs that serve their purposes as solidly as a Roman aqueduct does.
+
+An aqueduct also illustrates another problem with the API design: your customers are engineers themselves. You are not supplying water to end-users. Suppliers are plugging their pipes into your engineering structure, building their own structures upon it. On the one hand, you may provide access to water to many more people through them, not spending your time plugging each individual house into your network. On the other hand, you can't control the quality of suppliers' solutions, and you are to blame every time there is a water problem caused by their incompetence.
+
+That's why designing an API implies a larger area of responsibility. **An API is a multiplier to both your opportunities and your mistakes**.

@@ -1,0 +1,128 @@
+### Advantages and Disadvantages of HTTP APIs Compared to Alternative Technologies
+
+As we discussed in the previous chapter, today, the choice of a technology for developing client-server APIs comes down to selecting either a resource-oriented approach (commonly referred to as “REST API”; let us reiterate that we will use the term “HTTP API” instead) or a modern RPC protocol. As we mentioned earlier, *conceptually* the difference is not that significant. However, *technically* these frameworks use the HTTP protocol quite differently:
+
+**First**, different frameworks rely on different data formats:
+  * HTTP APIs and some RPC protocols (such as *JSON-RPC*[ref JSON-RPC](https://www.jsonrpc.org/), *GraphQL*[ref GraphQL](https://graphql.org/), etc.) use the *JSON*[ref JSON](https://www.ecma-international.org/publications-and-standards/standards/ecma-404/) format (sometimes with additional endpoints for transferring binary data).
+  * *gRPC*[ref gRPC](https://grpc.io/) and some specialized RPC protocols like *Thrift*[ref Apache Thrift](https://thrift.apache.org/) and *Avro*[ref Apache Avro](https://avro.apache.org/docs/) utilize binary formats (such as *Protocol Buffers*[ref Protocol Buffers](https://protobuf.dev/), *FlatBuffers*[ref FlatBuffers](https://flatbuffers.dev/), or *Apache Avro*'s own format).
+  * Finally, some RPC protocols (notably *SOAP*[ref SOAP](https://www.w3.org/TR/soap12/) and *XML-RPC*[ref XML-RPC](http://xmlrpc.com/)) employ the *XML*[ref Extensible Markup Language (XML)](https://www.w3.org/TR/xml/) data format (which is considered a rather outdated practice by many developers).
+
+**Second**, these approaches utilize HTTP capabilities differently:
+  * Either the client-server interaction heavily relies on the features described in the HTTP standard, or
+  * HTTP is used as a transport, with an additional abstraction layer built upon it (i.e., the HTTP capabilities, such as headers and status codes nomenclatures, are deliberately reduced to a bare minimum, and all metadata is handled by the higher-level protocol).
+
+The reader may wonder why this dichotomy exists in the first place, i.e., why some HTTP APIs rely on HTTP semantics, while others reject it in favor of custom arrangements, and still others are stuck somewhere in between. For example, if we consider the JSON-RPC response format,[ref JSON-RPC 2.0 Specification. Response object](https://www.jsonrpc.org/specification#response_object) we quickly notice that it could be replaced with standard HTTP protocol functionality. Instead of this:
+
+```json
+HTTP/1.1 200 OK
+
+{
+  "jsonrpc": "2.0",
+  "id",
+  "error": {
+    "code": -32600,
+    "message": "Invalid request"
+  }
+}
+```
+
+the server could have simply responded with a `400 Bad Request`, passing the request identifier as a custom header like `X-JSONRPC2-RequestId`. Nevertheless, protocol designers decided to introduce their own custom format.
+
+This situation (not only with JSON-RPC but with essentially every high-level protocol built on top of HTTP) has developed due to various reasons. Some of them are historical (such as the inability to use many HTTP protocol features in early implementations of the `XMLHttpRequest` functionality in web browsers). However, new RPC protocols that rely on the bare minimum of HTTP capabilities continue to emerge today.
+
+We can enumerate at least three groups of reasons (apart from the ideological ones, which we described in the previous chapter) leading to this situation:
+
+##### Metadata Readability
+
+Let us emphasize a very important distinction between application-level protocols (such as JSON-RPC in our case) and pure HTTP. In the example above, a `400 BadRequest` error is a transparent status for every intermediary network agent but a JSON-RPC custom error is not. Firstly, only a JSON-RPC-enabled client can read it. Secondly, and more importantly, in JSON-RPC, the request status *is not metadata*. In pure HTTP, the details of the operation, such as the method, requested URL, execution status, and request / response headers are readable *without the necessity to parse the entire body*. In most higher-level protocols, including JSON-RPC, this is not the case: even a protocol-enabled client must read a body to retrieve that information.
+
+How does an API developer benefit from the capability of reading request and response metadata? The modern client-server communication stack is multi-layered. We can enumerate a number of intermediary agents that process network requests and responses:
+  * Frameworks that developers use to write code
+  * Programming language APIs that frameworks are built on, and operating system APIs that compilers / interpreters of these languages rely on
+  * Intermediary proxy servers between a client and a server
+  * Various abstractions used in server programming, including server frameworks, programming languages, and operating systems
+  * Web server software that is typically placed in front of backend handlers
+  * Additional modern microservice-oriented tools such as API gateways and proxies.
+
+The main advantage that following the letter of the HTTP standard offers is the possibility of relying on intermediary agents, from client frameworks to API gateways, to read the request metadata and perform actions based on it. This includes regulating timeouts and retry policies, logging, proxying, and sharding requests, among other things, without the necessity to write additional code to achieve these functionalities. If we try to formulate the main principle of designing HTTP APIs, it will be: **you would rather design an API in a way that intermediary agents can read and interpret request and response metadata**.
+
+The main disadvantage of HTTP APIs is that you have to rely on intermediary agents, from client frameworks to API gateways, to read the request metadata and perform actions based on it *without your consent*. This includes regulating timeouts and retry policies, logging, proxying, and sharding requests, among other things. Since HTTP-related specifications are complex and the concepts of REST can be challenging to comprehend, and software engineers do not always write perfect code, these intermediary agents (including partners' developers!) will sometimes interpret HTTP metadata *incorrectly*, especially when dealing with exotic and hard-to-implement standards. Usually, one of the stated reasons for developing new RPC frameworks is the desire to make working with the protocol simple and consistent, thereby reducing the likelihood of errors when writing integration code.
+
+##### Quality of Solutions
+
+The ability to read and interpret the metadata of requests and responses leads to the fragmentation of available software for working with HTTP APIs. There are plenty of tools on the market, being developed by many different companies and collaborations, and many of them are free to use:
+  * Proxies and gateways (nginx, Envoy, etc.)
+  * Different IDLs (first of all, OpenAPI) and related tools for working with specifications (Redoc, Swagger UI, etc.) and auto-generating code
+  * Programmer-oriented software that allows for convenient development and debugging of API clients (Postman, Insomnia), etc.
+
+Of course, most of these instruments will work with APIs that utilize other paradigms. However, the ability to read HTTP metadata and interpret it *uniformly* makes it possible to easily design complex pipelines such as exporting nginx access logs to Prometheus and generating response status code monitoring dashboards in Grafana that work out of the box.
+
+The downside of this versatility is the quality of these solutions and the amount of time one needs to integrate them, especially if one's technological stack is not common. On the other hand, the development of alternative technologies is usually driven by a single large IT company (such as Facebook, Google, or the Apache Software Foundation). Such a framework might be less functional, but it will certainly be more homogeneous and qualitative in terms of convenience for developers, supporting users, and the number of known issues.
+
+This observation applies not only to software but also to its creators. Developers' knowledge of HTTP APIs is fragmented as well. Almost every programmer is capable of working with HTTP APIs to some extent, but a significant number of them lack a thorough understanding of the standards and do not consult them while writing code. As a result, implementing business logic that effectively and consistently works with HTTP APIs can be more challenging than integrating alternative technologies. This statement holds true for both partner integrators and API providers themselves.
+
+##### The Question of Performance
+
+When discussing the advantages of alternative technologies such as GraphQL, gRPC, Apache Thrift, etc., the argument of lower performance of JSON-over-HTTP APIs is often presented. Specifically, the following issues with the technology are commonly mentioned:
+  1. The verbosity of the JSON format:
+      * Mandatory field names in every object, even for an array of similar entities
+      * The large proportion of technical symbols (quotes, braces, commas, etc.) and the necessity to escape them in string values
+  2. The common approach of returning a full resource representation on resource retrieval requests, even if the client only needs a subset of the fields
+  3. The lower performance of data serializing and deserializing operations
+  4. The need to introduce additional encoding, such as Base64, to handle binary data
+  5. Performance quirks of the HTTP protocol itself, particularly the inability to serve multiple simultaneous requests through one connection.
+
+Let's be honest: HTTP APIs do suffer from the listed problems. However, we can confidently say that the impact of these factors is often overestimated. The reason API vendors care little about HTTP API performance is that the actual overhead is not as significant as it is perceived. Specifically:
+
+  1. Regarding the verbosity of the format, it is important to note that these issues are mainly relevant when compression algorithms are not utilized. Comparisons have shown[ref Comparing sizes of protobuf vs json](https://nilsmagnus.github.io/post/proto-json-sizes/) that enabling compression algorithms such as *gzip* largely reduces the difference in sizes between JSON documents and alternative binary formats (and there are compression algorithms specifically designed for processing text data, such as *brotli*[ref Brotli Compressed Data Format](https://datatracker.ietf.org/doc/html/rfc7932)).
+
+  2. If necessary, API designers can customize the list of returned fields in HTTP APIs. It aligns well with both the letter and the spirit of the standard. However, as we already explained to the reader in the “[Partial Updates](#api-patterns-partial-updates)” chapter, trying to minimize traffic by returning only subsets of data is rarely justified in well-designed APIs.
+
+  3. If standard JSON deserializers are used, the overhead compared to binary standards might indeed be significant. However, if this overhead is a real problem, it makes sense to consider alternative JSON serializers such as *simdjson*[ref simdjson : Parsing gigabytes of JSON per second](https://github.com/simdjson/simdjson). Due to their low-level and highly optimized code, *simdjson* demonstrates impressive throughput which would be suitable for all APIs except some corner cases.
+      * The combination of gzip/brotli + simdjson largely renders the use of optimized JSON derivatives, such as BSON,[ref BSON](https://bsonspec.org/) unnecessary in client-server communication.
+
+  4. Generally speaking, the HTTP API paradigm implies that binary data (such as images or video files) is served through separate endpoints. Returning binary data in JSON is only necessary when a separate request for the data is a problem from the performance perspective. These situations are virtually non-existent in server-to-server interactions and/or if HTTP/2 or a higher protocol version is used.
+
+  5. The HTTP/1.1 protocol version is indeed a suboptimal solution if request multiplexing is needed. However, alternate approaches to tackling the problem usually rely on… HTTP/2. Of course, an HTTP API can also be served over HTTP/2.
+
+Let us reiterate once more: JSON-over-HTTP APIs are *indeed* less performative than binary protocols. Nevertheless, we take the liberty to say that for a well-designed API in common subject areas switching to alternative protocols will generate quite a modest profit.
+
+#### Advantages and Disadvantages of the JSON Format
+
+It's not hard to notice that most of the claims regarding HTTP API performance are actually not about the HTTP protocol but the JSON format. There is no problem in developing an HTTP API that will utilize any binary format (including, for instance, *Protocol Buffers*). Then the difference between a Protobuf-over-HTTP API and a gRPC API would be just about using granular URLs, status codes, request / response headers, and the ensuing (in)ability to use integrated software tools out of the box.
+
+However, on many occasions (including this book) developers prefer the textual JSON over binary Protobuf (Flatbuffers, Thrift, Avro, etc.) for a very simple reason: JSON is easy to read. First, it's a text format and doesn't require additional decoding. Second, it's self-descriptive, meaning that property names are included. Unlike Protobuf-encoded messages which are basically impossible to read without a `.proto` file, one can make a very good guess as to what a JSON document is about at a glance. Provided that request metadata in HTTP APIs is readable as well, we ultimately get a communication format that is easy to parse and understand with just our eyes.
+
+Apart from being human-readable, JSON features another important advantage: it is strictly formal meaning it does not contain any constructs that can be interpreted differently in different architectures (with a possible exception of the sizes of numbers and strings), and the deserialization result aligns very well with native data structures (i.e., indexed and associative arrays) of almost every programming language. From this point of view, we actually had no other choice when selecting a format for code samples in this book.
+
+#### Choosing a Client-Server Development Technology
+
+As we see, HTTP APIs and alternative RPC protocols occupy different market niches:
+  * For public APIs, exposing JSON-over-HTTP endpoints is the default option because the technology:
+      * Is familiar to a broad circle of software engineers
+      * Allows for developing applications on top of virtually any platform.
+  * For specialized APIs, choosing specialized frameworks (such as selecting Apache Avro to work with Apache Hadoop) is an obvious solution.
+
+The practice of providing public APIs in, let's say, gRPC format has been slowly gaining popularity but is still close to negligible. Therefore, the selection problem only arises when we discuss private general-purpose APIs. As of today, the choice appears to be as follows:
+  * HTTP (“REST”) API
+  * gRPC
+  * GraphQL
+  * Other smaller technologies which we will skip.
+
+**gRPC** is a classical second-generation technology featuring all the advantages we discussed earlier:
+  * It relies on the state-of-the-art capabilities of the HTTP/2 protocol and the Protobuf data exchange format (the latter is non-mandatory, although the majority of gRPC API implementations use it).
+  * It is developed by Google and comes with a broad selection of tools.
+  * It features the contract-first approach, i.e., developing an API begins with writing a specification.
+  * The use of code generation allows for conveniently working with the protocol in imperative programming languages.
+
+The disadvantages of gRPC are:
+  * The complexity of decoding messages and debugging communication.
+  * Poor support of Web browsers.
+  * Its less widespread adoption, which results in a higher entry threshold for developers.
+  * Potential vendor lock-in.
+
+Otherwise, gRPC is undoubtedly one of the most advanced and efficient protocols.
+
+**GraphQL** features a curious approach that combines the concept of “resources” in HTML (i.e., it focuses on detailed descriptions of data formats and domain relations) while providing a rich query vocabulary to retrieve the needed subset of fields. Its main application is in data-heavy subject areas with complex entity hierarchies. (As evident from the name, GraphQL is more of a mechanism for distributed querying of abstract data storages than an API development paradigm.) Exposing *external* GraphQL APIs is rather an exotic practice as of today, mainly because managing a GraphQL service becomes increasingly challenging with growing data size and query numbers.[ref Mehta, S., Barodiya, K. Lessons learned from running GraphQL at scale](https://blog.dream11engineering.com/lessons-learned-from-running-graphql-at-scale-2ad60b3cefeb)
+
+**NB**: in theory, an API could provide a dual interface — let's say, both JSON-over-HTTP and gRPC. Since the formal description of data formats and applicable operations is fundamental to all modern frameworks, these formats could be converted from one to another, thus making such a multi-API possible. However, in practice, we are not aware of any examples of such an API. We would venture to say that the potential benefits of increased convenience for developers do not outweigh the overhead expenses of maintaining dual interfaces.

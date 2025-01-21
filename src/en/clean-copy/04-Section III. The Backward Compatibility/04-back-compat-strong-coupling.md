@@ -1,0 +1,221 @@
+### Strong Coupling and Related Problems
+
+To demonstrate the problems of strong coupling, let's move on to *interesting* topics. Let's continue our “variation analysis”: what if partners wish to offer their own unique coffee recipes to end users in addition to the standard beverages? The challenge is that the partner API, as described in the previous chapter, does not expose the very existence of the partner network to the end user, thus presenting a simple case. However, once we start providing methods to modify the core functionality, not just API extensions, we will soon face next-level problems.
+
+So, let's add one more endpoint for registering the partner's own recipe:
+
+```json
+// Adds new recipe
+POST /v1/recipes
+{
+  "id",
+  "product_properties": {
+    "name",
+    "description",
+    "default_volume"
+    // Other properties to describe
+    // the beverage to an end user
+    …
+  }
+}
+```
+
+At first glance, this appears to be a reasonably simple interface, explicitly decomposed into abstraction levels. But let's imagine the future and consider what would happen to this interface as our system evolves further.
+
+The first problem is obvious to those who thoroughly read the “[Describing Final Interfaces](#api-design-describing-interfaces)” chapter: product properties must be localized. This leads us to the first change:
+
+```json
+"product_properties": {
+  // "l10n" is the standard abbreviation
+  // for "localization"
+  "l10n": [{
+    "language_code": "en", 
+    "country_code": "US", 
+    "name", 
+    "description" 
+  }, /* other languages and countries */ … ]
+}
+```
+
+And here arises the first big question: what should we do with the `default_volume` field? On one hand, it's an objective property measured in standardized units to be passed to the program execution engine. On the other hand, in countries like the United States, beverage volumes are specified as “10 fl oz” rather than “300 ml.” We can propose two solutions:
+  * Either the partner provides only the corresponding number and we will make readable descriptions ourselves, or
+  * The partner provides both the number and all its localized representations.
+
+The flaw in the first option is that a partner might be willing to use the service in a new country or language, but they will be unable to do so until the API is localized to support these new territories. The flaw in the second option is that it only works with predefined volumes, so ordering an arbitrary beverage volume will not be possible. The very first step we've taken effectively has had us trapped.
+
+The localization flaws are not the only problem with this API. We should ask ourselves a question: *why* do we really need these `name` and `description` fields? They are simply non-machine-readable strings with no specific semantics. At first glance, we need them to return in the `/v1/search` method response, but that's not a proper answer as it only leads to another question: why do we actually return these strings from `search`?
+
+The correct answer lies beyond this specific interface. We need them *because some representation exists*. There is a UI for choosing a beverage type. The `name` and `description` fields are probably two designations of the beverage for the user to read, a short one (to be displayed on the search results page) and a long one (to be displayed in the extended product specification block). This means we are setting the API requirements based on some specific visual design. But *what if* a partner is creating their own UI for their own app? Not only might they not actually need two descriptions, but we are also *deceiving* them. The `name` is not “just a name” as it implies certain restrictions: it has a recommended length that is optimal for a specific UI, and it must look consistent on the search results page. Indeed, designations like “our best quality™ coffee” or “Invigorating Morning Freshness®” would look out of place among “Cappuccino,” “Lungo,” and “Latte.”
+
+There is also another aspect to consider. As UIs (both ours and partners') evolve, new visual elements will eventually be introduced. For example, a picture of the beverage, its energy value, allergen information, etc. The `product_properties` entity will become a scrapyard for numerous optional fields, and learning how to set each field and its effects in the UI will be an interesting journey filled with trial and error.
+
+The problems we're facing are the problems of *strong coupling*. Each time we offer an interface as described above, we effectively dictate the implementation of one entity (recipe) based on the implementations of other entities (UI layout, localization rules). This approach disregards the fundamental principle of “top to bottom” API design because **low-level entities should not define high-level ones**.
+
+#### The Rule of Contexts
+
+To exacerbate matters, let us state that the inverse principle is also true: high-level entities should not define low-level ones as well since it is not their responsibility. The way out of this logical labyrinth is that high-level entities should *define a context* for other objects to interpret. To properly design the interfaces for adding a new recipe we should not attempt to find a better data format. Instead, we need to understand the explicit and implicit contexts that exist in our subject area.
+
+We have already identified a localization context. There is a set of languages and regions supported by our API, and there are requirements for what partners must provide to make the API work in a new region. Specifically, there must be a formatting function to represent beverage volume somewhere in our API code, either internally or within an SDK:
+
+```typescript
+l10n.volume.format = function(
+  value, language_code, country_code
+) { … }
+/* 
+  l10n.formatVolume(
+   '300ml', 'en', 'UK'
+  ) → '300 ml'
+  l10n.formatVolume(
+    '300ml', 'en', 'US'
+  ) → '10 fl oz'
+*/
+```
+
+To ensure our API works correctly with a new language or region, the partner must either define this function or indicate which pre-existing implementation to use through the partner API, like this:
+
+```json
+// Add a general formatting rule
+// for the Russian language
+PUT /formatters/volume/ru
+{
+  "template": "{volume} мл"
+}
+// Add a specific formatting rule
+// for the Russian language 
+// in the “US” region
+PUT /formatters/volume/ru/US
+{
+  // In the US, we need to recalculate
+  // the number and add a postfix
+  "value_transform": {
+    "action": "divide",
+    "divisor": 30
+  },
+  "template": "{volume} ун."
+}
+```
+
+so the aforementioned `l10n.volume.format` function implementation can retrieve the formatting rules for the new language-region pair and utilize them.
+
+**NB**: We are well aware that such a simple format is not sufficient to cover real-world localization use cases, and one would either rely on existing libraries or design a sophisticated format for such templating, which takes into account various aspects such as grammatical cases and rules for rounding numbers or allows defining formatting rules in the form of function code. The example above is simplified for purely educational purposes.
+
+Let's address the `name` and `description` problem. To reduce the coupling level, we need to formalize (probably just for ourselves) a “layout” concept. We request the provision of the `name` and `description` fields not because we theoretically need them but to present them in a specific user interface. This particular UI might have an identifier or a semantic name associated with it:
+
+```json
+GET /v1/layouts/{layout_id}
+{
+  "id",
+  // Since we will likely have numerous
+  // layouts, it's better to enable 
+  // extensibility from the beginning
+  "kind": "recipe_search",
+  // Describe every property we require
+  // to have this layout rendered properly
+  "properties": [{
+    // Since we learned that `name`
+    // is actually a title for a search
+    // result snippet, it's much more
+    // convenient to have an explicit
+    // `search_title` instead
+    "field": "search_title",
+    "view": {
+      // A machine-readable description
+      // of how this field is rendered
+      "min_length": "5em",
+      "max_length": "20em",
+      "overflow": "ellipsis"
+    }
+  }, …],
+  // Which fields are mandatory
+  "required": [
+    "search_title", 
+    "search_description"
+  ]
+}
+```
+
+Thus, the partner can decide which option better suits their needs. They can provide mandatory fields for the standard layout:
+
+```json
+PUT /v1/recipes/{id}/properties/l10n/{lang}
+{
+  "search_title", "search_description"
+}
+```
+
+Alternatively, they can create their own layout and provide the data fields it requires, or they may choose to design their own UI and not use this functionality at all, thereby defining neither layouts nor corresponding data fields.
+
+Ultimately, our interface would look like this:
+
+```json
+POST /v1/recipes
+{ "id" }
+→
+{ "id" }
+```
+
+This conclusion might seem highly counter-intuitive, but the absence of fields in a `Recipe` simply tells us that this entity possesses no specific semantics of its own. It serves solely as an identifier of a context, a way to indicate where to find the data needed by other entities. In the real world, we should implement a builder endpoint capable of creating all the related contexts with a single request:
+
+```json
+POST /v1/recipe-builder
+{
+  "id",
+  // Recipe's fixed properties
+  "product_properties": {
+    "default_volume", "l10n"
+  },
+  // Create all the desired layouts
+  "layouts": [{
+    "id", "kind", "properties"
+  }],
+  // Add all the required formatters
+  "formatters": {
+    "volume": [
+      { "language_code", "template" }, 
+      { "language_code", "country_code", 
+        "template" }
+    ]
+  },
+  // Other actions needed to register 
+  // a new recipe in the system
+  …
+}
+```
+
+We should also note that providing a newly created entity identifier from the requesting side is not the best practice. However, since we decided from the very beginning to keep recipe identifiers semantically meaningful, we have to live on with this convention. Obviously, there is a risk of encountering collisions with recipe names used by different partners. Therefore, we actually need to modify this operation: either a partner must always use a pair of identifiers (e.g., the recipe id plus the partner's own id), or we need to introduce composite identifiers, as we recommended earlier in the “[Describing Final Interfaces](#api-design-describing-interfaces)” chapter.
+
+```json
+POST /v1/recipes/custom
+{
+  // The first part of the composite
+  // identifier, for example,
+  // the partner's own id
+  "namespace": "my-coffee-company",
+  // The second part of the identifier
+  "id_component": "lungo-customato"
+}
+→
+{
+  "id": 
+    "my-coffee-company:lungo-customato"
+}
+```
+
+Also note that this format allows us to maintain an important extensibility point: different partners might have both shared and isolated namespaces. Furthermore, we might introduce special namespaces (like `common`, for example) to allow editing standard recipes (and thus organizing our own recipes backoffice).
+
+**NB**: A mindful reader might have noticed that this technique was already used in our API study much earlier in the “[Separating Abstraction Levels](#api-design-separating-abstractions)” chapter regarding the “program” and “program run” entities. Indeed, we can propose an interface for retrieving commands to execute a specific recipe without the `program-matcher` endpoint, and instead, do it this way:
+
+```json
+GET /v1/recipes/{id}/run-data/{api_type}
+→
+{ /* A description of how to
+     execute a specific recipe
+     using a specified API type */ }
+```
+
+Then developers would have to make this trick to get the beverage prepared:
+  * Learn the API type of the specific coffee machine.
+  * Retrieve the execution description as described above.
+  * Based on the API type, execute specific commands.
+
+Obviously, such an interface is completely unacceptable because, in the majority of use cases, developers do not care at all about which API type the specific coffee machine exposes. To avoid the need for introducing such poor interfaces we created a new “program” entity, which serves solely as a context identifier, just like a “recipe” entity does. Similarly, the `program_run_id` entity is also organized in the same manner, without possessing any specific properties and representing *just* a program run identifier.

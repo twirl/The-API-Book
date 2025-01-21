@@ -1,0 +1,141 @@
+### Bidirectional Data Flows. Push and Poll Models
+
+In the previous chapter, we discussed the following scenario: a partner receives information about new events occuring in the system by periodically requesting an endpoint that supports retrieving ordered lists.
+
+```json
+GET /v1/orders/created-history↵
+  ?older_than=<item_id>&limit=<limit>
+→
+{
+  "orders_created_events": [{
+    "id",
+    "occured_at",
+    "order_id"
+  }, …]
+}
+```
+
+This pattern (known as *polling*[ref Polling (Computer Science)](https://en.wikipedia.org/wiki/Polling_(computer_science))) is the most common approach to organizing two-way communication in an API when a partner needs not only to send data to the server but also to receive notifications from the server about changes in some state.
+
+Although this approach is quite easy to implement, polling always requires a compromise between responsiveness, performance, and system throughput:
+
+  * The longer the interval between consecutive requests, the greater the delay between the change of state on the server and receiving the information about it on the client, and the potentially larger the traffic volume that needs to be transmitted in one iteration.
+  * On the other hand, the shorter this interval, the more requests will be made in vain, as no changes in the system have occurred during the elapsed time.
+
+In other words, polling always generates some background traffic in the system but never guarantees maximum responsiveness. Sometimes, this problem is solved by using the so-called “long polling[ref Push Technology. Long Polling](https://en.wikipedia.org/wiki/Push_technology#Long_polling),” which intentionally delays the server's response for a prolonged period (seconds, tens of seconds) until some state change occurs. However, we do not recommend using this approach in modern systems due to associated technical problems, particularly in unreliable network conditions where the client has no way of knowing that the connection is lost, and a new request needs to be sent.
+
+If regular polling is insufficient to solve the user's problem, you can switch to a reverse model (push) in which the server itself informs the client that changes have occurred in the system.
+
+Although the problem and the ways to solve it may appear similar, completely different technologies are currently used to deliver messages from the backend to the backend and from the backend to the client device.
+
+#### Delivering Notifications to Client Devices
+
+As various mobile platforms currently constitute a major share of all client devices, this implies significant limitations in terms of battery and partly traffic savings on the technologies for data exchange between the server and the end user. Many platform and device manufacturers monitor the resources consumed by the application and can send it to the background or close open connections. In such a situation, frequent polling should only be used in active phases of the application work cycle (i.e., when the user is directly interacting with the UI) or in controlled environments (for example, if employees of a partner company use the application in their work and can add it to system exceptions).
+
+Three alternatives to polling might be proposed:
+
+##### Duplex Connections
+
+The most obvious option is to use technologies that can transmit messages in both directions over a single connection. The best-known example of such technology is *WebSockets*[ref WebSockets](https://websockets.spec.whatwg.org/). Sometimes, the Server Push functionality of the HTTP/2 protocol[ref Hypertext Transfer Protocol Version 2 (HTTP/2). Server Push](https://datatracker.ietf.org/doc/html/rfc7540#section-8.2) is used for this purpose; however, we must note that the specification formally does not allow such usage. There is also the *WebRTC*[ref WebRTC: Real-Time Communication in Browsers](https://www.w3.org/TR/webrtc/) protocol; its main purpose is a peer-to-peer exchange of media data, and it's rarely used in client-server interaction.
+
+Although the idea looks simple and attractive, its applicability to real-world use cases is limited. Popular server software and frameworks do not support server-initiated message sending (for instance, gRPC does support streamed responses[ref gRPC. Server streaming RPC](https://grpc.io/docs/what-is-grpc/core-concepts/#server-streaming-rpc), but the client should initiate the exchange; using gRPC server streams to send server-initiated events is essentially employing HTTP/2 server pushes for this purpose, and it's the same technique as in the long polling approach, just a bit more modern), and the existing specification definition standards do not support it — as WebSocket is a low-level protocol, and you will need to design the interaction format on your own.
+
+Duplex connections still suffer from the unreliability of the network and require implementing additional tricks to tell the difference between a network problem and the absence of new messages. All these issues result in limited applicability of the technology; it's mostly used in web applications.
+
+##### Separate Callback Channels
+
+Instead of a duplex connection, two separate connections might be used: one for sending requests to the server and one to receive notifications from the server. The most popular technology of this kind is *MQTT*[ref MQTT](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html). Although it is considered very effective because of utilizing low-level protocols, its disadvantages follow from its advantages:
+  * The technology is meant to implement the pub/sub pattern, and its main value is that the server software (MQTT Broker) is provided alongside the protocol itself. Applying it to other tasks, especially bidirectional communication, might be challenging.
+  * The low-level protocols force you to develop your own data formats.
+
+There is also a Web standard for sending server notifications called Server-Sent Events[ref HTML Living Standard. Server-Sent Events](https://html.spec.whatwg.org/multipage/server-sent-events.html) (SSE). However, it's less functional than WebSocket (only text data and unidirectional flow are allowed) and rarely used.
+
+##### Third-Party Push Notifications
+
+One of the notorious problems with the long polling / WebSocket / SSE / MQTT technologies is the necessity to maintain an open network connection between the client and the server, which might be a problem for mobile applications and IoT devices from in terms of performance and battery life. One option that allows for mitigating the issue is delegating sending push notifications to a third-party service (the most popular choice today is Google's Firebase Cloud Messaging) that delivers notifications through the built-in mechanisms of the platform. Using such integrated services takes most of the load of maintaining open connections and checking their status off the developer's shoulders. The disadvantages of using third-party services are the necessity to pay for them and strict limits on message sizes.
+
+Also, sending push notifications to end-user devices suffers from one important issue: the percentage of successfully delivered messages never reaches 100%; the message drop rate might be tens of percent. Taking into account the message size limitations, it's actually better to implement a mixed model than a pure push model: the client continues polling the server, just less frequently, and push notifications just trigger ahead-of-time polling. (This problem is actually applicable to any notification delivery technology. Low-level protocols offer more options to set delivery guarantees; however, given the situation with forceful closing of open connections by OSes, having low-frequency polling as a precaution in an application is almost never a bad thing.)
+
+#### Using Push Technologies in Public APIs
+
+As a consequence of the fragmentation of client technologies described above, it's virtually impossible to use any of them but polling in public APIs. Requiring partners to implement receiving notifications through WebSocket, MQTT, or SSE channels raises the bar for adopting the API as working with low-level protocols, which are poorly covered by existing IDLs and code-generation tools, requires a significant amount of effort and is prone to implementation errors. If you decide to provide ready-to-use SDKs to ease working with the API, you will need to develop them for every applicable platform (which is, let us reiterate, quite labor-consuming). Given that HTTP polling is *much* easier to implement and its disadvantages play their role only in situations when one *really* needs to think about saving traffic and computational resources, we would rather recommend exposing additional channels for receiving server-sent notifications *as an addition* to polling, not instead of it.
+
+Using platform pushes might be a fine solution for public APIs, but there another problem arises: application developers are not eager to allow other third-party services send push notifications, and that's for a list of reasons, starting with the costs of sending pushes and ending with security considerations.
+
+In fact, the most convenient way of organizing message delivery from the public API backend to a partner service's user is by delivering messages backend-to-backend. This way, the partner service can relay it further using push notifications or any other technology that the partner selected for developing their applications.
+
+#### Delivering Backend-to-Backend Notifications
+
+Unlike client applications, server-side integrations universally utilize a single approach to implementing a bidirectional data flow, apart from polling (which is as applicable to server-to-server integrations as to client-server ones, and bears the same pros and cons). The approach is using a separate communication channel for callbacks. In the case of public APIs, the dominating practice is using callback URLs, also known as “webhooks.”
+
+Although long polling, WebSocket, HTTP/2 Push, and other technologies discussed above are also applicable to realizing backend-to-backend communication, we find it difficult to name a popular API that utilizes any of them. We assume that the reasons for this are:
+  * Server-to-server integrations are less susceptible to performance issues (servers rarely hit any limits on network bandwidth, and keeping an open connection is not a problem as well)
+  * There are higher expectations regarding message delivery guarantees
+  * A broad choice of ready-to-use components to develop a *webhook* service (as it's basically a regular webserver) is available
+  * It is possible to have a specification covering the communication format and use the advantages of code-generation.
+
+To integrate via a *webhook*, a partner specifies a URL of their own message processing server, and the API provider calls this endpoint to notify about status changes.
+
+Let us imagine that in our coffee example the partner has a backend capable of processing newly created orders to be processed by partner's coffee shops, and we need to organize such communication. Realizing this task comprise several steps:
+
+##### 1. Negotiate a Contract
+
+Depending on how important the partner is for our business, different options are possible:
+  * The API vendor might develop the functionality of calling the partner's *webhook* utilizing a protocol proposed by the partner
+  * Contrary to the previous, it's partner's job to develop an endpoint to support a format proposed by the API developers
+  * Any combination of the above
+
+What is important is that the *must* be a formal contract (preferably in a form of a specification) for *webhook*'s request and response formats and all the errors that might happen.
+
+##### 2. Agree on Authorization and Authentication Methods
+
+As a *webhook* is a callback channel, you will need to develop a separate authorization system to deal with it as it's *partners* duty to check that the request is genuinely coming from the API backend, not vice versa. We reiterate here our strictest recommendation to stick to existing standard techniques, for example, mTLS[ref Mutual Authentication. mTLS](https://en.wikipedia.org/wiki/Mutual_authentication#mTLS); though in the real world, you will likely have to use archaic methods like fixing the caller server's IP address.
+
+##### 3. Develop an Interface for Setting the URL of a *Webhook*
+
+As the callback endpoint is developed by partners, we do not know its URL beforehand. It implies some interface must exist for setting this URL and authorized public keys (probably in a form of a control panel for partners).
+
+**Importantly**, the operation of setting a *webhook* URL is to be treated as a potentially hazardous one. It is highly desirable to request a second authentication factor to authorize the operations as a potential attacker wreak a lot of havoc if there is a vulnerability in the procedure:
+  * By setting an arbitrary URL, the perpetrator might get access to all partner's orders (and the partner might lose access)
+  * This vulnerability might be used for organizing DoS attacks on third parties
+  * If an internal URL might be set as a *webhook*, a SSRF attack[ref SSRF](https://en.wikipedia.org/wiki/SSRF) might be directed toward the API vendor's own infrastructure.
+
+#### Typical Problems of *Webhook*-Powered Integrations
+
+Bidirectional data flows (both client-server and server-server ones, though the latter to a greater extent) bear quite undesirable risks for an API provider. In general, the quality of integration primarily depends on the API developers. In the callback-based integration, it's vice versa: the integration quality depends on how partners implemented the *webhook*. We might face numerous problems with the partners' code:
+  * *Webhook* might return false-positive responses meaning the notification was not actually processed but the success status was returned by the partner's server
+  * On other hand, false-negative responses are also possible if the operation was actually accepted but erroneously returned an error (or just responded in invalid format)
+  * *Webhook* might be processing incoming requests very slowly — up to a point when the requesting server will be just unable to deliver subsequent messages on time
+  * Partner's developers might make a mistake in implementing the idempotency policies, and repeated requests to the *webhook* will lead to errors or data inconsistency on the partner's side
+  * The size of the message body might exceed the limit set in the partner's webserver configuration
+  * On the partner's side, authentication token checking might be missing or flawed so some malefactor might be able to issue requests pretending they come from the genuine API server
+  * Finally, the endpoint might simply be unavailable because of many reasons, starting from technical issues in the data center where partner's servers are located and ending with a human error in setting *webhook*'s URL.
+
+Obviously, we can't guarantee partners don't make any of these mistakes. The only thing we *can* do is to minimize the impact radius:
+
+  1. The system state must be restorable. If the partner erroneously responded that messages are processed while they are not, there must be a possibility for them to redeem themselves and get the list of missed events and/or the full system state and fix all the issues
+  2. Help partners to write proper code by describing in the documentation all unobvious subtleties that inexperienced developers might be unaware of:
+      * Idempotency keys for every operation
+      * Delivery guarantees (“at least once,” “exactly ones,” etc.; see the reference description[ref Apache Kafka. Kafka Design. Message Delivery Guarantees](https://docs.confluent.io/kafka/design/delivery-semantics.html) on the example of *Apache Kafka* API)
+      * Possibility of the server generating parallel requests and the maximum number of such requests at a time
+      * Guarantees of message ordering (i.e., the notifications are always delivered ordered from the oldest one to the newest one) or the absence of such guarantees
+      * The sizes of all messages and message fields in bytes
+      * The retry policy in case an error is returned by the partner's server
+  3. Implement a monitoring system to check the health of partners' endpoints:
+      * If a large number of errors or timeouts occurs, it must be escalated (including notifying the partner about the problem), probably with several escalation tiers,
+      * If too many un-processed notifications are stuck, there must be a mechanism of controllable degradation (limiting the number of requests toward the partner, e.g. cutting the demand by disallowing some users to make an order) up to fully disconnecting the partner from the platform.
+    
+#### Message Queues
+
+As for internal APIs, the *webhook* technology (i.e., the possibility to programmatically define a callback URL) is either not needed at all or is replaced with the Service Discovery[ref Web Services Discovery](https://en.wikipedia.org/wiki/Web_Services_Discovery) protocol as services comprising a single backend are symmetrically able to call each other. However, the problems of callback-based integration discussed above are equally actual for internal calls. Requesting an internal API might result in a false-negative mistake, internal clients might be unaware that ordering is not guaranteed, etc.
+
+To solve these problems, and also to ensure better horizontal scalability, message queues[ref Message Queue](https://en.wikipedia.org/wiki/Message_queue) were developed, most notably numerous pub/sub pattern[ref Publish / Subscribe Pattern](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) implementations. At present moment, pub/sub-based architectures are very popular in enterprise software development, up to switching any inter-service communication to message queues.
+
+**NB**: Let us note that everything comes with a price, and these delivery guarantees and horizontal scalability are not an exclusion:
+  * All communication becomes eventually consistent with all the implications
+  * Decent horizontal scalability and cheap message queue usage are only achievable with at least once/at most once policies and no ordering guarantee
+  * Queues might accumulate unprocessed events, introducing increasing delays, and solving this issue on the subscriber's side might be quite non-trivial.
+
+Also, in public APIs both technologies are frequently used in conjunction: the API backend sends a task to call the *webhook* in the form of publishing an event which the specially designed internal service will try to process by making the call.
+
+Theoretically, we can imagine an integration that exposes directly accessible message queues in one of the standard formats for partners to subscribe. However, we are unaware of any examples of such APIs.

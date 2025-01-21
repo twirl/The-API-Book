@@ -68,8 +68,12 @@ pre code em * {
     max-width: 100%;
 }
 
-.app-img-wrapper img {
+img.size-s {
     max-width: 390px;
+}
+
+img.size-s {
+    max-width: 540px;
 }
 
 pre {

@@ -1,0 +1,1018 @@
+### Describing Final Interfaces
+
+When all entities, their responsibilities, and their relations to each other are defined, we proceed to the development of the API itself. We need to describe the objects, fields, methods, and functions nomenclature in detail. In this chapter, we provide practical advice on making APIs usable and understandable.
+
+One of the most important tasks for an API developer is to ensure that code written by other developers using the API is easily readable and maintainable. Remember that the law of large numbers always works against you: if a concept or call signature can be misunderstood, it will be misunderstood by an increasing number of partners as the API's popularity grows.
+
+**NB**: The examples in this chapter are meant to illustrate the consistency and readability problems that arise during API development. We do not provide specific advice on designing REST APIs (such advice will be given in the corresponding section of this book) or programming languages' standard libraries. The focus is o the idea, not specific syntax.
+
+An important assertion number one:
+
+##### Rules Must Not Be Applied Unthinkingly
+
+Rules are simply formulated generalizations based on one's experience. They are not to be applied unconditionally, and they do not make thinking redundant. Every rule has a rational reason to exist. If your situation does not justify following a rule, then you should not do it.
+
+This idea applies to every concept listed below. If you end up with an unusable, bulky, or non-obvious API because you followed the rules, it's a motivation to revise the rules (or the API).
+
+It is important to understand that you can always introduce your own concepts. For example, some frameworks intentionally reject paired `set_entity` / `get_entity` methods in favor of a single `entity()` method with an optional argument. The crucial part is being systematic in applying the concept. If it is implemented, you must apply it to every single API method or at the very least develop a naming rule to distinguish such polymorphic methods from regular ones.
+
+##### Explicit Is Always Better Than Implicit
+
+The entity name should explicitly indicate what the entity does and what side effects to expect when using it.
+
+**Bad**:
+
+```typescript
+// Cancels an order
+order.canceled = true;
+```
+
+It is not obvious that a state field might be modified, and that this operation will cancel the order.
+
+**Better**:
+
+```typescript
+// Cancels an order
+order.cancel();
+```
+
+**Bad**:
+
+```typescript
+// Returns aggregated statistics
+// since the beginning of time
+orders.getStats()
+```
+
+Even if the operation is non-modifying but computationally expensive, you should explicitly indicate that, especially if clients are charged for computational resource usage. Furthermore, default values should not be set in a way that leads to maximum resource consumption.
+
+**Better**:
+
+```typescript
+// Calculates and returns
+// aggregated statistics
+// for a specified period of time
+orders.calculateAggregatedStats({
+  begin_date,
+  end_date
+});
+```
+
+**Try to design function signatures that are transparent about what the function does, what arguments it takes, and what the outcome is**. When reading code that works with your API, it should be easy to understand what it does without referring to the documentation.
+
+Two important implications:
+
+**1.1.** If the operation is modifying, it must be obvious from the signature. In particular, there should not be modifying operations named `getSomething` or using the `GET` HTTP verb.
+
+**1.2.** If your API's nomenclature contains both synchronous and asynchronous operations, then (a)synchronicity must be apparent from signatures, **or** a naming convention must exist.
+
+##### Specify Which Standards Are Used
+
+Regrettably, humanity is unable to agree on even the most trivial things, like which day starts the week, let alone more sophisticated standards.
+
+Therefore, *always* specify exactly which standard is being used. Exceptions are possible if you are 100% sure that only one standard for this entity exists in the world and every person on Earth is totally aware of it.
+
+**Bad**: `"date": "11/12/2020"` — there are numerous date formatting standards. It is unclear which number represents the day and which number represents the month.
+
+**Better**: `"iso_date": "2020-11-12"`.
+  
+**Bad**: `"duration": 5000` — five thousand of what?
+
+**Better**:  
+    `"duration_ms": 5000`  
+    or  
+    `"duration": "5000ms"`  
+    or  
+    `"iso_duration": "PT5S"`  
+    or  
+    `"duration": {"unit": "ms", "value": 5000}`.
+
+One particular implication of this rule is that money sums must *always* be accompanied by a currency code.
+
+It is also worth mentioning that in some areas the situation with standards is so spoiled that no matter what you do, someone will be upset. A “classical” example is the order of geographical coordinates (latitude-longitude vs longitude-latitude). Unfortunately, the only effective method to address the frustration in such cases is the Serenity Notepad which will be discussed in [the corresponding chapter](#back-compat-serenity-notepad).
+
+##### Entities Must Have Concrete Names
+
+Avoid using single amoeba-like words, such as “get,” “apply,” “make,” etc.
+
+**Bad**: `user.get()` — it is difficult to guess what is actually returned.
+
+**Better**: `user.get_id()`.
+
+##### Don't Spare the Letters
+
+In the 21st century, there's no need to shorten entities' names.
+
+**Bad**: `order.getTime()` — it is unclear what time is actually returned: order creation time, order preparation time, order waiting time, or something else.
+
+**Better**: `order.getEstimatedDeliveryTime()`.
+
+**Bad**:
+
+```typescript
+// Returns a pointer to the first occurrence
+// in str1 of any of the characters
+// that are part of str2
+strpbrk(str1, str2)
+```
+
+Possibly, the author of this API thought that the abbreviation `pbrk` would mean something to readers, but that is clearly mistaken. It is also hard to understand from the signature which string (`str1` or `str2`) represents a character set.
+
+**Better**:
+
+```typescript
+str_search_for_characters(
+  str,
+  lookup_character_set
+)
+```  
+
+— though it is highly debatable whether this function should exist at all; a feature-rich search function would be much more convenient. Also, shortening a `string` to `str` bears no practical sense, unfortunately being a common practice in many subject areas.
+
+**NB**: Sometimes field names are shortened or even omitted (e.g., a heterogeneous array is passed instead of a set of named fields) to reduce the amount of traffic. In most cases, this is absolutely meaningless as the data is usually compressed at the protocol level.
+
+##### Naming Implies Typing
+
+A field named `recipe` must be of type `Recipe`. A field named `recipe_id` must contain a recipe identifier that can be found within the `Recipe` entity.
+
+The same applies to basic types. Arrays must be named in the plural form or as collective nouns, e.g., `objects`, `children`. If it is not possible, it is better to add a prefix or a postfix to avoid ambiguity.
+
+**Bad**: `GET /news` — it is unclear whether a specific news item is returned, or a list of them.
+
+**Better**: `GET /news-list`.
+
+Similarly, if a Boolean value is expected, entity naming must describe a qualitative state, e.g., `is_ready`, `open_now`.
+
+**Bad**: `"task.status": true`  
+— statuses are not explicitly binary. Additionally, such an API is not extendable.
+
+**Better**: `"task.is_finished": true`.
+
+Specific platforms imply specific additions to this rule depending on the first-class citizen types they provide. For example, JSON doesn't have a `Date` object type, so dates are typically passed as numbers or strings. In this case, it's convenient to mark dates somehow, for example, by adding `_at` or `_date` postfixes, i.e. `created_at`, `occurred_at`.
+
+If an entity name is a polysemantic term itself, which could confuse developers, it is better to add an extra prefix or postfix to avoid misunderstanding.
+
+**Bad**:
+
+```json
+// Returns a list of 
+// coffee machine builtin functions
+GET /coffee-machines/{id}/functions
+```
+
+The word “function” is ambiguous. It might refer to built-in functions, but it could also mean “a piece of code,” or a state (machine is functioning).
+
+**Better**: 
+
+```json
+GET /v1/coffee-machines/{id}↵
+  /builtin-functions-list
+```
+
+##### Matching Entities Must Have Matching Names and Behave Alike
+
+**Bad**: `begin_transition` / `stop_transition`  
+— The terms `begin` and `stop` don't match; developers will have to refer to the documentation to find a paired method.
+
+**Better**: either `begin_transition` / `end_transition` or `start_transition` / `stop_transition`.
+
+**Bad**:
+
+```typescript
+// Find the position of the first occurrence
+// of a substring in a string
+strpos(haystack, needle)
+// Replace all occurrences
+// of the search string 
+// with the replacement string
+str_replace(needle, replace, haystack)
+```
+
+Several rules are violated:
+  * The usage of an underscore is not consistent
+  * Functionally close methods have different `needle`/`haystack` argument ordering
+  * The first function finds the first occurrence while the second one finds all occurrences, and there is no way to deduce that fact from the function signatures.
+
+Improving these function signatures is left as an exercise for the reader.
+
+##### Avoid Double Negations
+
+**Bad**: `"dont_call_me": false`  
+— humans are bad at perceiving double negation and can make mistakes.
+
+**Better**: `"prohibit_calling": true` or `"avoid_calling": true`  
+— this is easier to read. However, you should not deceive yourself: it is still a double negation, even if you've found a “negative” word without a “negative” prefix.
+
+It is also worth mentioning that mistakes in using De Morgan's laws[ref De Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan's_laws) are even more common. For example, if you have two flags:
+
+```json
+GET /coffee-machines/{id}/stocks
+→
+{
+  "has_beans": true,
+  "has_cup": true
+}
+```
+
+The condition “coffee might be prepared” would look like `has_beans && has_cup` — both flags must be true. However, if you provide the negations of both flags:
+
+```json
+{
+  "no_beans": false,
+  "no_cup": false
+}
+```
+
+— then developers will have to evaluate the `!no_beans && !no_cup` flag which is equivalent to the `!(no_beans || no_cup)` condition. In this transition, people tend to make mistakes. Avoiding double negations helps to some extent, but the best advice is to avoid situations where developers have to evaluate such flags.
+
+##### Avoid Implicit Type Casting
+
+This advice contradicts the previous one, ironically. When developing APIs you frequently need to add a new optional field with a non-empty default value. For example:
+
+```typescript
+let orderParams = {
+  contactless_delivery: false
+};
+let order = api.createOrder(
+  orderParams
+);
+```
+
+This new `contactless_delivery` option isn't required, but its default value is `true`. A question arises: how should developers discern the explicit intention to disable the option (`false`) from not knowing if it exists (the field isn't set)? They would have to write something like:
+
+```typescript
+let value = orderParams.contactless_delivery;
+if (Type(value) == 'Boolean' && value == false) {
+  … 
+}
+```
+
+This practice makes the code more complicated, and it's quite easy to make mistakes resulting in effectively treating the field as the opposite. The same can happen if special values (e.g., `null` or `-1`) are used to denote value absence.
+
+If the protocol does not support resetting to default values as a first-class citizen, the universal rule is to make all new Boolean flags false by default.
+
+**Better**
+
+```typescript
+let orderParams = {
+  /* <em> */force_contact_delivery: true/* </em> */
+};
+let order = api.createOrder(
+  orderParams
+);
+```
+
+If a non-Boolean field with a specially treated absence of value is to be introduced, then introduce two fields.
+
+**Bad**:
+
+```json
+// Creates a user
+POST /v1/users
+{ … }
+→
+// Users are created with a monthly
+// spending limit set by default
+{
+  "spending_monthly_limit_usd": "100",
+  …
+}
+// To cancel the limit null value is used
+PUT /v1/users/{id}
+{ 
+  "spending_monthly_limit_usd": null,
+  …
+}
+```
+
+**Better**
+
+```json
+POST /v1/users
+{
+  // true — user explicitly cancels
+  //   monthly spending limit
+  // false — limit isn't canceled
+  //   (default value)
+  /* <em> */"abolish_spending_limit": false,/* </em> */
+  // Non-required field
+  // Only present if the previous flag
+  // is set to false
+  "spending_monthly_limit_usd": "100",
+  …
+}
+```
+
+**NB**: The contradiction with the previous rule lies in the necessity of introducing “negative” flags (the “no limit” flag), which we had to rename to `abolish_spending_limit`. Though it's a decent name for a negative flag, its semantics is still not obvious, and developers will have to read the documentation. This is the way.
+
+##### Declare Technical Restrictions Explicitly
+
+Every field in your API comes with restrictions: the maximum allowed text length, the size of attached documents, the allowed ranges for numeric values, etc. Often, describing those limits is neglected by API developers — either because they consider it obvious, or because they simply don't know the boundaries themselves. This is of course an antipattern: not knowing the limits automatically implies that partners' code might stop working at any moment due to reasons they don't control.
+
+Therefore, first, declare the boundaries for every field in the API without any exceptions, and, second, generate proper machine-readable errors describing the exact boundary that was violated should such a violation occur.
+
+The same reasoning applies to quotas as well: partners must have access to the statistics on which part of the quota they have already used, and the errors in the case of exceeding quotas must be informative.
+
+##### All Requests Must Be Limited
+
+The restrictions should apply not only to field sizes but also to list sizes or aggregation intervals.
+
+**Bad**: `getOrders()` — what if a user made a million orders?
+
+**Better**: `getOrders({ limit, parameters })` — there must be a cap on the amount of processed and returned data. This also implies providing the possibility to refine the query if a partner needs more data than what is allowed to be returned in one request.
+
+##### Describe the Retry Policy
+
+One of the most significant performance-related challenges that nearly any API developer encounters, regardless of whether the API is internal or public, is service denial due to a flood of re-requests. Temporary backend API issues, such as increased response times, can lead to complete server failure if clients rapidly repeat requests after receiving an error or a timeout, resulting in generating a significantly larger workload than usual in a short period of time.
+
+The best practice in such a situation is to require clients to retry API endpoints with increasing intervals (for example, the first retry occurs after one second, the second after two seconds, the third after four seconds, and so on, up to a maximum of, let's say, one minute). Of course, in the case of a public API, no one is obliged to comply with such a requirement, but its presence certainly won't make things worse for you. At the very least, some partners will read the documentation and follow your recommendations.
+
+Moreover, you can develop a reference implementation of the retry policy in your public SDKs and ensure it is correctly implemented in open-source modules for your API.
+
+##### Count the Amount of Traffic
+
+Nowadays the amount of traffic is rarely taken into account as the Internet connection is considered unlimited almost universally. However, it is not entirely unlimited: with some degree of carelessness, it's always possible to design a system that generates an uncomfortable amount of traffic even for modern networks.
+
+There are three obvious reasons for inflating network traffic:
+  * Clients query the data too frequently or cache it too little
+  * No data pagination is provided
+  * No limits are set on the data fields, or too large binary data (graphics, audio, video, etc.) is transmitted.
+
+All these problems must be addressed by setting limitations on field sizes and properly decomposing endpoints. If an entity comprises both “lightweight” data (such as the name and description of a recipe) and “heavy” data (such as the promotional picture of a beverage which might easily be a hundred times larger than the text fields), it's better to split endpoints and pass only a reference to the “heavy” data (e.g., a link to the image). This will also allow for setting different cache policies for different kinds of data.
+
+As a useful exercise, try modeling the typical lifecycle of a partner's app's main functionality (e.g., making a single order) to count the number of requests and the amount of traffic it requires. It might turn out that the high number of requests or increased network traffic consumption is due to a mistake in the design of state change notification endpoints. We will discuss this issue in detail in the “[Bidirectional Data Flow](#api-patterns-push-vs-poll)” chapter of “The API Patterns” section of this book.
+
+##### No Results Is a Result
+
+If a server processes a request correctly and no exceptional situation occurs, there should be no error. Unfortunately, the antipattern of throwing errors when no results are found is widespread.
+
+**Bad**
+
+```json
+POST /v1/coffee-machines/search
+{
+  "query": "lungo",
+  "location": <customer's location>
+}
+→ 404 Not Found
+{
+  "localized_message":
+    "No one makes lungo nearby"
+}
+```
+
+The response implies that a client made a mistake. However, in this case, neither the customer nor the developer made any mistakes. The client cannot know beforehand whether lungo is served in this location.
+
+**Better**:
+
+```json
+POST /v1/coffee-machines/search
+{
+  "query": "lungo",
+  "location": <customer's location>
+}
+→ 200 OK
+{
+  "results": []
+}
+```
+
+This rule can be summarized as follows: if an array is the result of the operation, then the emptiness of that array is not a mistake, but a correct response. (Of course, this applies if an empty array is semantically acceptable; an empty array of coordinates, for example, would be a mistake.)
+
+**NB**: This pattern should also be applied in the opposite case. If an array of entities is an optional parameter in the request, the empty array and the absence of the field must be treated differently. Let's consider the example:
+
+```json
+// Finds all coffee recipes
+// that contain no milk
+POST /v1/recipes/search
+{ "filter": { "no_milk": true } }
+→ 200 OK
+{
+  "results": [
+    { "recipe": "espresso", … }, 
+    { "recipe": "lungo", … }
+  ]
+}
+// Finds offers for
+// the given recipes
+POST /v1/offers/search
+{ 
+  "location", 
+  "recipes": ["espresso", "lungo"]
+}
+```
+
+Now let's imagine that the first request returned an empty array of results meaning there are no known recipes that satisfy the condition. Ideally, the developer would have expected this situation and installed a guard to prevent the call to the offer search function in this case. However, we can't be 100% sure they did. If this logic is missing, the application will make the following call:
+
+```json
+POST /v1/offers/search
+{
+  "location",
+  /* <em> */"recipes": []/* </em> */
+}
+```
+
+Often, the endpoint implementation ignores the empty recipe array and returns a list of offers as if no recipe filter was supplied. In our case, it means that the application seemingly ignores the user's request to show only milk-free beverages, which we consider unacceptable behavior. Therefore, the response to such a request with an empty array parameter should either be an error or an empty result.
+
+##### Validate Inputs
+
+The decision of whether to use an exception or an empty response in the previous example depends directly on what is stated in the contract. If the specification specifies that the `recipes` parameter must not be empty, an error should be generated (otherwise, you would violate your own spec).
+
+This rule applies not only to empty arrays but to every restriction specified in the contract. “Silently” fixing invalid values rarely makes practical sense.
+
+**Bad**:
+
+```json
+POST /v1/offers/search
+{
+  "location": {
+    "longitude": 20,
+    /* <em> */"latitude": 100/* </em> */
+  }
+}
+→ 200 OK
+{
+  // Offers for the
+  // [0, 90] point
+  "offers"
+}
+```
+
+As we can see, the developer somehow passed the wrong latitude value (100 degrees). Yes, we can “fix” it by reducing it to the closest valid value, which is 90 degrees, but who benefits from this? The developer will never learn about this mistake, and we doubt that coffee offers in the Northern Pole vicinity are relevant to users.
+
+**Better**:
+```json
+POST /v1/coffee-machines/search
+{
+  "location": {
+    "longitude": 20,
+    "latitude": 100
+  }
+}
+→ 400 Bad Request
+{
+  // Error description
+}
+```
+
+It is also useful to proactively notify partners about behavior that appears to be a mistake:
+
+```json
+POST /v1/coffee-machines/search
+{
+  "location": {
+    "latitude": 0,
+    "longitude": 0
+  }
+}
+→
+{
+  "results": [],
+  "warnings": [{
+    "type": "suspicious_coordinates",
+    "message": "Location [0, 0]↵
+      is probably a mistake"
+  }, {
+    "type": "unknown_field",
+    "message": "unknown field:↵
+      `force_convact_delivery`. Did you↵
+      mean `force_contact_delivery`?"
+  }]
+}
+```
+
+If it is not possible to add such notices, we can introduce a debug mode or strict mode in which notices are escalated:
+
+```json
+POST /v1/coffee-machines/search↵
+  /* <em> */?strict_mode=true/* </em> */
+{
+  "location": {
+    "latitude": 0,
+    "longitude": 0
+  }
+}
+→ 400 Bad Request
+{
+  "errors": [{
+    "type": "suspicious_coordinates",
+    "message": "Location [0, 0]↵
+      is probably a mistake"
+  }],
+  …
+}
+```
+
+If the [0, 0] coordinates are not an error, it makes sense to allow for manual bypassing of specific errors:
+
+```json
+POST /v1/coffee-machines/search↵
+  /* <em> */?strict_mode=true↵/* </em> */
+  /* <em> */&disable_errors=suspicious_coordinates/* </em> */
+```
+
+##### Default Values Must Make Sense
+
+Setting default values is one of the most powerful tools that help avoid verbosity when working with APIs. However, these values should help developers rather than hide their mistakes.
+
+**Bad**:
+
+```json
+POST /v1/coffee-machines/search
+{
+  "recipes": ["lungo"]
+  // User location is not set
+}
+→
+{
+  "results": [
+    // Results for some default
+    // location
+  ]
+}
+```
+
+Formally speaking, having such behavior is feasible: why not have a “default geographical coordinates” concept? However, in reality, such policies of “silently” fixing mistakes lead to absurd situations like “the null island” — the most visited place in the world.[ref Hrala, J. Welcome to Null Island, The Most 'Visited' Place on Earth That Doesn't Actually Exist](https://www.sciencealert.com/welcome-to-null-island-the-most-visited-place-that-doesn-t-exist) The more popular an API becomes, the higher the chances that partners will overlook these edge cases.
+
+**Better**:
+
+```json
+POST /v1/coffee-machines/search
+{
+  "recipes": ["lungo"]
+  // User location is not set
+}
+→ 400 Bad Request
+{
+  // Error description
+}
+```
+
+##### Errors Must Be Informative
+
+It is not enough to simply validate inputs; providing proper descriptions of errors is also essential. When developers write code, they encounter problems, sometimes quite trivial, such as invalid parameter types or boundary violations. The more convenient the error responses returned by your API, the less time developers will waste struggling with them, and the more comfortable working with the API will be for them.
+
+**Bad**:
+
+```json
+POST /v1/coffee-machines/search
+{
+  "recipes": ["lngo"],
+  "position": {
+    "latitude": 110,
+    "longitude": 55
+  }
+}
+→ 400 Bad Request
+{}
+```
+
+— of course, the mistakes (typo in `"lngo"`, wrong coordinates) are obvious. But the handler checks them anyway, so why not return readable descriptions?
+
+**Better**:
+
+```json
+{
+  "reason": "wrong_parameter_value",
+  "localized_message":
+    "Something is wrong.↵
+     Contact the developer of the app.",
+  "details": {
+    "checks_failed": [
+      {
+        "field": "recipe",
+        "error_type": "wrong_value",
+        "message":
+          "Unknown value: 'lngo'.↵
+           Did you mean 'lungo'?"
+      },
+      {
+        "field": "position.latitude",
+        "error_type": 
+          "constraint_violation",
+        "constraints": {
+          "min": -90,
+          "max": 90
+        },
+        "message":
+          "'position.latitude' value↵
+            must fall within↵
+            the [-90, 90] interval"
+      }
+    ]
+  }
+}
+```
+
+It is also a good practice to return all detectable errors at once to save developers time.
+
+##### Return Unresolvable Errors First
+
+```json
+POST /v1/orders
+{
+  "recipe": "lngo",
+  "offer"
+}
+→ 409 Conflict
+{ "reason": "offer_expired" }
+```
+
+```json
+// Request repeats
+// with the renewed offer
+POST /v1/orders
+{
+  "recipe": "lngo",
+  "offer"
+}
+→ 400 Bad Request
+{ "reason": "recipe_unknown" }
+```
+— what was the point of renewing the offer if the order cannot be created anyway? For the user, it will look like meaningless efforts (or meaningless waiting) that will ultimately result in an error regardless of what they do. Yes, maintaining error priorities won't change the result — the order still cannot be created. However, first, users will spend less time (also make fewer mistakes and contribute less to the error metrics) and second, diagnostic logs for the problem will be much easier to read.
+
+##### Prioritize Significant Errors
+
+If the errors under consideration are resolvable (i.e., the user can take some actions and still get what they need), you should first notify them of those errors that will require more significant state updates.
+
+**Bad**:
+
+```json
+POST /v1/orders
+{
+  "items": [{
+    "item_id": "123",
+    "price": "0.10"
+  }]
+}
+→
+409 Conflict
+{
+  // Error: while the user
+  // was making an order,
+  // the product price has changed
+  "reason": "price_changed",
+  "details": [{
+    "item_id": "123",
+    "actual_price": "0.20"
+  }]
+}
+```
+
+```json
+// Repeat the request
+// to get the actual price
+POST /v1/orders
+{
+  "items": [{
+    "item_id": "123",
+    "price": "0.20"
+  }]
+}
+→
+409 Conflict
+{
+  // Error: the user already has
+  // too many parallel orders,
+  // creating a new one 
+  // is prohibited
+  "reason": "order_limit_exceeded",
+  "localized_message":
+    "Order limit exceeded"
+}
+```
+
+— what was the point of showing the price changed dialog, if the user still can't make an order, even if the price is right? When one of the concurrent orders has finished, and the user is able to commit another one, prices, item availability, and other order parameters will likely need another correction.
+
+##### Analyze Potential Error Deadlocks
+
+In complex systems, it might happen that resolving one error leads to another one, and vice versa.
+
+```json
+// Create an order
+// with paid delivery
+POST /v1/orders
+{
+  "items": 3,
+  "item_price": "3000.00"
+  "currency_code": "MNT",
+  "delivery_fee": "1000.00",
+  "total": "10000.00"
+}
+→ 409 Conflict
+// Error: if the order sum
+// is more than 9000 tögrögs, 
+// delivery must be free
+{
+  "reason": "delivery_is_free"
+}
+```
+
+```json
+// Create an order
+// with free delivery
+POST /v1/orders
+{
+  "items": 3,
+  "item_price": "3000.00"
+  "currency_code": "MNT",
+  "delivery_fee": "0.00",
+  "total": "9000.00"
+}
+→ 409 Conflict
+// Error: the minimal order sum
+// is 10000 tögrögs
+{
+  "reason": "below_minimal_sum",
+  "currency_code": "MNT",
+  "minimal_sum": "10000.00"
+}
+```
+
+You may note that in this setup the error can't be resolved in one step: this situation must be elaborated on, and either order calculation parameters must be changed (discounts should not be counted against the minimal order sum), or a special type of error must be introduced.
+
+##### Specify Caching Policies and Lifespans of Resources
+
+In modern systems, clients usually have their own state and almost universally cache results of requests. Every entity has some period of autonomous existence, whether session-wise or long-term. So it's highly desirable to provide clarifications: it should be understandable how the data is supposed to be cached, if not from operation signatures, but at least from the documentation.
+
+Let's emphasize that we understand “cache” in the extended sense: which variations of operation parameters (not just the request time, but other variables as well) should be considered close enough to some previous request to use the cached result?
+
+
+**Bad**:
+
+```json
+// Returns lungo prices including
+// delivery to the specified location
+GET /price?recipe=lungo↵
+  &longitude={longitude}↵
+  &latitude={latitude}
+→
+{ "currency_code", "price" }
+```
+Two questions arise:
+  * Until when is the price valid?
+  * In what vicinity of the location is the price valid?
+
+**Better**: you may use standard protocol capabilities to denote cache options, such as the `Cache-Control` header. If you need caching in both temporal and spatial dimensions, you should do something like this:
+
+```json
+GET /price?recipe=lungo↵
+  &longitude={longitude}↵
+  &latitude={latitude}
+→
+{
+  "offer": {
+    "id",
+    "currency_code",
+    "price",
+    "conditions": {
+      // Until when the price is valid
+      "valid_until",
+      // In what vicinity 
+      // the price is valid
+      // * city
+      // * geographical object
+      // * …
+      "valid_within"
+    }
+  }
+}
+```
+
+**NB**: Sometimes, developers set very long caching times for immutable resources, spanning a year or even more. It makes little practical sense as the server load will not be significantly reduced compared to caching for, let's say, one month. However, the cost of a mistake increases dramatically: if wrong data is cached for some reason (for example, a `404` error), this problem will haunt you for the next year or even more. We would recommend selecting reasonable cache parameters based on how disastrous invalid caching would be for the business.
+
+##### Keep the Precision of Fractional Numbers Intact
+
+If the protocol allows, fractional numbers with fixed precision (such as money sums) must be represented as a specially designed type like `Decimal` or its equivalent.
+
+If there is no `Decimal` type in the protocol (for instance, JSON doesn't have one), you should either use integers (e.g., apply a fixed multiplier) or strings.
+
+If converting to a float number will certainly lead to a loss of precision (for example, if we translate “20 minutes” into hours as a decimal fraction), it's better to either stick to a fully precise format (e.g., use `00:20` instead of `0.33333…`), or provide an SDK to work with this data. As a last resort, describe the rounding principles in the documentation.
+
+##### All API Operations Must Be Idempotent
+
+Let us remind the reader that idempotency is the following property: repeated calls to the same function with the same parameters won't change the resource state. Since we are primarily discussing client-server interaction, repeating requests in case of network failure is not something exceptional but a common occurrence.
+
+If an endpoint's idempotency can not be naturally assured, explicit idempotency parameters must be added in the form of a token or a resource version.
+
+**Bad**:
+
+```json
+// Creates an order
+POST /orders
+```
+
+A second order will be produced if the request is repeated!
+
+**Better**:
+
+```json
+// Creates an order
+POST /v1/orders
+X-Idempotency-Token: <token>
+```
+
+The client must retain the `X-Idempotency-Token` in case of automated endpoint retrying. The server must check whether an order created with this token already exists.
+
+**Alternatively**:
+
+```json
+// Creates order draft
+POST /v1/orders/drafts
+→
+{ "draft_id" }
+```
+
+```json
+// Confirms the draft
+PUT /v1/orders/drafts↵
+  /{draft_id}/confirmation
+{ "confirmed": true }
+```
+
+Creating order drafts is a non-binding operation as it doesn't entail any consequences, so it's fine to create drafts without the idempotency token. Confirming drafts is a naturally idempotent operation, with the `draft_id` serving as its idempotency key.
+
+**Another alternative** is implementing optimistic concurrency control, which we will discuss in the “[Synchronization Strategies](#api-patterns-sync-strategies)” chapter.
+
+It is also worth mentioning that adding idempotency tokens to naturally idempotent handlers is not meaningless. It allows distinguishing between two situations:
+  * The client did not receive the response due to network issues and is now repeating the request.
+  * The client made a mistake by posting conflicting requests.
+
+Consider the following example: imagine there is a shared resource, characterized by a revision number, and the client tries to update it.
+
+```json
+POST /resource/updates
+{
+  "resource_revision": 123
+  "updates"
+}
+```
+
+The server retrieves the actual resource revision and finds it to be 124. How should it respond correctly? Returning the `409 Conflict` code will force the client to try to understand the nature of the conflict and somehow resolve it, potentially confusing the user. It is also unwise to fragment the conflict-resolving algorithm and allow each client to implement it independently.
+
+The server can compare request bodies, assuming that identical requests mean retrying. However, this assumption might be dangerously wrong (for example if the resource is a counter of some kind, repeating identical requests is routine).
+
+Adding the idempotency token (either directly as a random string or indirectly in the form of drafts) solves this problem.
+
+```json
+POST /resource/updates
+X-Idempotency-Token: <token>
+{
+  "resource_revision": 123
+  "updates"
+}
+→ 201 Created
+```
+
+— the server determined that the same token was used in creating revision 124 indicating the client is retrying the request.
+
+Or:
+
+```json
+POST /resource/updates
+X-Idempotency-Token: <token>
+{
+  "resource_revision": 123
+  "updates"
+}
+→ 409 Conflict
+```
+
+— the server determined that a different token was used in creating revision 124 indicating an access conflict.
+
+Furthermore, adding idempotency tokens not only fixes the issue but also enables advanced optimizations. If the server detects an access conflict, it could attempt to resolve it by “rebasing” the update like modern version control systems do, and return a `200 OK` instead of a `409 Conflict`. This logic dramatically improves the user experience, being fully backward-compatible, and helps avoid code fragmentation for conflict resolution algorithms.
+
+However, be warned: clients are bad at implementing idempotency tokens. Two common problems arise:
+  * You can't really expect clients to generate truly random tokens. They might share the same seed or simply use weak algorithms or entropy sources. Therefore constraints must be placed on token checking, ensuring that tokens are unique to the specific user and resource rather than globally.
+  * Client developers might misunderstand the concept and either generate new tokens for each repeated request (which degrades the UX but is otherwise harmless) or conversely use a single token in several requests (which is not harmless at all and could lead to catastrophic disasters; this is another reason to implement the suggestion in the previous clause). Writing an SDK and/or detailed documentation is highly recommended.
+
+##### Don't Invent Security Practices
+
+If the author of this book were given a dollar each time he had to implement an additional security protocol invented by someone, he would be retired by now. API developers' inclination to create new signing procedures for requests or complex schemes of exchanging passwords for tokens is both obvious and meaningless.
+
+**First**, there is no need to reinvent the wheel when it comes to security-enhancing procedures for various operations. All the algorithms you need are already invented, just adopt and implement them. No self-invented algorithm for request signature checking can provide the same level of protection against a Manipulator-in-the-middle (*MitM*) attack[ref Manipulator-in-the-middle Attack](https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack) as a mutual TLS authentication with certificate pinning.[ref Mutual Authentication. mTLS](https://en.wikipedia.org/wiki/Mutual_authentication#mTLS)
+
+**Second**, assuming oneself to be an expert in security is presumptuous and dangerous. New attack vectors emerge daily, and staying fully aware of all actual threats is a full-time job. If you do something different during workdays, the security system you design will contain vulnerabilities that you have never heard about — for example, your password-checking algorithm might be susceptible to a timing attack[ref Timing Attack](https://en.wikipedia.org/wiki/Timing_attack) or your webserver might be vulnerable to a request splitting attack.[ref HTTP Request Splitting](https://capec.mitre.org/data/definitions/105.html)
+
+The OWASP Foundation compiles a list of the most common vulnerabilities in APIs every year,[ref OWASP API Security Project](https://owasp.org/www-project-api-security/) which we strongly recommend studying. We also recommend a definitive work by Andrew Hoffman[ref:hoffman-web-application-security]() for everyone interested in Web security.
+
+And just in case: all APIs must be provided over TLS 1.2 or higher (preferably 1.3).
+
+##### Help Partners With Security
+
+It is equally important to provide interfaces to partners that minimize potential security problems for them.
+
+**Bad**:
+
+```json
+// Allows partners to set
+// descriptions for their beverages
+PUT /v1/partner-api/{partner-id}↵
+  /recipes/lungo/info
+"<script>alert(document.cookie)</script>"
+```
+
+```json
+// Returns the desciption
+GET /v1/partner-api/{partner-id}↵
+  /recipes/lungo/info
+→
+"<script>alert(document.cookie)</script>"
+```
+
+Such an interface directly creates a stored XSS vulnerability that potential attackers might exploit. While it is the partners' responsibility to sanitize inputs and display them safely, the large numbers work against you: there will always be inexperienced developers who are unaware of this vulnerability or haven't considered it. In the worst case, this stored XSS might affect all API consumers, not just a specific partner.
+
+In these situations, we recommend, first, sanitizing the data if it appears potentially exploitable (e.g. if it is meant to be displayed in the UI and/or is accessible through a direct link). Second, limiting the blast radius so that stored exploits in one partner's data space can't affect other partners. If the functionality of unsafe data input is still required, the risks must be explicitly addressed:
+
+**Better** (though not perfect):
+
+```json
+// Allows for setting a potentially
+// unsafe description for a beverage
+PUT /v1/partner-api/{partner-id}↵
+  /recipes/lungo/info
+/* <em> */X-Dangerously-Disable-Sanitizing: true/* </em> */
+"<script>alert(document.cookie)</script>"
+```
+
+```json
+// Returns the potentially
+// unsafe description
+GET /v1/partner-api/{partner-id}↵
+  /recipes/lungo/info
+/* <em> */X-Dangerously-Allow-Raw-Value: true/* </em> */
+→
+"<script>alert(document.cookie)</script>"
+```
+
+One important finding is that if you allow executing scripts via the API, always prefer typed input over unsafe input:
+
+**Bad**:
+
+```json
+POST /v1/run/sql
+{
+  // Passes the full script
+  "query": "INSERT INTO data (name)↵
+    VALUES ('Robert');↵
+    DROP TABLE students;--')"
+}
+```
+
+**Better**:
+
+```json
+POST /v1/run/sql
+{
+  // Passes the script template
+  "query": "INSERT INTO data (name)↵
+    VALUES (?)",
+  // and the parameters to set
+  "values": [
+    "Robert');↵
+     DROP TABLE students;--"
+  ]
+}
+```
+
+In the second case, you will be able to sanitize parameters and avoid SQL injections in a centralized manner. Let us remind the reader that sanitizing must be performed with state-of-the-art tools, not self-written regular expressions.
+
+##### Use Globally Unique Identifiers
+
+It's considered good practice to use globally unique strings as entity identifiers, either semantic (e.g., "lungo" for beverage types) or random ones (e.g., UUID-4[ref Universally Unique Identifier. Version 4 (random)](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))). It might turn out to be extremely useful if you need to merge data from several sources under a single identifier.
+
+In general, we tend to advise using URN-like identifiers, e.g. `urn:order:<uuid>` (or just `order:<uuid>`). That helps a lot in dealing with legacy systems with different identifiers attached to the same entity. Namespaces in URNs help to quickly understand which identifier is used and if there is a usage mistake.
+
+One important implication: **never use increasing numbers as external identifiers**. Apart from the abovementioned reasons, it allows counting how many entities of each type there are in the system. Your competitors will be able to calculate the precise number of orders you have each day, for example.
+
+##### Stipulate Future Restrictions
+
+With the growth of API popularity, it will inevitably become necessary to introduce technical means of preventing illicit API usage, such as displaying captchas, setting honeypots, raising “too many requests” exceptions, installing anti-DDoS proxies, etc. All these things cannot be done if the corresponding errors and messages were not described in the docs from the very beginning.
+
+You are not obliged to actually generate those exceptions, but you might stipulate this possibility in the docs. For example, you might describe the `429 Too Many Requests` error or captcha redirect but implement the functionality when it's actually needed.
+
+It is extremely important to leave room for multi-factor authentication (such as TOTP, SMS, or 3D-secure-like technologies) if it's possible to make payments through the API. In this case, it's a must-have from the very beginning.
+
+**NB**: This rule has an important implication: **always separate endpoints for different API families**. (This may seem obvious, but many API developers fail to follow it.) If you provide a server-to-server API, a service for end users, and a widget to be embedded in third-party apps — all these APIs must be served from different endpoints to allow for different security measures (e.g., mandatory API keys, forced login, and solving captcha respectively).
+
+##### No Bulk Access to Sensitive Data
+
+If it's possible to access the API users' personal data, bank card numbers, private messages, or any other kind of information that, if exposed, might seriously harm users, partners, and/or the API vendor, there must be *no* methods for bulk retrieval of the data, or at least there must be rate limiters, page size restrictions, and ideally, multi-factor authentication in front of them.
+
+Often, making such offloads on an ad-hoc basis, i.e., bypassing the API, is a reasonable practice.
+
+##### Localization and Internationalization
+
+All endpoints must accept language parameters (e.g., in the form of the `Accept-Language` header), even if they are not currently being used.
+
+It is important to understand that the user's language and the user's jurisdiction are different things. Your API working cycle must always store the user's location. It might be stated either explicitly (requests contain geographical coordinates) or implicitly (initial location-bound request initiates session creation which stores the location) — but no correct localization is possible in the absence of location data. In most cases reducing the location to just a country code is enough.
+
+The thing is that lots of parameters that potentially affect data formats depend not on language but on the user's location. To name a few: number formatting (integer and fractional part delimiter, digit groups delimiter), date formatting, the first day of the week, keyboard layout, measurement units system (which might be non-decimal!), etc. In some situations, you need to store two locations: the user's residence location and the user's “viewport.” For example, if a US citizen is planning a European trip, it's convenient to show prices in the local currency but measure distances in miles and feet.
+
+Sometimes explicit location passing is not enough since there are lots of territorial conflicts in the world. How the API should behave when user coordinates lie within disputed regions is a legal matter, regretfully. The author of this book once had to implement a “state A territory according to state B official position” concept.
+
+**Important**: mark a difference between localization for end users and localization for developers. In the examples above, the `localized_message` field is meant for the user; the app should show it if no specific handler for this error exists in the client code. This message must be written in the user's language and formatted according to the user's location. But the `details.checks_failed[].message` is meant to be read by developers examining the problem. So it must be written and formatted in a manner that suits developers best — which usually means “in English,” as English is a *de facto* standard in software development.
+
+It is worth mentioning that the `localized_` prefix in the examples is used to differentiate messages to users from messages to developers. A concept like that must be, of course, explicitly stated in your API docs.
+
+And one more thing: all strings must be UTF-8, no exclusions.

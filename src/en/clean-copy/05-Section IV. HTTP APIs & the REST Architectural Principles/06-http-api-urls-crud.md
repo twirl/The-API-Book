@@ -1,0 +1,184 @@
+### Designing a Nomenclature of URLs. The CRUD Operations
+
+As we noted on several occasions in the previous chapters, neither the HTTP and URL standards nor REST architectural principles prescribe concrete semantics for the meaningful parts of a URL (notably, path fragments and key-value pairs in the query). **The rules for organizing URLs in an HTTP API exist *only* to improve the API's readability and consistency from the developers' perspective**. However, this doesn't mean they are unimportant. Quite the opposite: URLs in HTTP APIs are a means of describing abstraction levels and entities' responsibility areas. A well-designed API hierarchy should be reflected in a well-designed URL nomenclature.
+
+**NB**: The lack of specific guidance from the specification editors naturally led to developers inventing it themselves. Many of these spontaneous practices can be found on the Internet, such as the requirement to use only nouns in URLs. They are often claimed to be a part of the standards or REST architectural principles (which they are not). Nevertheless, deliberately ignoring such self-proclaimed “best practices” is a rather risky decision for an API vendor as it increases the chances of being misunderstood.
+
+Traditionally, the following semantics are considered to be the default:
+  * Path components (i.e., fragments between `/` symbols) are used to organize nested resources, such as `/partner/{id}/coffee-machines/{id}`. A path can be further extended by adding new suffixes to indicate subordinate sub-resources.
+  * Query parameters are used to indicate non-strict connections (i.e., “many-to-many” relations such as `/recipes/?partner=<partner_id>`) or as a means to pass operation parameters (`/search/?recipe=lungo`).
+
+This convention allows for reflecting almost any API's entity nomenclature decently and it is more than reasonable to follow it (and it's unreasonable to defiantly neglect it). However, this indistinctly defined logic inevitably leads to numerous variants of interpreting it:
+  
+  1. Where do metadata of operations end and “regular” data begin, and how acceptable is it to duplicate fields in both places? For example, one common practice in HTTP APIs is to indicate the type of returned data by adding an “extension” to the URL, similar to file names in file systems (i.e., when accessing the resource `/v1/orders/{id}.xml`, the response will be in XML format, and when accessing `/v1/orders/{id}.json`, it will be in JSON format). On the one hand, `Accept*` headers are intended to determine the data format. On the other hand, code readability is clearly improved by introducing a “format” parameter directly in the URL.
+
+  2. As a consequence of the previous point, how should the version of the API itself be correctly indicated in an HTTP API? At least three options can be suggested, each of which fully complies with the letter of the standard:
+      * A path parameter: `/v1/orders/{id}`
+      * A query parameter: `/orders/{id}?version=1`
+      * A header:
+
+          ```json
+          GET /orders/{id} HTTP/1.1
+          X-OurCoffeeAPI-Version: 1
+          ```
+          
+      Even more exotic options can be added here, such as specifying the schema in a customized media type or request protocol.
+
+  3. How exactly should the endpoints connecting two entities lacking a clear relation between them be organized? For example, how should a URL for preparing a lungo on a specific coffee machine look?
+      * `/coffee-machines/{id}/recipes/lungo/prepare`
+      * `/recipes/lungo/coffee-machines/{id}/prepare`
+      * `/coffee-machines/{id}/prepare?recipe=lungo`
+      * `/recipes/lungo/prepare?coffee_machine_id=<id>`
+      * `/prepare?coffee_machine_id=<id>&recipe=lungo`
+      * `/action=prepare&coffee_machine_id=<id>&recipe=lungo`
+
+      All these options are semantically viable and generally speaking equitable.
+
+  4. How strictly should the literal interpretation of the `VERB /resource` construct be enforced? If we agree to follow the “only nouns in the URLs” rule (logically, a verb cannot be applied to a verb, right?) then we should use `preparer` or `preparator` in the examples above (and the `/action=prepare&coffee_machine_id=<id>&recipe=lungo` is unacceptable at all as there is no object to act upon). However, this adds visual noise in the form of “ator” suffixes but definitely doesn't make the code more concise or readable.
+
+  5. If the call signature implies that the operation is by default unsafe or non-idempotent, does it mean that the operation *must* be unsafe or non-idempotent? As HTTP verbs bear double semantics (the meaning of the operation vs. possible side effects), it implies ambiguity in organizing APIs. Let's consider the `/v1/search` resource from our study API. Which verb should be used to request it?
+      * On one hand, `GET /v1/search?query=<search query>` explicitly declares that there are no side effects (no state is overwritten) and the results can be cached (given that all significant parameters are passed as parts of the URL).
+      * On the other hand, a response to a `GET /v1/search` request must contain *a representation of the `/search` resource*. Are search results a representation of a search engine? The meaning of a “search” operation is much better described as “processing the representation enclosed in the request according to the resource's own specific semantics,” which is exactly the definition of the `POST` method. Additionally, how could we cache search requests? The results page is dynamically formed from a plethora of various sources, and a subsequent request with the same query might yield a different result.
+
+      In other words, with any operation that runs an algorithm rather than returns a predefined result (such as listing offers relevant to a search phrase), we will have to decide what to choose: following verb semantics or indicating side effects? Caching the results or hinting that the results are generated on the fly?
+
+      **NB**: The authors of the standard are also concerned about this dichotomy and have finally proposed the `QUERY` HTTP method[ref The HTTP QUERY Method](https://www.ietf.org/archive/id/draft-ietf-httpbis-safe-method-w-body-02.html), which is basically a safe (i.e., non-modifying) version of `POST`. However, we do not expect it to gain widespread adoption just as the existing `SEARCH` verb[ref Web Distributed Authoring and Versioning (WebDAV) SEARCH](https://www.rfc-editor.org/rfc/rfc5323) did not.
+
+Unfortunately, we don't have simple answers to these questions. Within this book, we adhere to the following approach: the call signature should, first and foremost, be concise and readable. Complicating signatures for the sake of abstract concepts is undesirable. In relation to the mentioned issues, this means that:
+  1. Operation metadata should not change the meaning of the operation. If a request reaches the final microservice without any headers at all, it should still be executable, although some auxiliary functionality may degrade or be absent.
+
+  2. We use versioning in the path for one simple reason: all other methods make sense only if, when changing the major version of the protocol, the URL nomenclature remains the same. However, if the resource nomenclature can be preserved, there is no need to break backward compatibility.
+  3. Hierarchies are indicated if they are unequivocal. If a low-level entity is a full subordinate of a higher-level entity, the relation will be expressed with nested path fragments.
+      * If there are doubts about the hierarchy persisting during further development of the API, it is more convenient to create a new root path prefix rather than employ nested paths.
+  4. For “cross-domain” operations (i.e., when it is necessary to refer to entities of different abstraction levels within one request) it is better to have a dedicated resource specifically for this operation (e.g., in the example above, we would prefer the `/prepare?coffee_machine_id=<id>&recipe=lungo` signature).
+  5. The semantics of the HTTP verbs take priority over false non-safety / non-idempotency warnings. Furthermore, the author of this book prefers using `POST` to indicate any unexpected side effects of an operation, such as high computational complexity, even if it is fully safe.
+
+**NB**: Passing variables as either query parameters or path fragments affects not only readability. Let's consider the example from the previous chapter and imagine that gateway D is implemented as a stateless proxy with a declarative configuration. Then receiving a request like this:
+  * `GET /v1/state?user_id=<user_id>`
+
+      and transforming it into a pair of nested sub-requests:
+
+  * `GET /v1/profiles?user_id=<user_id>`
+  * `GET /v1/orders?user_id=<user_id>`
+
+      would be much more convenient than extracting identifiers from the path or some header and putting them into query parameters. The former operation [replacing one path with another] is easily described declaratively and is supported by most server software out of the box. On the other hand, retrieving data from various components and rebuilding requests is a complex functionality that most likely requires a gateway supporting scripting languages and/or plugins for such manipulations. Conversely, the automated creation of monitoring panels in services like the Prometheus+Grafana bundle (or basically any other log analyzing tool) is much easier to organize by path prefix than by a synthetic key computed from request parameters.
+
+      All this leads us to the conclusion that maintaining an identical URL structure when paths are fixed and all the parameters are passed as query parameters will result in an even more uniform interface, although less readable and semantic. In internal systems, preferring the convenience of usage over readability is sometimes an obvious decision. In public APIs, we would rather discourage implementing this approach.
+
+#### The CRUD Operations
+
+One of the most popular tasks solved by exposing HTTP APIs is implementing CRUD interfaces. The “CRUD” acronym (which stands for **C**reate, **R**ead, **U**pdate, **D**elete) was popularized in 1983 by James Martin and gained a second wind with HTTP APIs gaining widespread acclaim. The key concept is that every CRUD operation matches a specific HTTP verb:
+  * The “create” operation corresponds to the HTTP `POST` method.
+  * The “read” operation corresponds to returning a representation of the resource via the `GET` method.
+  * The “update” operation corresponds to overwriting a resource with either the `PUT` or `PATCH` method.
+  * The “delete” operation corresponds to deleting a resource with the `DELETE` method.
+
+**NB**: In fact, this correspondence serves as a mnemonic to choose the appropriate HTTP verb for each operation. However, we must warn the reader that verbs should be chosen according to their definition in the standards, not based on mnemonic rules. For example, it might seem like deleting the third element in a list should be organized via the `DELETE` method:
+  * `DELETE /v1/list/{list_id}/?position=3`
+
+      However, as we remember, doing so is a grave mistake: first, such a call is non-idempotent, and second, it violates the `GET` / `DELETE` consistency principle.
+
+The CRUD/HTTP correspondence might appear convenient as every resource is forced to have its own URL and each operation has a suitable verb. However, upon closer examination, we will quickly understand that the correspondence presents resource manipulation in a very simplified, and, even worse, poorly extensible way.
+
+##### Creating
+
+Let's start with the resource creation operation. As we remember from the “[Synchronization Strategies](#api-patterns-sync-strategies)” chapter, in any important subject area, creating entities must be an idempotent procedure that ideally allows for controlling concurrency. In the HTTP API paradigm, idempotent creation could be implemented using one of the following three approaches:
+  1. Through the `POST` method with passing an idempotency token (in which capacity the resource `ETag` might be employed):
+
+      ```json
+      POST /v1/orders/?user_id=<user_id> HTTP/1.1
+      If-Match: <revision>
+
+      { … }
+      ```
+  
+  2. Through the `PUT` method, implying that the entity identifier is generated by the client. Revision still could be used for controlling concurrency; however, the idempotency token is the URL itself:
+
+      ```json
+      PUT /v1/orders/{order_id} HTTP/1.1
+      If-Match: <revision>
+
+      { … }
+      ```
+
+  
+  3. By creating a draft with the `POST` method and then committing it with the `PUT` method:
+
+      ```json
+      POST /v1/drafts HTTP/1.1
+
+      { … }
+      →
+      HTTP/1.1 201 Created
+      Location: /v1/drafts/{id}
+      ```
+      
+      ```json
+      PUT /v1/drafts/{id}/commit
+      If-Match: <revision>
+
+      {"status": "confirmed"}
+      →
+      HTTP/1.1 200 OK
+      Location: /v1/orders/{id}
+      ```
+
+Approach \#2 is rarely used in modern systems as it requires trusting the client to generate identifiers properly. If we consider options \#1 and \#3, we must note that the latter conforms to HTTP semantics better as `POST` requests are considered non-idempotent by default and should not be repeated in case of a timeout or server error. Therefore, repeating a request would appear as a mistake from an external observer's perspective, and it could indeed become one if the server changes the `If-Match` header check policy to a more relaxed one. Conversely, repeating a `PUT` request (assuming that getting a timeout or an error while performing a “heavy” order creation operation is much more probable than in the case of a “lightweight” draft creation) could be automated and would not result in order duplication even if the revision check is disabled.
+
+##### Reading
+
+Let's continue. The reading operation is at first glance straightforward:
+  * `GET /v1/orders/{id}`.
+
+However, upon closer inspection, it becomes less simple. First, the client should have a method to retrieve the ongoing orders executed on behalf of the user, which requires creating a separate enumerator resource:
+  * `GET /v1/orders/?user_id=<user_id>`.
+
+Returning potentially long lists in a single response is a bad idea, so we will need pagination:
+  * `GET /v1/orders/?user_id=<user_id>&cursor=<cursor>`.
+
+If there is a long list of orders, the user will require filters to navigate it. Let's say we introduce a beverage type filter:
+  * `GET /v1/orders/?user_id=<user_id>&recipe=lungo`.
+
+However, if the user needs to see a single list containing both latte and lungo orders, this interface becomes much less viable as there is no universally adopted technique for passing structures in that are more complex than key-value pairs. Soon, we will face the need to have a search endpoint with rich semantics, which naturally should be represented as a `POST` request body.
+
+Additionally, if some media data could be attached to an order (such as photos), a separate endpoint to expose them should be developed:
+  * `GET /v1/orders/{order_id}/attachments/{id}`.
+
+##### Updating
+
+The problem of partial updates was discussed in detail in the [corresponding chapter](#api-patterns-partial-updates) of “The API Patterns” section. To quickly recap:
+  * The concept of fully overwriting resources with `PUT` is viable but soon faces problems when working with calculated or immutable fields and organizing collaborative editing. It is also suboptimal in terms of traffic consumption.
+  * Partially updating a resource using the `PATCH` method is potentially non-idempotent (and likely non-transitive), and the aforementioned concerns regarding automatic retries are applicable to it as well.
+
+If we need to update a complex entity, especially if collaborative editing is needed, we will soon find ourselves leaning towards one of the following two approaches:
+  * Decomposing the `PUT` functionality into a set of atomic nested handlers (like `PUT /v1/orders/{id}/address`, `PUT /v1/orders/{id}/volume`, etc.), one for each specific operation.
+  * Introducing a resource to process a list of changes encoded in a specially designed format. Likely, this resource will also require implementing a draft/commit scheme via a `POST` + `PUT` pair of methods.
+
+If media data is attached to an entity, we will additionally require more endpoints to amend this metadata.
+
+##### Deleting
+
+Finally, with deleting resources the situation is simple: in modern services, data is never deleted, only archived or marked as deleted. Therefore, instead of a `DELETE /v1/orders/{id}` endpoint there should be `PUT /v1/orders/{id}/archive` or `PUT /v1/archive?order=<order_id>`.
+
+#### Real-Life CRUD Operations
+
+This discourse is not intended to be perceived as criticizing the idea of CRUD operations itself. We simply point out that in complex subject areas, cutting edges and sticking to some mnemonic rules rarely play out. We started with the idea of having two URLs and four or five methods to apply to them:
+  * `/v1/orders/` to be acted upon with `POST`
+  * `/v1/orders/{id}` to be acted upon with `GET` / `PUT` / `DELETE` / optionally `PATCH`.
+
+However, if we add the following requirements:
+  * Concurrency control in entity creation
+  * Collaborative editing
+  * Archiving entities
+  * Searching entities with filters
+then we end up with the following nomenclature of 8 URLs and 9-10 methods:
+  * `GET /v1/orders/?user_id=<user_id>` to retrieve the ongoing orders, perhaps with additional simple filters
+  * `/v1/orders/drafts/?user_id=<user_id>` to be acted upon with `POST` to create an order draft and with `GET` to retrieve existing drafts and the revision
+  * `PUT /v1/orders/drafts/{id}/commit` to commit the draft
+  * `GET /v1/orders/{id}` to retrieve the newly created order
+  * `POST /v1/orders/{id}/drafts` to create a draft for applying partial changes
+  * `PUT /v1/orders/{id}/drafts/{id}/commit` to apply the drafted changes
+  * `/v1/orders/search?user_id=<user_id>` to be acted upon with either `GET` (for simple cases) or `POST` (in more complex scenarios) to search for orders
+  * `PUT /v1/orders/{id}/archive` to archive the order
+
+plus presumably a set of operations like `POST /v1/orders/{id}/cancel` for executing atomic actions on entities. This is what is likely to happen in real life: the idea of CRUD as a methodology for describing typical operations applied to resources with a small set of uniform verbs quickly evolves towards a bucket of different endpoints, each covering a specific aspect of working with the entity during its lifecycle. This only proves that mnemonics are just helpful starting points; each situation requires a thorough understanding of the subject area and designing an API that fits it. However, if your task is to develop a “universal” interface that fits every kind of entity, we would strongly suggest starting with something like the ten-method nomenclature described above.

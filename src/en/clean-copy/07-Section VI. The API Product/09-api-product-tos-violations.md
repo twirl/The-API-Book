@@ -1,0 +1,70 @@
+### The Technical Means of Preventing ToS Violations
+
+Implementing the centralized system to prevent partner endpoint-bound fraud, as described in the previous chapter, faces practical challenges.
+
+The task of filtering out illicit API requests comprises three steps:
+  * Identifying suspicious users
+  * Optionally, requesting an additional authentication factor
+  * Making decisions and applying access restrictions.
+
+##### Identifying Suspicious Users
+
+Generally speaking, there are two approaches we might take: the static one and the dynamic (behavioral) one.
+
+*Statically* we monitor suspicious activity surges, as described in the previous chapter, marking an unusually high density of requests coming from specific networks or `Referer`s (actually, *any* piece of information suits if it splits users into more or less independent groups: for example, OS version or system language would suffice if you can gather those).
+
+Behavioral analysis involves examining the history of requests made by a specific user, i.e., searching for non-typical patterns, such as an “inhuman” order of traversing endpoints or too small pauses between requests.
+
+**Importantly**, when we talk about “users,” we will have to create duplicate systems to observe them using both tokens (cookies, logins, phone numbers) and IP addresses, as malefactors aren't obliged to preserve the tokens between requests or might keep a pool of them to impede their exposure.
+
+##### Requesting an Additional Authentication Factor
+
+As both static and behavioral analyses are heuristic, it's highly desirable not to make decisions based solely on their outcome but rather ask the suspicious users to additionally prove they're making legitimate requests. Implementing such a mechanism significantly improves the quality of an anti-fraud system, increasing system sensitivity and enabling proactive defense by requiring users to pass tests in advance.
+
+In the case of services for end users, the main method of acquiring the second factor is redirecting to a captcha page. In the case of APIs it might be problematic, especially if you initially neglected the “Stipulate Restrictions” rule we've given in the “[Describing Final Interfaces](#api-design-describing-interfaces)” chapter. In many cases, you may need to delegate this responsibility to partners, meaning *partners* will display captchas and identify users based on signals received from the API endpoints. This will, of course, significantly impair the convenience of working with the API.
+
+**NB**: Instead of captchas, other actions introducing additional authentication factors could be used. It might be the phone number confirmation or the second step of the 3D-Secure protocol. The important part is that requesting an additional authentication step must be stipulated in the program interface, as it can't be added later in a backward-compatible manner.
+
+Other popular mechanics of identifying robots include offering bait (“honeypot”) or employing execution environment checks (starting from rather trivial ones like executing JavaScript on the webpage and ending with sophisticated techniques of checking application integrity checksums).
+
+##### Restricting Access
+
+Don't be deceived by the illusion of having a wide range of technical means to identify fraudulent users; you will soon realize the lack of effective methods to restrict them. Banning them based on cookies / `Referer` / `User-Agent` makes little to no impact as this data is supplied by clients and can be easily forged. In the end, you have four mechanisms for suppressing illegal activities:
+  * Banning users by IP addresses (networks, autonomous systems)
+  * Requiring mandatory user identification (maybe tiered: login / login with a confirmed phone number / login with a confirmed identity / login with a confirmed identity and biometrics / etc.)
+  * Returning fake responses
+  * Filing administrative abuse reports.
+
+The problem with the first option is the collateral damage you will inflict, especially when banning subnets.
+
+The second option, while rational, is often impractical for real APIs because not every partner will agree with the approach, and certainly many users will churn off. This will also require compliance with existing personal data laws.
+
+The third option is the most effective one in technical terms as it allows putting the ball in the malefactor's court: it is now up to them to figure out how to determine if the robot was detected. But from a moral point of view (and from a legal perspective as well) this method is rather questionable, especially if we take into account the probability of false-positive signals, meaning that some real users will get fake data.
+
+Therefore, you have only one method that truly works: filing complaints with hosting providers, ISPs, or law enforcement authorities. Needless to say, this brings certain reputational risks, and the reaction time is rather not lightning fast.
+
+In most cases, you're not fighting fraud — you're actually increasing the cost of the attack, simultaneously buying yourself enough time to take administrative actions against the perpetrator. Preventing API misuse completely is impossible as malefactors might ultimately employ the expensive but bulletproof solution — hiring real people to make the requests to the API on real devices through legitimate applications.
+
+An opinion exists, which the author of this book shares, that engaging in this sword-against-shield confrontation must be carefully thought out, and advanced technical solutions are to be enabled only if you are one hundred percent sure it is worth it (e.g., if they steal real money or data). By introducing elaborate algorithms, you rather conduct an evolutionary selection of the smartest and most cunning cybercriminals, counteracting whom will be way harder than those who just naïvely call API endpoints with `curl`. Furthermore, in the final phase, when filing a complaint with authorities, you'll need to prove the alleged ToS violation, which can be challenging when dealing with advanced fraudsters. So it's rather better to have all the malefactors monitored (and regularly reported), and escalate the situation (i.e., enable technical protection and initiate legal actions) only if the threat passes a certain threshold. That also implies having all the tools ready and keeping them below infringers' radars.
+
+Based on the author of this book's experience, mind games with malefactors, where you respond to any improvement of their script with the smallest possible effort that is enough to break it, might continue indefinitely. This strategy, i.e., making fraudsters guess which traits were used to ban them this time (instead of unleashing the whole heavy artillery potential), greatly annoys amateur “hackers” as they lack hard engineering skills and eventually give up.
+
+#### Dealing with Stolen Keys
+
+Now let's address the second type of unlawful API usage, namely the use keys stolen from conscientious partners in the malefactor's applications. Since the requests are generated by real users, captchas won't help, but other techniques will.
+
+  1. Maintaining metrics collection by IP addresses and subnets might be useful in this case as well. If the malefactor's app isn't public but rather targeted to a closed audience, this fact will be visible on the dashboards (and if you're lucky enough, you might also find suspicious `Referer`s, public access to which is restricted).
+
+  2. Allowing partners to restrict the functionality available under specific API keys:
+      * Setting the allowed IP address range for server-to-server APIs, allowed `Referer`s and application ids for client APIs
+      * White-listing only allowed API functions for a specific key
+      * Other restrictions that make sense in your case (in our coffee API example, it's convenient to allow partners to prohibit API calls outside of the countries and cities they work in).
+  
+  3. Introducing additional request signing:
+      * For example, if there is a form displaying the best lungo offers on the partner's website, for which the partners call the API endpoint like `/v1/search?recipe=lungo&api_key={apiKey}`, then the API key might be replaced with a signature like `sign = HMAC("recipe=lungo", apiKey)`. The signature might be stolen as well, but it will be useless for malefactors as they will only be able to find lungo with it.
+      * Instead of API keys, time-based one-time passwords (TOTP) might be used. These tokens are valid for a short period of time only (typically, one minute), making it much more complicated to use stolen keys.
+  
+  4. Filing complaints to the administration (hosting providers, app store owners) in case the malefactor distributes their application through stores or uses a diligent hosting service that investigates abuse filings. Legal actions are also an option, much more so compared to countering user fraud, as illegal access to the system using stolen credentials is unambiguously outlawed in most jurisdictions.
+
+  5. Banning compromised API keys; the partners' reaction will be, of course, negative, but ultimately every business will prefer temporary disabling of some functionality over receiving a multi-million bill.
+
