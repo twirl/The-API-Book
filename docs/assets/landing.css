@@ -102,7 +102,9 @@ a.substack {
 }
 
 a.kindle,
-a.apple {
+a.apple,
+a.leanpub,
+a.gumroad {
     width: auto;
     vertical-align: unset;
 }

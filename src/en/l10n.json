@@ -67,6 +67,10 @@
         "kindleHref": "https://www.amazon.com/gp/product/B09RHH44S5/",
         "appleTag": "Apple Books",
         "appleHref": "http://books.apple.com/us/book/id6467567700",
+        "leanpubTag": "Leanpub",
+        "leanpubHref": "https://leanpub.com/sergey-konstantinov-the-api/",
+        "gumroadTag": "Gumroad",
+        "gumroadHref": "https://twirl.gumroad.com/l/Sergey-Konstantinov-The-API",
         "substackTag": "Substack",
         "substackHref": "https://twirl.substack.com/",
         "substackString": "twirl.substack.com"
@@ -101,7 +105,7 @@
         "followOn": "Follow me on",
         "follow": ["linkedin", "twitter", "substack"],
         "supportThisWork": "Support this work: buy it on",
-        "support": ["kindle", "apple"],
+        "support": ["kindle", "apple", "leanpub", "gumroad"],
         "content": [
             "<p>API-first development is one of the hottest technical topics nowadays since many companies have started to realize that APIs serves as a multiplier to their opportunities — but it amplifies the design mistakes as well.</p>",
             "<p>This book is written to share expertise and describe best practices in designing and developing APIs. It comprises six sections dedicated to the following topics:</p>",
