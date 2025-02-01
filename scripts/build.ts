@@ -8,10 +8,10 @@ import {
     plugins,
     LogLevel,
     applyAstPluginToStructure,
-    L10n,
-} from '@twirl/book-builder';
+    L10n
+} from './builder-model';
 import { buildLanding } from './build-landing';
-import { CustomTemplates, ExtraStrings } from '../src/templates';
+import { CustomTemplates, ExtraStrings } from './templates';
 
 const SRC = resolve('./src') as Path;
 const LOCALES: { [language: string]: string } = {

@@ -1,4 +1,10 @@
 {
+    "bellemare-event-driven-microservices": {
+        "authors": "Bellemare, A.",
+        "publicationDate": "2020",
+        "title": "Building Event-Driven Microservices",
+        "hrefs": ["isbn:9781492057895"]
+    },
     "birrel-nelson-implementing-rpc": {
         "authors": "Birrell, A. D., Nelson, B. J.",
         "publicationDate": "1984",
@@ -34,6 +40,18 @@
         "title": "High Performance Browser Networking",
         "hrefs": ["isbn:9781449344764", "https://hpbn.co"]
     },
+    "gorton-scalable-systems": {
+        "authors": "Gorton, I.",
+        "publicationDate": "2022",
+        "title": "Foundations of Scalable Systems",
+        "hrefs": ["isbn:9781098106065"]
+    },
+    "gourley-totty-http": {
+        "authors": "Gourley D., Totty, B.",
+        "publicationDate": "2002",
+        "title": ["HTTP: The Definitive Guide"],
+        "hrefs": ["isbn:9781565925090"]
+    },
     "hoffman-web-application-security": {
         "authors": "Hoffman, A.",
         "publicationDate": "2024",
@@ -41,16 +59,76 @@
         "subtitle": ["Second Edition"],
         "hrefs": ["isbn:9781098143930"]
     },
+    "kleppmann-data-intensive-applications": {
+        "authors": "Kleppmann, M.",
+        "publicationDate": "2017",
+        "title": "Designing Data-Intensive Applications",
+        "hrefs": ["isbn:9781449373320"]
+    },
+    "kung-robinson-occ": {
+        "authors": "Kung, H. T., Robinson, J. T.",
+        "publicationDate": "1981",
+        "title": "On Optimistic Methods for Concurrency Control",
+        "subtitle": [
+            "ACM Transactions on Database Systems,",
+            "Vol. 6, No. 2, June 1981, Pages 213-226"
+        ],
+        "hrefs": ["https://dl.acm.org/doi/10.1145/319566.319567"]
+    },
+    "madden-api-security-in-action": {
+        "authors": "Madden, N.",
+        "publicationDate": "2020",
+        "title": "API Security in Action",
+        "hrefs": ["isbn:9781617296024"]
+    },
     "martin-functional-design": {
         "authors": "Martin, R. C.",
         "publicationDate": "2023",
         "title": "Functional Design: Principles, Patterns, and Practices",
         "hrefs": ["isbn:9780138176518"]
     },
+    "mcconnell-code-complete": {
+        "authors": "McConnell, S. C.",
+        "publicationDate": "2004",
+        "title": "Code Complete, Second Edition",
+        "hrefs": ["isbn:9780735619678"]
+    },
     "nelson-rpc": {
         "authors": "Nelson, B. J.",
         "publicationDate": "1981",
         "title": "Remote Procedure Call",
         "hrefs": ["https://dl.acm.org/doi/10.5555/910306"]
+    },
+    "shapiro-et-al-crdt": {
+        "authors": "Shapiro, M., Preguiça, N., Baquero, C., Zawirski, M.",
+        "publicationDate": "2011",
+        "title": "Conflict-Free Replicated Data Types",
+        "subtitle": [
+            "13th International Conference Stabilization, Safety, and Security of Distributed Systems",
+            "page 386-400"
+        ],
+        "hrefs": [
+            "https://link.springer.com/chapter/10.1007/978-3-642-24550-3_29"
+        ]
+    },
+    "steen-tanenbaum-distributed-systems": {
+        "authors": "Van Steen, M., Tanenbaum A.",
+        "publicationDate": "2024",
+        "title": "Distributed Systems 4th edition",
+        "hrefs": [
+            "isbn:9789081540629",
+            "https://www.distributed-systems.net/index.php/books/ds4/"
+        ]
+    },
+    "stevens-unix-network-programming-2": {
+        "authors": "Stevens, W. R.",
+        "publicationDate": "1990",
+        "title": "UNIX Network Programming",
+        "subtitle": [
+            "Interprocess Communication",
+            "Volume 2",
+            "Second Edition"
+        ],
+        "hrefs": ["isbn:0130810819"]
     }
 }

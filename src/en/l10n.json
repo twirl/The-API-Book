@@ -13,6 +13,8 @@
     "file": "API",
     "isbn": "ISBN",
     "references": "References",
+    "referenceSee": "See",
+    "referenceOr": "or refer to",
     "aboutMe": {
         "title": "About the Author",
         "content": [

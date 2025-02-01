@@ -60,12 +60,16 @@ Here we assume that task creation requires minimal checks and doesn't wait for a
 Thus we naturally came to the pattern of organizing asynchronous APIs through task queues. Here we use the term “asynchronous” logically meaning the absence of mutual *logical* locks: the party that makes a request gets a response immediately and does not wait until the requested procedure is fully carried out being able to continue to interact with the API. *Technically* in modern application environments, locking (of both the client and server) almost universally doesn't happen during long-responding calls. However, *logically* allowing users to work with the API while waiting for a response from a modifying endpoint is error-prone and leads to collisions like the one we described above.
 
 The asynchronous call pattern is useful for solving other practical tasks as well:
-  * Caching operation results and providing links to them (implying that if the client needs to reread the operation result or share it with another client, it might use the task identifier to do so)
-  * Ensuring operation idempotency (through introducing the task confirmation step we will actually get the draft-commit system as discussed in the “[Describing Final Interfaces](#api-design-describing-interfaces)” chapter)
-  * Naturally improving resilience to peak loads on the service as the new tasks will be queuing up (possibly prioritized) in fact implementing the “token bucket” technique[ref Token Bucket](https://en.wikipedia.org/wiki/Token_bucket)
-  * Organizing interaction in the cases of very long-lasting operations that require more time than typical timeouts (which are tens of seconds in the case of network calls) or can take unpredictable time.
 
-Also, asynchronous communication is more robust from a future API development point of view: request handling procedures might evolve towards prolonging and extending the asynchronous execution pipelines whereas synchronous handlers must retain reasonable execution times which puts certain restrictions on possible internal architecture.
+* Caching operation results and providing links to them (implying that if the client needs to reread the operation result or share it with another client, it might use the task identifier to do so)
+
+* Ensuring operation idempotency (through introducing the task confirmation step we will actually get the draft-commit system as discussed in the “[Describing Final Interfaces](#api-design-describing-interfaces)” chapter)
+
+* Naturally improving resilience to peak loads on the service as the new tasks will be queuing up (possibly prioritized)
+
+* Organizing interaction in the cases of very long-lasting operations that require more time than typical timeouts (which are tens of seconds in the case of network calls) or can take unpredictable time.
+
+Also, asynchronous communication is more robust from a future API development point of view: request handling procedures might evolve towards prolonging and extending the asynchronous execution pipelines whereas synchronous handlers must retain reasonable execution times which puts certain restrictions on possible internal architecture. One might refer to the definitive work by Adam Bellemare on advantages of event-driven architectures.[ref:bellemare-event-driven-microservices Building Event-Driven Microservices]()
 
 **NB**: In some APIs, an ambivalent decision is implemented where endpoints feature a double interface that might either return a result or a link to a task. Although from the API developer's point of view, this might look logical (if the request was processed “quickly”, e.g., served from cache, the result is to be returned immediately; otherwise, the asynchronous task is created), for API consumers, this solution is quite inconvenient as it forces them to maintain two execution branches in their code. Sometimes, a concept of providing a double set of endpoints (synchronous and asynchronous ones) is implemented, but this simply shifts the burden of making decisions onto partners.
 

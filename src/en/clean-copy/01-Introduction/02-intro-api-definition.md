@@ -22,4 +22,6 @@ What differs between a Roman aqueduct and a good API is that in the case of APIs
 
 An aqueduct also illustrates another problem with the API design: your customers are engineers themselves. You are not supplying water to end-users. Suppliers are plugging their pipes into your engineering structure, building their own structures upon it. On the one hand, you may provide access to water to many more people through them, not spending your time plugging each individual house into your network. On the other hand, you can't control the quality of suppliers' solutions, and you are to blame every time there is a water problem caused by their incompetence.
 
+The situation with API design becomes even more complicated when we acknowledge that modern APIs are typically interfaces to *distributed systems*. There is no single aqueduct but rather a collection of connections between multiple sources and destinations, often established on-demand — and your task is to make these connections work *coherently* so that clients don't even need to know how complex this water distribution architecture is internally.
+
 That's why designing an API implies a larger area of responsibility. **An API is a multiplier to both your opportunities and your mistakes**.

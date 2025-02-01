@@ -1,6 +1,8 @@
 ### Eventual Consistency
 
-The approach described in the previous chapter is in fact a trade-off: the API performance issues are traded for “normal” (i.e., expected) background errors that happen while working with the API. This is achieved by isolating the component responsible for controlling concurrency and only exposing read-only tokens in the public API. Still, the achievable throughput of the API is limited, and the only way of scaling it up is removing the strict consistency from the external API and thus allowing reading system state from read-only replicas:
+The approach described in the previous chapter is in fact a trade-off: the API performance issues are traded for “normal” (i.e., expected) background errors that happen while working with the API. This is achieved by isolating the component responsible for controlling concurrency and only exposing only revision tokens in the public API. Still, the achievable throughput of the API is limited as strong consistency implies strict constraints on backend implementation.
+
+In many situations, given the rate of writes is much less than reads (as in out case, when making two orders from two different devices under one account is rather an exceptional situation), it might make sense to stick *eventual consistency* rather than the strict one.[ref:steen-tanenbaum-distributed-systems 7.2.2 Eventual consistency]() The typical setup in Web often involves having asynchronously replicated databases:
 
 ```typescript
 // Reading the state,
@@ -20,9 +22,16 @@ try {
 }
 ```
 
-As orders are created much more rarely than read, we might significantly increase the system performance if we drop the requirement of returning the most recent state of the resource from the state retrieval endpoints. The versioning will help us avoid possible problems: creating an order will still be impossible unless the client has the actual version. In fact, we transited to the eventual consistency[ref Consistency Model. Eventual Consistency](https://en.wikipedia.org/wiki/Consistency_model#Eventual_consistency) model: the client will be able to fulfill its request *sometime* when it finally gets the actual data. In modern microservice architectures, eventual consistency is rather an industrial standard, and it might be close to impossible to achieve the opposite, i.e., strict consistency.
+As orders are created much more rarely than read, we might significantly increase the system performance if we drop the requirement of returning the most recent state of the resource from the state retrieval endpoints. The versioning will help us avoid possible problems: creating an order will still be impossible unless the client has the actual version. The client will be able to fulfill its request *eventually* when it finally gets the actual data.
 
-**NB**: Let us stress that you might choose the approach only in the case of exposing new APIs. If you're already providing an endpoint implementing some consistency model, you can't just lower the consistency level (for instance, introduce eventual consistency instead of the strict one) even if you never documented the behavior. This will be discussed in detail in the “[On the Waterline of the Iceberg](#back-compat-iceberg-waterline)” chapter of “The Backward Compatibility” section of this book.
+
+**NB**: Strictly speaking, in this example, we're referring to the “single-leader replication” type of eventual consistency: while reads might return outdated data, *writes* are nevertheless strictly ordered, and the service that physically makes writes *can* resolve the actual state of the system. There is also the “multi-leader replication” class of systems, where there is no such thing as “the actual state” or “the latest version,” as every leader replica handles writes independently and concurrently — which, in our case, means clients *can always* create duplicate orders, whatever precautions we take. Typically, such systems are only used in the following cases:
+
+* The operations are naturally idempotent.  
+* A certain percentage of duplicate entities is acceptable.  
+* There is a mechanism in place that always routes specific clients to specific replicas, so concurrent conflicting requests to different leaders are not possible.  
+
+The curious reader may refer to Martin Kleppmann's work on the subject.[ref:kleppmann-data-intensive-applications Chapter 5. Replication]()
 
 Choosing weak consistency instead of a strict one, however, brings some disadvantages. For instance, we might require partners to wait until they get the actual resource state to make changes — but it is quite unobvious for partners (and actually inconvenient) they must be prepared to wait for changes they made themselves to propagate.
 
@@ -38,7 +47,7 @@ let pendingOrders = await api.
 
 If strict consistency is not guaranteed, the second call might easily return an empty result as it reads data from a replica, and the newest order might not have hit it yet.
 
-An important pattern that helps in this situation is implementing the “read-your-writes[ref Consistency Model. Read-Your-Writes Consistency](https://en.wikipedia.org/wiki/Consistency_model#Read-your-writes_consistency)” model, i.e., guaranteeing that clients observe the changes they have just made. The consistency might be lifted to the read-your-writes level by making clients pass some token that describes the last changes known to the client.
+An important pattern that helps in this situation is implementing the “read-your-writes[ref Consistency Model. Read-Your-Writes Consistency|ref:steen-tanenbaum-distributed-systems 7.3.3 Read your writes](https://en.wikipedia.org/wiki/Consistency_model#Read-your-writes_consistency)” model: it guarantees that clients observe the changes they have just made. In APIs, the read-your-writes strategy could be implemented by by making clients pass some token that describes the last change known to the client.
 
 ```typescript
 let der = await api
@@ -54,25 +63,36 @@ let pendingOrders = await api.
 ```
 
 Such a token might be:
-  * An identifier (or identifiers) of the last modifying operations carried out by the client
-  * The last known resource version (modification date, ETag) known to the client.
+
+* An identifier (or identifiers) of the last modifying operations carried out by the client
+
+* The last known resource version (modification date, ETag) known to the client.
 
 Upon getting the token, the server must check that the response (e.g., the list of ongoing operations it returns) matches the token, i.e., the eventual consistency converged. If it did not (the client passed the modification date / version / last order id newer than the one known to the server), one of the following policies or their combinations might be applied:
-  * The server might repeat the request to the underlying DB or to the other kind of data storage in order to get the newest version (eventually)
-  * The server might return an error that requires the client to try again later
-  * The server queries the main node of the DB, if such a thing exists, or otherwise initiates retrieving the master data.
+
+* The server might repeat the request to the underlying DB or to the other kind of data storage in order to get the newest version (eventually)
+
+* The server might return an error that requires the client to try again later
+
+* The server queries the main node of the DB, if such a thing exists, or otherwise initiates retrieving the master data.
 
 The advantage of this approach is client development convenience (compared to the absence of any guarantees): by preserving the version token, client developers get rid of the possible inconsistency of the data got from API endpoints. There are two disadvantages, however:
-  * It is still a trade-off between system scalability and a constant inflow of background errors:
-      * If you're querying master data or repeating the request upon the version mismatch, the load on the master storage is increased in poorly a predictable manner
-      * If you return a client error instead, the number of such errors might be considerable, and partners will need to write some additional code to deal with the errors.
-  * This approach is still probabilistic, and will only help in a limited number of use cases (to be discussed below).
+
+* It is still a trade-off between system scalability and a constant inflow of background errors:
+  
+  * If you're querying master data or repeating the request upon the version mismatch, the load on the master storage is increased in poorly a predictable manner
+
+  * If you return a client error instead, the number of such errors might be considerable, and partners will need to write some additional code to deal with the errors.
+  
+* This approach is still probabilistic, and will only help in a limited number of use cases (to be discussed below).
 
 There is also an important question regarding the default behavior of the server if no version token was passed. Theoretically, in this case, master data should be returned, as the absence of the token might be the result of an app crash and subsequent restart or corrupted data storage. However, this implies an additional load on the master node.
 
 #### Evaluating the Risks of Switching to Eventual Consistency
+      
+First, let us stress that you might choose the approach only in the case of exposing new APIs. If you're already providing an endpoint implementing some consistency model, you can't just lower the consistency level (for instance, introduce eventual consistency instead of the strict one) even if you never documented the behavior. This will be discussed in detail in the “[On the Waterline of the Iceberg](#back-compat-iceberg-waterline)” chapter of “The Backward Compatibility” section of this book.
 
-Let us state an important assertion: the methods of solving architectural problems we're discussing in this section are probabilistic. Abolishing strict consistency means that even if all components of the system work perfectly, client errors will still occur. It might appear that they could be simply ignored, but in reality, doing so means introducing risks.
+Second, let us state another important assertion: the methods of solving architectural problems we're discussing in this section are probabilistic. Abolishing strict consistency means that even if all components of the system work perfectly, client errors will still occur. It might appear that they could be simply ignored, but in reality, doing so means introducing risks.
 
 Imagine that because of eventual consistency, users of our API sometimes cannot create orders with their first attempt. For example, a customer adds a new payment method in the application, but their subsequent order creation request is routed to a replica that hasn't yet received the information regarding the newest payment method. As these two actions (adding a bank card and making an order) often go in conjunction, there will be a noticeable percentage of errors — let's say, 1%. At this stage, we could disregard the situation as it appears harmless: in the worst-case scenario, the client will repeat the request.
 

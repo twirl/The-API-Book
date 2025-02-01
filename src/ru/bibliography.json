@@ -34,6 +34,12 @@
         "title": "High Performance Browser Networking",
         "hrefs": ["isbn:9781449344764", "https://hpbn.co"]
     },
+    "gourley-totty-http": {
+        "authors": "Gourley D., Totty, B.",
+        "publicationDate": "2002",
+        "title": ["HTTP: The Definitive Guide"],
+        "hrefs": ["isbn:9781565925090"]
+    },
     "hoffman-web-application-security": {
         "authors": "Hoffman, A.",
         "publicationDate": "2024",
@@ -52,5 +58,14 @@
         "publicationDate": "1981",
         "title": "Remote Procedure Call",
         "hrefs": ["https://dl.acm.org/doi/10.5555/910306"]
+    },
+    "steen-tanenbaum-distributed-systems": {
+        "authors": "Van Steen, M., Tanenbaum A.",
+        "publicationDate": "2024",
+        "title": "Distributed Systems 4th edition",
+        "hrefs": [
+            "isbn:9789081540629",
+            "https://www.distributed-systems.net/index.php/books/ds4/"
+        ]
     }
 }

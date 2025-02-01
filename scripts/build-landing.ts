@@ -1,10 +1,7 @@
 import { resolve } from 'node:path';
 import { readdir, writeFile } from 'node:fs/promises';
 import { statSync } from 'node:fs';
-import {
-    Path,
-    Structure
-} from '@twirl/book-builder';
+import { Path, Structure } from './builder-model';
 import {
     CustomTemplates,
     Example,
@@ -12,7 +9,7 @@ import {
     linker,
     shareLink,
     toc
-} from '../src/templates';
+} from './templates';
 
 export const buildLanding = async ({
     structure,

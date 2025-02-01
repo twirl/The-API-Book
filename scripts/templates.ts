@@ -9,7 +9,7 @@ import {
     Section,
     Strings,
     Structure
-} from '@twirl/book-builder';
+} from './builder-model';
 import { resolve } from 'node:path';
 
 export interface ExtraStrings extends Strings {

@@ -95,6 +95,8 @@ However, on many occasions (including this book) developers prefer the textual J
 
 Apart from being human-readable, JSON features another important advantage: it is strictly formal meaning it does not contain any constructs that can be interpreted differently in different architectures (with a possible exception of the sizes of numbers and strings), and the deserialization result aligns very well with native data structures (i.e., indexed and associative arrays) of almost every programming language. From this point of view, we actually had no other choice when selecting a format for code samples in this book.
 
+**NB**. To get a more thorough understanding of data formats and their features the reader might refer to the Kleppmann's overview.[ref:kleppmann-data-intensive-applications Chapter 4. Encoding and Evolution]()
+
 #### Choosing a Client-Server Development Technology
 
 As we see, HTTP APIs and alternative RPC protocols occupy different market niches:
