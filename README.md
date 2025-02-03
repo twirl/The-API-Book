@@ -33,7 +33,7 @@ Thanks [art.mari.ka](https://www.instagram.com/art.mari.ka/) for the illustratio
 
 Thanks [Ilya Subbotin](https://ru.linkedin.com/in/isubbotin) and [Fedor Golubev](https://www.linkedin.com/in/fedor-golubev-93910b5/) for the valuable feedback.
 
-Thanks [Ira Gorelik](https://pixabay.com/users/igorelick-680927/) for the Aqueduct.
+Thanks [Slepitssskaya](https://photodune.net/user/slepitssskaya) for the Aqueduct.
 
 Thanks [Friedrich Althausen](http://www.grafikfritze.de/) for Vollkorn, [Christian Robertson](https://twitter.com/cr64) for Roboto Mono, and [ParaType](https://www.paratype.ru/) for PT Sans.
 

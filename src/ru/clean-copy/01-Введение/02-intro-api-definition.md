@@ -14,7 +14,7 @@
 
 Когда автора этой книги просят привести пример хорошего API, он обычно показывает фотографию древнеримского акведука:
 
-[![igorelick @ pixabay](/img/pont-du-gard.jpg "Древнеримский акведук Пон-дю-Гар. Построен в I веке н.э")](https://pixabay.com/photos/pont-du-gard-france-aqueduct-bridge-3909998/)
+[![Slepitssskaya / Envato](/img/pont-du-gard.jpg "Древнеримский акведук Пон-дю-Гар. Построен в I веке н.э")](https://photodune.net/user/slepitssskaya)
 
   * он связывает между собой две области;
   * обратная совместимость нарушена ноль раз за последние две тысячи лет.
