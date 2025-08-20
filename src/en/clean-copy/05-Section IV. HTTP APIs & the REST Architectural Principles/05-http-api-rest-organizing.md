@@ -42,14 +42,15 @@ While scaling the backend is not a problem, this approach works. However, with t
   * Service C stores orders
   * Gateway service D routes incoming requests to other microservices.
 
-This implies that a request traverses the following path:
+This implies that a request traverses the following path (Figure 36.1):
   * Gateway D receives the request and sends it to both Service C and Service D.
   * C and D call Service A to check the authentication token (passed as a proxied `Authorization` header or as an explicit request parameter) and return the requested data — the user's profile and the list of their orders.
   * Service D merges the responses and sends them back to the client.
 
-[![PLOT](/img/graphs/http-api-organizing-01.en.png "The original microservice mesh")]()
+[![PLOT](/img/graphs/http-api-organizing-01.en.png "Figure 36.1. The original microservice mesh")]()
 
-It is quite obvious that in this setup, we put excessive load on the authorization service as every nested microservice now needs to query it. Even if we abolish checking the authenticity of internal requests, it won't help as services B and C can't know the identifier of the user. Naturally, this leads to the idea of propagating the once-retrieved `user_id` through the microservice mesh:
+It is quite obvious that in this setup, we put excessive load on the authorization service as every nested microservice now needs to query it. Even if we abolish checking the authenticity of internal requests, it won't help as services B and C can't know the identifier of the user. Naturally, this leads to the idea of propagating the once-retrieved `user_id` through the microservice mesh (Figure 36.2):
+
   * Gateway D receives a request and exchanges the token for `user_id` through service A
   * Gateway D queries service B:
 
@@ -63,7 +64,7 @@ It is quite obvious that in this setup, we put excessive load on the authorizati
       GET /v1/orders?user_id=<user id>
       ```
 
-[![PLOT](/img/graphs/http-api-organizing-02.en.png "Step 1. Adding explicit user identifiers")]()
+[![PLOT](/img/graphs/http-api-organizing-02.en.png "Figure 36.2. Step 1. Adding explicit user identifiers")]()
 
 **NB**: We used the `/v1/orders?user_id` notation and not, let's say, `/v1/users/{user_id}/orders`, because of two reasons:
   * The orders service stores orders, not users, and it would be logical to reflect this fact in URLs
@@ -96,7 +97,8 @@ ETag: <revision>
 …
 ```
 
-Then gateway D can be implemented following this scenario:
+Then gateway D can be implemented following this scenario (Figure 36.3):
+
   1. Cache the response of `GET /v1/orders?user_id=<user_id>` using the URL as a cache key
   2. Upon receiving a subsequent request:
       * Fetch the cached state, if any
@@ -110,7 +112,7 @@ Then gateway D can be implemented following this scenario:
       * If service C responds with a `304 Not Modified` status code, return the cached state
       * If service C responds with a new version of the data, cache it and then return it to the client.
 
-[![PLOT](/img/graphs/http-api-organizing-03.en.png "Step 2. Adding server-side caches")]()
+[![PLOT](/img/graphs/http-api-organizing-03.en.png "Figure 36.3. Step 2. Adding server-side caches")]()
 
 By employing this approach [using `ETag`s to control caching], we automatically get another pleasant bonus. We can reuse the same data in the order creation endpoint design. In the optimistic concurrency control paradigm, the client must pass the actual revision of the `orders` resource to change its state:
 
@@ -136,9 +138,9 @@ ETag: <new revision>
 { /* The updated list of orders */ }
 ```
 
-and gateway D will update the cache with the current data snapshot.
+and gateway D will update the cache with the current data snapshot (Figure 36.4).
 
-[![PLOT](/img/graphs/http-api-organizing-04.en.png "Creating a new order")]()
+[![PLOT](/img/graphs/http-api-organizing-04.en.png "Figure 36.4. Creating a new order")]()
 
 **Importantly**, after this API refactoring, we end up with a system in which we can *remove gateway D* and make the client itself perform its duty. Nothing prevents the client from:
   * Storing `user_id` on its side (or retrieving it from the token, if the format allows it) as well as the last known `ETag` of the order list

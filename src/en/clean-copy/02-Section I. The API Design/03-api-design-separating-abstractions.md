@@ -264,19 +264,14 @@ To be more specific, let's assume those two kinds of coffee machines provide the
       // Returns the state of the sensors
       GET /sensors
       →
-      {
-        "sensors": [
-          {
-            // Possible values:
-            // * cup_volume
-            // * ground_coffee_volume
-            // * cup_filled_volume
-            "type": "cup_volume",
-            "value": "200ml"
-          },
-          …
-        ]
-      }
+      { "sensors": [{
+        // Possible values:
+        // * cup_volume
+        // * ground_coffee_volume
+        // * cup_filled_volume
+        "type": "cup_volume",
+        "value": "200ml"
+      }, … ]}
       ```
 
       **NB**: The example is intentionally fictitious to model the situation described above: to determine beverage readiness you have to compare the requested volume with volume sensor readings.
@@ -411,7 +406,7 @@ And the `state` like that:
 }
 ```
 
-**NB**: When implementing the `orders` → `match` → `run` → `runtimes` call sequence, we have two options:
+**NB**: When implementing the `orders` `→` `match` `→` `run` `→` `runtimes` call sequence, we have two options:
   * Either `POST /orders` handler requests the data regarding the recipe, the coffee machine model, and the program on its own, and forms a stateless request that contains all necessary data (API kind, command sequence, etc.)
   * Or the request contains only data identifiers, and the next handler in the chain will request pieces of data it needs via some internal APIs.
 

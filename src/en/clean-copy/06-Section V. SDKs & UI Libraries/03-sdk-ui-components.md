@@ -2,13 +2,13 @@
 
 Introducing UI components to an SDK brings an additional dimension to an already complex setup comprising a low-level API and a client wrapper on top of it. Now both developers (who write the application) and end users (who use the application) interact with your API. This might not appear as a game changer at first glance; however, we assure you that it is. Involving an end-user has significant consequences from the API / SDK design point of view as it requires much more careful and elaborate program interfaces compared to a “pure” client-server API. Let us explain this statement with a concrete example.
 
-Imagine that we decided to provide a client SDK for our API that features ready-to-use components for application developers. The functionality is simple: the user enters a search phrase and observes the results in the form of a list.
+Imagine that we decided to provide a client SDK for our API that features ready-to-use components for application developers. The functionality is simple: the user enters a search phrase and observes the results in the form of a list (Figure 42.1).
 
-[![APP](/img/mockups/01.size-s.png "The main screen of an application with search results")]()
+[![APP](/img/mockups/01.size-s.png "Figure 42.1. The main screen of an application with search results")]()
 
-The user can select an item and view the offer details with available actions.
+The user can select an item and view the offer details with available actions (Figure 42.2).
 
-[![APP](/img/mockups/02.size-s.png "Offer view panel")]()
+[![APP](/img/mockups/02.size-s.png "Figure 42.2. Offer view panel")]()
 
 To implement this scenario, we provide an object-oriented API in the form of, let's say, a class named `SearchBox` that realizes the aforementioned functionality by utilizing the `search` method in our client-server API.
 
@@ -47,13 +47,13 @@ Any asynchronous operation in a UI component, especially if it is visibly indica
 
 ##### Multiple Inheritance in Entity Hierarchies
 
-Imagine that a developer decided to enhance the design of the offer list with icons of coffee shop chains. If the icon is set, it should be shown in every place related to a specific coffee shop's offer.
+Imagine that a developer decided to enhance the design of the offer list with icons of coffee shop chains. If the icon is set, it should be shown in every place related to a specific coffee shop's offer (Figure 42.3).
 
-[![APP](/img/mockups/03.size-s.png "Search results with a coffee shop chain icon")]()
+[![APP](/img/mockups/03.size-s.png "Figure 42.3. Search results with a coffee shop chain icon")]()
 
-Now let's also imagine that the developer additionally customized all buttons in the SDK by adding action icons.
+Now let's also imagine that the developer additionally customized all buttons in the SDK by adding action icons (Figure 42.4).
 
-[![APP](/img/mockups/04.size-s.png "The offer view panel with action icons")]()
+[![APP](/img/mockups/04.size-s.png "Figure 42.4. The offer view panel with action icons")]()
 
 A question arises: if an offer of the coffee chain is shown in the panel, which icon should be featured on the order creation button: the one inherited from the offer properties (the coffee chain logo) or the one inherited from the action type of the button itself? The order creation control element is incorporated into two entity hierarchies [visual one and data-bound (semantic) one] and inherits from both equally.
 

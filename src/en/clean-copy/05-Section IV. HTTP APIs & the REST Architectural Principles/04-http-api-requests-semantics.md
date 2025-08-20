@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 ```
 
-**NB**: In HTTP/2 (and future HTTP/3), separate binary frames are used for headers and data instead of the holistic text format.[ref:grigorik-high-performance-browser-networking Chapter 12. HTTP/2](https://hpbn.co/http2/) However, this doesn't affect the architectural concepts we will describe below. To avoid ambiguity, we will provide examples in the HTTP/1.1 format.
+**NB**: In HTTP/2 and HTTP/3, separate binary frames are used for headers and data instead of the holistic text format.[ref:grigorik-high-performance-browser-networking Chapter 12. HTTP/2](https://hpbn.co/http2/) However, this doesn't affect the architectural concepts we will describe below. To avoid ambiguity, we will provide examples in the HTTP/1.1 format.
 
 ##### A URL
 
@@ -76,7 +76,7 @@ Additionally, headers are used as control flow instructions for so-called “con
 
 One important component of an HTTP request is a method (verb) that describes the operation being applied to a resource. RFC 9110 standardizes eight verbs — namely, `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, `CONNECT`, `OPTIONS`, and `TRACE` — of which we as API developers are interested in the former four. The `CONNECT`, `OPTIONS`, and `TRACE` methods are technical and rarely used in HTTP APIs (except for `OPTIONS`, which needs to be implemented to ensure access to the API from a web browser). Theoretically, the `HEAD` verb, which allows for requesting *resource metadata only*, might be quite useful in API design. However, for reasons unknown to us, it did not take root in this capacity.
 
-Apart from RFC 9110, many other specifications propose additional HTTP verbs, such as `COPY`, `LOCK`, `SEARCH`, etc. — the full list can be found in the registry[ref Hypertext Transfer Protocol (HTTP) Method Registry](https://www.iana.org/assignments/http-methods/http-methods.xhtml). However, only one of them gained widespread popularity — the `PATCH` method. The reasons for this state of affairs are quite trivial: the five methods (`GET`, `POST`, `PUT`, `DELETE`, and `PATCH`) are enough for almost any API.
+Apart from RFC 9110, many other specifications propose additional HTTP verbs, such as `COPY`, `LOCK`, `SEARCH`, etc. — the full list can be found in the registry.[ref Hypertext Transfer Protocol Method Registry](https://www.iana.org/assignments/http-methods/) However, only one of them gained widespread popularity — the `PATCH` method. The reasons for this state of affairs are quite trivial: the five methods (`GET`, `POST`, `PUT`, `DELETE`, and `PATCH`) are enough for almost any API.
 
 HTTP verbs define two important characteristics of an HTTP call:
   * Semantics: what the operation *means*
@@ -84,8 +84,8 @@ HTTP verbs define two important characteristics of an HTTP call:
       * Whether the request modifies any resource state or if it is safe (and therefore, could it be cached)
       * Whether the request is idempotent or not.
 
-| Verb | Semantics | Is safe (non-modifying) | Is idempotent | Can have a body |
-|------|-----------|-------------------------|---------------|------------|
+| Method (verb) | Semantics | Safe? | Idempotent? | Can have a body? |
+|------|-----------|-------|-------------|------------------|
 | GET    | Returns a representation of a resource | Yes | Yes | Should not |
 | PUT    | Replaces (fully overwrites) a resource with a provided entity | No | Yes | Yes |
 | DELETE | Deletes a resource | No | Yes | Should not |

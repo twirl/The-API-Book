@@ -172,9 +172,13 @@ GET /v1/coffee-machines/{id}↵
 ##### Matching Entities Must Have Matching Names and Behave Alike
 
 **Bad**: `begin_transition` / `stop_transition`  
+
 — The terms `begin` and `stop` don't match; developers will have to refer to the documentation to find a paired method.
 
-**Better**: either `begin_transition` / `end_transition` or `start_transition` / `stop_transition`.
+**Better**: 
+
+* Either `begin_transition` / `end_transition`, or
+* `start_transition` / `stop_transition`.
 
 **Bad**:
 

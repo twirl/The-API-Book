@@ -3,8 +3,8 @@
 As we discussed in the previous chapter, today, the choice of a technology for developing client-server APIs comes down to selecting either a resource-oriented approach (commonly referred to as “REST API”; let us reiterate that we will use the term “HTTP API” instead) or a modern RPC protocol. As we mentioned earlier, *conceptually* the difference is not that significant. However, *technically* these frameworks use the HTTP protocol quite differently:
 
 **First**, different frameworks rely on different data formats:
-  * HTTP APIs and some RPC protocols (such as *JSON-RPC*[ref JSON-RPC](https://www.jsonrpc.org/), *GraphQL*[ref GraphQL](https://graphql.org/), etc.) use the *JSON*[ref JSON](https://www.ecma-international.org/publications-and-standards/standards/ecma-404/) format (sometimes with additional endpoints for transferring binary data).
-  * *gRPC*[ref gRPC](https://grpc.io/) and some specialized RPC protocols like *Thrift*[ref Apache Thrift](https://thrift.apache.org/) and *Avro*[ref Apache Avro](https://avro.apache.org/docs/) utilize binary formats (such as *Protocol Buffers*[ref Protocol Buffers](https://protobuf.dev/), *FlatBuffers*[ref FlatBuffers](https://flatbuffers.dev/), or *Apache Avro*'s own format).
+  * HTTP APIs and some RPC protocols (such as *JSON-RPC*,[ref JSON-RPC](https://www.jsonrpc.org/) *GraphQL*,[ref GraphQL](https://graphql.org/) etc.) use the *JSON*[ref JSON](https://www.ecma-international.org/publications-and-standards/standards/ecma-404/) format (sometimes with additional endpoints for transferring binary data).
+  * *gRPC*[ref gRPC](https://grpc.io/) and some specialized RPC protocols like *Thrift*[ref Apache Thrift](https://thrift.apache.org/) and *Avro*[ref Apache Avro](https://avro.apache.org/docs/) utilize binary formats (such as *Protocol Buffers*,[ref Protocol Buffers](https://protobuf.dev/) *FlatBuffers*,[ref FlatBuffers](https://flatbuffers.dev/) or *Apache Avro*'s own format).
   * Finally, some RPC protocols (notably *SOAP*[ref SOAP](https://www.w3.org/TR/soap12/) and *XML-RPC*[ref XML-RPC](http://xmlrpc.com/)) employ the *XML*[ref Extensible Markup Language (XML)](https://www.w3.org/TR/xml/) data format (which is considered a rather outdated practice by many developers).
 
 **Second**, these approaches utilize HTTP capabilities differently:
@@ -51,9 +51,9 @@ The main disadvantage of HTTP APIs is that you have to rely on intermediary agen
 ##### Quality of Solutions
 
 The ability to read and interpret the metadata of requests and responses leads to the fragmentation of available software for working with HTTP APIs. There are plenty of tools on the market, being developed by many different companies and collaborations, and many of them are free to use:
-  * Proxies and gateways (nginx, Envoy, etc.)
-  * Different IDLs (first of all, OpenAPI) and related tools for working with specifications (Redoc, Swagger UI, etc.) and auto-generating code
-  * Programmer-oriented software that allows for convenient development and debugging of API clients (Postman, Insomnia), etc.
+  * Proxies and gateways (nginx,[ref nginx](https://nginx.org) envoy,[ref envoy](https://www.envoyproxy.io/) etc.)
+  * Different IDLs (first of all, OpenAPI[ref OpenAPI Initiative](https://www.openapis.org/)) and related tools for working with specifications (Redoc,[ref Redoc: Open source API documentation tool](https://redocly.com/docs/redoc) Swagger UI,[ref Swagger UI](https://swagger.io/tools/swagger-ui/) etc.) and auto-generating code
+  * Programmer-oriented software that allows for convenient development and debugging of API clients (Postman,[ref Postman](https://www.postman.com/) Insomnia[ref Insomnia](https://insomnia.rest/)), etc.
 
 Of course, most of these instruments will work with APIs that utilize other paradigms. However, the ability to read HTTP metadata and interpret it *uniformly* makes it possible to easily design complex pipelines such as exporting nginx access logs to Prometheus and generating response status code monitoring dashboards in Grafana that work out of the box.
 

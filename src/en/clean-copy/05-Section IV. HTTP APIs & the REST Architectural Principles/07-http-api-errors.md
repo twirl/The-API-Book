@@ -27,7 +27,7 @@ What problems could potentially happen while handling the request? Off the top o
   12. The server is overloaded and cannot respond
   13. Unknown server error (i.e., the server is broken to the extent that it's impossible to understand why the error happened).
 
-From general considerations, the natural idea is to assign a status code for each mistake. Obviously, the `403 Forbidden` code fits well for mistake \#4, and the `429 Too Many Requests` for \#11. However, let's not be rash and ask first *for what purpose* are we assigning codes to errors?
+From general considerations, the natural idea is to assign a status code for each error. Obviously, the `403 Forbidden` code fits well for \#4, and the `429 Too Many Requests` for \#11. However, let's not be rash and ask first *for what purpose* are we assigning codes to errors?
 
 Generally speaking, there are three kinds of actors in the system: the user, the application (a client), and the server. Each of these actors needs to understand several important things about the error (and the answers could actually differ for each of them):
   1. Who made the mistake: the end user, the developer of the client, the backend developer, or another interim agent such as the network stack programmer?
@@ -61,7 +61,7 @@ Even if we choose this approach, there are very few status codes that can reflec
 
 The editors of the specification are very well aware of this problem as they state that “the server SHOULD send a representation containing an explanation of the error situation, and whether it is a temporary or permanent condition.” This, however, contradicts the entire idea of a uniform machine-readable interface (and so does the idea of using arbitrary status codes). (Let us additionally emphasize that this lack of standard tools to describe business logic-bound errors is one of the reasons we consider the REST architectural style as described by Fielding in his 2008 article non-viable. The client *must* possess prior knowledge of error formats and how to work with them. Otherwise, it could restore its state after an error only by restarting the application.)
 
-**NB**: Not long ago, the editors of the standard proposed their own version of the JSON description specification for HTTP errors — RFC 9457[ref RFC 9457 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc9457.html). You can use it, but keep in mind that it covers only the most basic scenario:
+**NB**: Not long ago, the editors of the standard proposed their own version of the JSON description specification for HTTP errors — RFC 9457.[ref RFC 9457 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc9457.html) You can use it, but keep in mind that it covers only the most basic scenario:
   * The error subtype is not transmitted in the metadata.
   * There is no distinction between a message for the user and a message for the developer.
   * The specific machine-readable format for error descriptions is left to the discretion of the developer.

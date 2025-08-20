@@ -51,9 +51,9 @@ Instead of a duplex connection, two separate channels might be used: one for sen
 
 Therefore, this approach is following neither request-response (even if a callback event is a direct response to the client’s actions, it is received asynchronously, requiring the client to match the response to its requests) nor a duplex connection pattern. However, we must note that this is a *logical* distinction for the convenience of client developers, as, under the hood, the underlying messaging system framework typically relies on WebSockets or implements polling.
 
-The most popular technology of this kind is *MQTT*[ref MQTT](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html). Although it is considered highly efficient due to its use of low-level protocols, its disadvantages stem from its advantages:
+The most popular technology of this kind is *MQTT*.[ref MQTT](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html) Although it is considered highly efficient due to its use of low-level protocols, its disadvantages stem from its advantages:
 
-* The technology is designed to implement the pub/sub pattern, and its primary value lies in the fact that the server software (MQTT Broker) is provided alongside the protocol itself. Applying it to other tasks, especially bidirectional communication, can be challenging.
+* The technology is designed to implement the pub/sub pattern, and its primary value lies in the fact that the server software (*MQTT Broker*) is provided alongside the protocol itself. Applying it to other tasks, especially bidirectional communication, can be challenging.
 * The use of low-level protocols requires developers to define their own data formats.
 
 Another popular technology for organizing message queues is the Advanced Message Queuing Protocol (*AMQP*). AMQP is an open standard for implementing message queues,[ref AMQP](https://www.amqp.org/) with many independent client and server (broker) implementations. One notable broker implementation is RabbitMQ,[ref RabbitMQ](https://www.rabbitmq.com/) while AMQP clients are typically implemented as libraries for specific client platforms and programming languages.
@@ -103,7 +103,7 @@ What is important is that the *must* be a formal contract (preferably in a form 
 
 As a *webhook* is a callback channel, you will need to develop a separate authorization system to deal with it as it's *partners* duty to check that the request is genuinely coming from the API backend, not vice versa. We reiterate here our strictest recommendation to stick to existing standard techniques, such as mTLS; though in the real world, you will likely have to use archaic methods like fixing the caller server's IP address.
 
-##### 3. Develop an Interface for Setting the URL of a *Webhook*
+##### 3. Develop an Interface for Setting the URL of a Webhook
 
 As the callback endpoint is developed by partners, we do not know its URL beforehand. It implies some interface must exist for setting this URL and authorized public keys (probably in a form of a control panel for partners).
 

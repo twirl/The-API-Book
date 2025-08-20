@@ -42,7 +42,7 @@ This convention allows for reflecting almost any API's entity nomenclature decen
 
       In other words, with any operation that runs an algorithm rather than returns a predefined result (such as listing offers relevant to a search phrase), we will have to decide what to choose: following verb semantics or indicating side effects? Caching the results or hinting that the results are generated on the fly?
 
-      **NB**: The authors of the standard are also concerned about this dichotomy and have finally proposed the `QUERY` HTTP method[ref The HTTP QUERY Method](https://www.ietf.org/archive/id/draft-ietf-httpbis-safe-method-w-body-02.html), which is basically a safe (i.e., non-modifying) version of `POST`. However, we do not expect it to gain widespread adoption just as the existing `SEARCH` verb[ref Web Distributed Authoring and Versioning (WebDAV) SEARCH](https://www.rfc-editor.org/rfc/rfc5323) did not.
+      **NB**: The authors of the standard are also concerned about this dichotomy and have finally proposed the `QUERY` HTTP method,[ref The HTTP QUERY Method](https://www.ietf.org/archive/id/draft-ietf-httpbis-safe-method-w-body-02.html) which is basically a safe (i.e., non-modifying) version of `POST`. However, we do not expect it to gain widespread adoption just as the existing `SEARCH` verb[ref Web Distributed Authoring and Versioning (WebDAV) SEARCH](https://www.rfc-editor.org/rfc/rfc5323) did not.
 
 Unfortunately, we don't have simple answers to these questions. Within this book, we adhere to the following approach: the call signature should, first and foremost, be concise and readable. Complicating signatures for the sake of abstract concepts is undesirable. In relation to the mentioned issues, this means that:
   1. Operation metadata should not change the meaning of the operation. If a request reaches the final microservice without any headers at all, it should still be executable, although some auxiliary functionality may degrade or be absent.
@@ -54,16 +54,17 @@ Unfortunately, we don't have simple answers to these questions. Within this book
   5. The semantics of the HTTP verbs take priority over false non-safety / non-idempotency warnings. Furthermore, the author of this book prefers using `POST` to indicate any unexpected side effects of an operation, such as high computational complexity, even if it is fully safe.
 
 **NB**: Passing variables as either query parameters or path fragments affects not only readability. Let's consider the example from the previous chapter and imagine that gateway D is implemented as a stateless proxy with a declarative configuration. Then receiving a request like this:
+
   * `GET /v1/state?user_id=<user_id>`
 
-      and transforming it into a pair of nested sub-requests:
+and transforming it into a pair of nested sub-requests:
 
   * `GET /v1/profiles?user_id=<user_id>`
   * `GET /v1/orders?user_id=<user_id>`
 
-      would be much more convenient than extracting identifiers from the path or some header and putting them into query parameters. The former operation [replacing one path with another] is easily described declaratively and is supported by most server software out of the box. On the other hand, retrieving data from various components and rebuilding requests is a complex functionality that most likely requires a gateway supporting scripting languages and/or plugins for such manipulations. Conversely, the automated creation of monitoring panels in services like the Prometheus+Grafana bundle (or basically any other log analyzing tool) is much easier to organize by path prefix than by a synthetic key computed from request parameters.
+would be much more convenient than extracting identifiers from the path or some header and putting them into query parameters. The former operation [replacing one path with another] is easily described declaratively and is supported by most server software out of the box. On the other hand, retrieving data from various components and rebuilding requests is a complex functionality that most likely requires a gateway supporting scripting languages and/or plugins for such manipulations. Conversely, the automated creation of monitoring panels in services like the Prometheus+Grafana bundle (or basically any other log analyzing tool) is much easier to organize by path prefix than by a synthetic key computed from request parameters.
 
-      All this leads us to the conclusion that maintaining an identical URL structure when paths are fixed and all the parameters are passed as query parameters will result in an even more uniform interface, although less readable and semantic. In internal systems, preferring the convenience of usage over readability is sometimes an obvious decision. In public APIs, we would rather discourage implementing this approach.
+All this leads us to the conclusion that maintaining an identical URL structure when paths are fixed and all the parameters are passed as query parameters will result in an even more uniform interface, although less readable and semantic. In internal systems, preferring the convenience of usage over readability is sometimes an obvious decision. In public APIs, we would rather discourage implementing this approach.
 
 #### The CRUD Operations
 
@@ -74,9 +75,10 @@ One of the most popular tasks solved by exposing HTTP APIs is implementing CRUD 
   * The “delete” operation corresponds to deleting a resource with the `DELETE` method.
 
 **NB**: In fact, this correspondence serves as a mnemonic to choose the appropriate HTTP verb for each operation. However, we must warn the reader that verbs should be chosen according to their definition in the standards, not based on mnemonic rules. For example, it might seem like deleting the third element in a list should be organized via the `DELETE` method:
+
   * `DELETE /v1/list/{list_id}/?position=3`
 
-      However, as we remember, doing so is a grave mistake: first, such a call is non-idempotent, and second, it violates the `GET` / `DELETE` consistency principle.
+However, as we remember, doing so is a grave mistake: first, such a call is non-idempotent, and second, it violates the `GET` / `DELETE` consistency principle.
 
 The CRUD/HTTP correspondence might appear convenient as every resource is forced to have its own URL and each operation has a suitable verb. However, upon closer examination, we will quickly understand that the correspondence presents resource manipulation in a very simplified, and, even worse, poorly extensible way.
 
@@ -167,11 +169,17 @@ This discourse is not intended to be perceived as criticizing the idea of CRUD o
   * `/v1/orders/{id}` to be acted upon with `GET` / `PUT` / `DELETE` / optionally `PATCH`.
 
 However, if we add the following requirements:
-  * Concurrency control in entity creation
-  * Collaborative editing
-  * Archiving entities
-  * Searching entities with filters
+
+* Concurrency control in entity creation
+
+* Collaborative editing
+
+* Archiving entities
+
+* Searching entities with filters
+
 then we end up with the following nomenclature of 8 URLs and 9-10 methods:
+
   * `GET /v1/orders/?user_id=<user_id>` to retrieve the ongoing orders, perhaps with additional simple filters
   * `/v1/orders/drafts/?user_id=<user_id>` to be acted upon with `POST` to create an order draft and with `GET` to retrieve existing drafts and the revision
   * `PUT /v1/orders/drafts/{id}/commit` to commit the draft

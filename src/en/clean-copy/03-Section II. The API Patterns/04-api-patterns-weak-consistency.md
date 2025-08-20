@@ -50,7 +50,7 @@ If strict consistency is not guaranteed, the second call might easily return an 
 An important pattern that helps in this situation is implementing the “read-your-writes[ref Consistency Model. Read-Your-Writes Consistency|ref:steen-tanenbaum-distributed-systems 7.3.3 Read your writes](https://en.wikipedia.org/wiki/Consistency_model#Read-your-writes_consistency)” model: it guarantees that clients observe the changes they have just made. In APIs, the read-your-writes strategy could be implemented by by making clients pass some token that describes the last change known to the client.
 
 ```typescript
-let der = await api
+let order = await api
   .createOrder(…);
 let pendingOrders = await api.
   getOngoingOrders({

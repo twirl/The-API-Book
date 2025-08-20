@@ -45,7 +45,7 @@ The term “client” here stands for an application being executed on a user's 
 
 Some request and response parts might be omitted if they are irrelevant to the topic being discussed.
 
-Simplified notation might be used to avoid redundancies, like `POST /operation` `{…, "some_parameter", …}` → `{ "operation_id" }`; request and response bodies might also be omitted.
+Simplified notation might be used to avoid redundancies, like `POST /operation` `{…, "some_parameter", …}` `→` `{ "operation_id" }`; request and response bodies might also be omitted.
 
 We will use sentences like “`POST /v1/buckets/{id}/operation` method” (or simply “`buckets/operation` method,” “`operation`” method — if there are no other `operation`s in the chapter, so there is no ambiguity) to refer to such endpoint definitions.
 

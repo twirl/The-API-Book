@@ -6,23 +6,16 @@ Let's transition to a more substantive conversation and try to understand why th
   * The emergence of ambivalent hierarchies in the inheritance of entity properties and options.
 
 Let's make the task more specific. Imagine that we need to develop a `SearchBox` that allows for the following modifications:
-  1. Replacing the textual paragraphs representing an offer with a map with markers that could be highlighted:
-
-      [![APP](/img/mockups/05.size-s.png "Search results on a map")]()
+  1. Replacing the textual paragraphs representing an offer with a map with markers that could be highlighted (Figure 43.1).
 
       * This illustrates the problem of replacing a subcomponent (the offer list) while preserving the behavior and design of other parts of the system as well as the complexity of implementing shared states.
 
-  2. Combining short and full descriptions of an offer in a single UI (a list item could be expanded, and the order can be created in-place):
 
-      [![APP](/img/mockups/06.size-s.png "A list of offers with short descriptions")]()
-
-      [![APP](/img/mockups/07.size-s.png "A list of offers with some of them expanded")]()
+  2. Combining short (Figure 43.2) and full (Figure 43.3) descriptions of an offer in a single UI (a list item could be expanded, and the order can be created in-place).
 
       * This illustrates the problem of fully removing a subcomponent and transferring its business logic to other parts of the system.
 
-  3. Manipulating the data presented to the user and the available actions for an offer through adding new buttons, such as “Previous offer,” “Next offer,” and “Make a call.”
-
-      [![APP](/img/mockups/08.size-s.png "An offer panel with additional icons and buttons")]()
+  3. Manipulating the data presented to the user and the available actions for an offer through adding new buttons, such as “Previous offer,” “Next offer,” and “Make a call” (Figure 43.4).
   
       In this scenario, we're evaluating different chains of propagating data and options down to the offer panel and building dynamic UIs on top of it:
 
@@ -32,9 +25,17 @@ Let's make the task more specific. Imagine that we need to develop a `SearchBox`
 
       * Some data fields (such as the icons of the “Not now” and “Make a call” buttons) are bound to the button type (i.e., the business logic it provides).
 
-The obvious approach to tackling these scenarios appears to be creating two additional subcomponents responsible for presenting a list of offers and the details of the specific offer. Let's name them `OfferList` and `OfferPanel` respectively.
+[![APP](/img/mockups/05.size-s.png "Figure 43.1. Search results on a map")]()
 
-[![PLOT](/img/mockups/09.png "The subcomponents of a `SearchBox`")]()
+[![APP](/img/mockups/06.size-s.png "Figure 43.2. A list of offers with short descriptions")]()
+
+[![APP](/img/mockups/07.size-s.png "Figure 43.3. A list of offers with some of them expanded")]()
+
+[![APP](/img/mockups/08.size-s.png "Figure 43.4. An offer panel with additional icons and buttons")]()
+
+The obvious approach to tackling these scenarios appears to be creating two additional subcomponents responsible for presenting a list of offers and the details of the specific offer. Let's name them `OfferList` and `OfferPanel` respectively (Figure 43.5).
+
+[![PLOT](/img/mockups/09.png "Figure 43.5. The subcomponents of a `SearchBox`")]()
 
 If we had no customization requirements, the pseudo-code implementing interactions between all three components would look rather trivial:
 
@@ -515,6 +516,8 @@ If we revisit the cases we began this chapter with, we can now outline solutions
 The price of this flexibility is the overwhelming complexity of component communications. Each event and data field must be propagated through the chains of such “composers” that elongate the abstraction hierarchy. Every transformation in this chain (for example, generating options for subcomponents or reacting to context events) is to be implemented in an extendable and parametrizable way. We can only offer reasonable helpers to ease using such customization. However, in the SDK code, the complexity will always be present. This is the way.
 
 The reference implementation of all the components with the interfaces we discussed and all three customization cases can be found in this book's repository:
-  * The source code is available on [www.github.com/twirl/The-API-Book/docs/examples](https://github.com/twirl/The-API-Book/tree/gh-pages/docs/examples/01.%20Decomposing%20UI%20Components)
+  * The source code is available on:
+      * [www.github.com/twirl/The-API-Book/docs/examples](https://github.com/twirl/The-API-Book/tree/gh-pages/docs/examples/)
       * There are also additional tasks for self-study
-  * The sandbox with “live” examples is available on [twirl.github.io/The-API-Book](https://twirl.github.io/The-API-Book/examples/01.%20Decomposing%20UI%20Components/).
+  * The sandbox with “live” examples is available on: 
+      * [twirl.github.io/The-API-Book](https://twirl.github.io/The-API-Book/).

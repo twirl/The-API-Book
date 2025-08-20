@@ -12,11 +12,12 @@ In other words, hundreds or even thousands of different APIs must work correctly
 
 **An API is an obligation**. A formal obligation to connect different programmable contexts.
 
-When the author of this book is asked for an example of a well-designed API, he will usually show a picture of a Roman aqueduct:
+When the author of this book is asked for an example of a well-designed API, he will usually show a picture of a Roman aqueduct (see Figure 2.1):
 
-[![Slepitssskaya / Envato](/img/pont-du-gard.jpg "The Pont-du-Gard aqueduct. Built in the 1st century AD")](https://photodune.net/user/slepitssskaya)
   * It interconnects two areas
   * Backward compatibility has not been broken even once in two thousand years.
+
+[![Slepitssskaya / Envato](/img/pont-du-gard.jpg "Figure 2.1. The Pont-du-Gard aqueduct. Built in the 1st century AD")](https://photodune.net/user/slepitssskaya)
 
 What differs between a Roman aqueduct and a good API is that in the case of APIs, the contract is presumed to be *programmable*. To connect the two areas, *writing some code* is needed. The goal of this book is to help you design APIs that serve their purposes as solidly as a Roman aqueduct does.
 

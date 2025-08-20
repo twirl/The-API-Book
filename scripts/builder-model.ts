@@ -12,5 +12,5 @@ export {
     L10n,
     Section,
     Strings,
-    Structure
-} from '@twirl/book-builder';
+    Structure,
+} from "@twirl/book-builder";
