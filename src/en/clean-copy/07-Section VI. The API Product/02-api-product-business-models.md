@@ -70,7 +70,7 @@ Additionally, we might talk about forming a community, i.e., a network of develo
 
 ##### API = a Feedback and UGC Tool
 
-If a company possesses some big data, it might be useful to provide a public API for users to make corrections in the data or otherwise get involved in working with it. For example, cartographical API providers usually allow the audience to post feedback or correct mistakes right on partners' websites and applications. [In the case of our coffee API, we might be collecting feedback to improve the service, both passively through building coffee shop ratings or actively through contacting business owners to convey users' requests or finding new coffee shops that are still not integrated with the platform.]
+If a company possesses some big data, fully or partially authored by external contributors (so-called “user-generated content,” or “UGC”), it might be useful to provide a public API for users to make corrections in the data or otherwise get involved in working with it. For example, cartographical API providers usually allow the audience to post feedback or correct mistakes right on partners' websites and applications. [In the case of our coffee API, we might be collecting feedback to improve the service, both passively through building coffee shop ratings or actively through contacting business owners to convey users' requests or finding new coffee shops that are still not integrated with the platform.]
 
 ##### Terraforming
 
