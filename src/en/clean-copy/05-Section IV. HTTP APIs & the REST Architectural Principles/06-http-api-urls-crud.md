@@ -150,7 +150,7 @@ Additionally, if some media data could be attached to an order (such as photos),
 
 The problem of partial updates was discussed in detail in the [corresponding chapter](#api-patterns-partial-updates) of “The API Patterns” section. To quickly recap:
   * The concept of fully overwriting resources with `PUT` is viable but soon faces problems when working with calculated or immutable fields and organizing collaborative editing. It is also suboptimal in terms of traffic consumption.
-  * Partially updating a resource using the `PATCH` method is potentially non-idempotent (and likely non-transitive), and the aforementioned concerns regarding automatic retries are applicable to it as well.
+  * Partially updating a resource using the `PATCH` method is potentially non-idempotent (and likely order-dependent), and the aforementioned concerns regarding automatic retries are applicable to it as well.
 
 If we need to update a complex entity, especially if collaborative editing is needed, we will soon find ourselves leaning towards one of the following two approaches:
   * Decomposing the `PUT` functionality into a set of atomic nested handlers (like `PUT /v1/orders/{id}/address`, `PUT /v1/orders/{id}/volume`, etc.), one for each specific operation.

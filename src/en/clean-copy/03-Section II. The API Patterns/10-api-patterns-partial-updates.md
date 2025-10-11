@@ -91,7 +91,7 @@ However, upon closer examination all these conclusions seem less viable:
   * The concept of passing only the fields that have actually changed shifts the burden of detecting which fields have changed onto the client developers' shoulders:
       * Not only does the complexity of implementing the comparison algorithm remain unchanged but we also run the risk of having several independent realizations.
       * The capability of the client to calculate these diffs doesn't relieve the server developers of the duty to do the same as client developers might make mistakes or overlook certain aspects.
-  * Finally, the naïve approach of organizing collaborative editing by allowing conflicting operations to be carried out if they don't touch the same fields works only if the changes are transitive. In our case, they are not: the result of simultaneously removing the first element in the list and editing the second one depends on the execution order.
+  * Finally, the naïve approach of organizing collaborative editing by allowing conflicting operations to be carried out if they don't touch the same fields works only if the changes are not order-dependent. In our case, they are: the result of simultaneously removing the first element in the list and editing the second one depends on the execution order.
       * Often, developers try to reduce the outgoing traffic volume as well by returning an empty server response for modifying operations. Therefore, two clients editing the same entity do not see the changes made by each other until they explicitly refresh the state, which further increases the chance of yielding highly unexpected results.
 
 The solution could be enhanced by introducing explicit control sequences instead of relying on “magical” values and adding meta settings for the operation (such as a field name filter as it's implemented in gRPC over Protobuf[ref Protocol Buffers. Field Masks in Update Operations](https://protobuf.dev/reference/protobuf/google.protobuf/#field-masks-updates)). Here's an example:
@@ -126,11 +126,11 @@ PATCH /v1/orders/{id}↵
 
 While this approach may appear more robust, it doesn't fundamentally address the problems:
   * “Magical” values are replaced with “magical” prefixes
-  * The fragmentation of algorithms and the non-transitivity of operations persist.
+  * The fragmentation of algorithms and the result’s dependence on the order of operations persist.
 
 Given that the format becomes more complex and less intuitively understandable, we consider this enhancement dubious.
 
-A **more consistent solution** is to split an endpoint into several idempotent sub-endpoints, each having its own independent identifier and/or address (which is usually enough to ensure the transitivity of independent operations). This approach aligns well with the decomposition principle we discussed in the “[Isolating Responsibility Areas](#api-design-isolating-responsibility)” chapter.
+A **more consistent solution** is to split an endpoint into several idempotent sub-endpoints, each having its own independent identifier and/or address (which is usually enough to ensure the order-independence of different types of operations). This approach aligns well with the decomposition principle we discussed in the “[Isolating Responsibility Areas](#api-design-isolating-responsibility)” chapter.
 
 ```json
 // Creates an order
@@ -189,7 +189,7 @@ PUT /v1/orders/{id}/items/{item_id}
 DELETE /v1/orders/{id}/items/{item_id}
 ```
 
-Now to reset the `volume` field it is enough *not* to pass it in the `PUT items/{item_id}`. Also note that the operations of removing one beverage and editing another one became transitive.
+Now to reset the `volume` field it is enough *not* to pass it in the `PUT items/{item_id}`. Also note that the operations of removing one beverage and editing another one became order-independent.
 
 This approach also allows for separating read-only and calculated fields (such as `created_at` and `status`) from the editable ones without creating ambivalent situations (such as what should happen if the client tries to modify the `created_at` field).
 
@@ -230,4 +230,4 @@ X-Idempotency-Token: <token>
 
 This approach is much more complex to implement, but it is the only viable technique for realizing collaborative editing as it explicitly reflects the exact actions the client applied to an entity. Having the changes in this format also allows for organizing offline editing with accumulating changes on the client side for the server to resolve the conflict later based on the revision history.
 
-**NB**: One approach to this task is developing a set of operations in which all actions are transitive (i.e., the final state of the entity does not change regardless of the order in which the changes were applied). One example of such a nomenclature is a conflict-free replicated data type (*CRDT*).[ref Conflict-Free Replicated Data Type|ref:shapiro-et-al-crdt Conflict-Free Replicated Data Types](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type) However, we consider this approach viable only in some subject areas, as in real life, non-transitive changes are always possible. If one user entered new text in the document and another user removed the document completely, there is no way to automatically resolve this conflict that would satisfy both users. The only correct way of resolving this conflict is explicitly asking users which option for mitigating the issue they prefer.
+**NB**: One approach to this task is developing a set of operations in which the state of the system remains consistent regardless of the order in which the operations are applied. One example of such a nomenclature is a conflict-free replicated data type (*CRDT*).[ref Conflict-Free Replicated Data Type|ref:shapiro-et-al-crdt Conflict-Free Replicated Data Types](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type) However, we consider this approach viable only in some subject areas, as in real life, the order of operation *is* typically important. If one user entered new text in the document and another user removed the document completely, there is no way to automatically resolve this conflict that would satisfy both users. The only correct way of resolving this conflict is explicitly asking users which option for mitigating the issue they prefer.
