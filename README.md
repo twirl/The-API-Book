@@ -17,6 +17,8 @@ This is an open-source book distributed under the [Creative Commons Attribution-
 * Read [‘The API’ Book by Sergey Konstantinov](https://twirl.github.io/The-API-Book) in English
 * Читать [книгу ‘The API’ Сергея Константинова](https://twirl.github.io/The-API-Book/index.ru.html) по-русски
 
+Additionaly, there are “API Design” and “API Review” skills distilled from the book, available at [github.com/twirl/APIDev.rules](https://github.com/twirl/APIDev.rules).
+
 ## Current State and the Roadmap
 
 See [ROADMAP.md](./ROADMAP.md).
